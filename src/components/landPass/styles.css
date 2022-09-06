@@ -1,0 +1,93 @@
+.landpass_container {
+  padding: 5%;
+}
+
+.mapareas_box {
+  background-color: white;
+  border-radius: 1em;
+  padding: 1em;
+  box-shadow: -5px 3px 23px rgba(20, 18, 103, 0.03),
+    0px 13px 36px rgba(23, 58, 110, 0.01);
+}
+.filter-box {
+  border-radius: 0.5em;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 1em;
+}
+.circle_avatar {
+  background-color: #c4c4c4;
+  border-radius: 100px;
+  min-height: 40px;
+  min-width: 40px;
+  position: relative;
+}
+.small_circle {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  background-color: #c4c4c4;
+  border: 2px solid white;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0.5em;
+}
+.area-hightlight_card {
+  background: #ffffff;
+  box-shadow: 5px 0px 23px rgba(20, 18, 103, 0.06),
+    0px 13px 36px rgba(23, 58, 110, 0.12);
+  border-radius: 1em;
+  padding: 0.5em;
+}
+.area-card_imgholder {
+  background: #eef4ff;
+  border-radius: 1em;
+  min-height: 110px;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 0.5em;
+}
+.medium_circle {
+  background-color: #c4c4c4;
+  border-radius: 100px;
+  min-height: 25px;
+  min-width: 25px;
+  position: relative;
+  overflow: hidden;
+}
+.likes-box {
+  background: #ffffff;
+  box-shadow: 5px 0px 23px rgba(20, 18, 103, 0.06),
+    0px 13px 36px rgba(23, 58, 110, 0.12);
+  border-radius: 0.5em;
+  padding: 0.2em 0.5em;
+}
+.map-container {
+  /* border: 2px solid black; */
+  border-radius: 3px;
+  border: 3px solid transparent;
+  border-image: linear-gradient(to left, #eb4a26, #a417d4, #0046b8);
+  border-image-slice: 1;
+  position: relative;
+}
+.greeting_box {
+  border-radius: 3px;
+  border: 2px solid transparent;
+  border-image: linear-gradient(to left, #eb4a26, #a417d4, #0046b8);
+  border-image-slice: 1;
+  background: rgba(255, 255, 255, 0.24);
+  box-shadow: inset 49.2px -49.2px 49.2px rgba(194, 194, 194, 0.1),
+    inset -49.2px 49.2px 49.2px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(98.4px);
+  padding: 4em .5em;
+  width: auto !important;
+  position: absolute;
+  top: 50%;
+  left: 50%;                       /* 3 */
+  transform: translate(-50%, -50%);
+  text-align: center;
+}

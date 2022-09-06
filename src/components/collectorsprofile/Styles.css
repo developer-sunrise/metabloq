@@ -1,0 +1,29 @@
+.collectors_profile{
+    border-radius: 1em;
+    border: .5px solid lightgray;
+}
+.collectors_profile-walletbox{
+    background: rgba(208, 208, 210, 0.25);
+    border-radius: .5em;
+    padding: .5em;
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    cursor: pointer;
+}
+.collectors-social-icons{
+    background-color: #0295FA;
+    border-radius: .3em;
+    margin: 0 .3em;
+    padding: .2em .4em;
+}
+.collectors_profile-imgdiv{
+    padding: .5em .5em 0 .5em;
+}
+
+@media(max-width:576px){
+    .collectors-social-icons-div{
+       justify-content: center;
+       padding: 1em 0;
+    }
+}

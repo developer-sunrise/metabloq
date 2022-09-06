@@ -1,0 +1,53 @@
+.signuppage_container{
+    background-image: url('../../assets/profile/editprofileBg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 10%;
+    height: 100vh;
+}
+
+.signup_container{
+    background: rgba(255, 255, 255, 0.24);
+    box-shadow: inset 49.2px -49.2px 49.2px rgba(194, 194, 194, 0.1), inset -49.2px 49.2px 49.2px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(98.4px);
+    border-radius: 1em;
+    padding:2em 5em;
+    color: white;
+}
+.signup-form{
+    padding: 0 0;
+}
+
+.signup-form .editprofile_input::placeholder{
+    color: #838383;
+    opacity: .5;
+}
+.signup_password-input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: .5em;
+    padding-right: .5em;
+}
+
+@media(max-width:576px){
+    .signup_social-icons-box{
+        padding: .5em 1em;
+        display: flex;
+        align-items: center;
+    }
+    .signup-form{
+        padding: 0;
+    }
+    .signup_container{
+        padding:2em;
+        color: white;
+    }
+    .signuppage_container{
+        padding: 5%;
+    }
+}

@@ -1,0 +1,25 @@
+.liveauction_cards {
+  background-color: white;
+  border: 0.5px solid lightgray;
+  border-radius: 1em;
+  padding: 1em;
+}
+.liveauction_cards-imgwithtime {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  
+}
+.liveauction_cards-timebox {
+  position: absolute;
+  background: #e6effa;
+  border-radius: 0.5em;
+  padding: 0.2em;
+  bottom: -5%;
+  left: 10%;
+  right: 10%;
+  object-fit: contain;
+}
+.liveauction_myswiper {
+  padding: 2em 0;
+}

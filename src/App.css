@@ -1,0 +1,220 @@
+/* global css */
+body {
+  /* overflow: hidden; */
+  margin: 0;
+  padding: 0;
+  font-family: "LufgaRegular" !important;
+  word-wrap: break-word;
+}
+.App {
+  max-height: 100%;
+  overflow: hidden;
+  /* font-size: calc(15px + 0.390625vw); */
+}
+.bold{
+  font-weight: bold;
+}
+/* gradient button*/
+.metablog_gradient-button {
+
+  background: 
+    linear-gradient(white 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(-90deg, #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%) border-box;
+  border: 1px solid transparent;
+  padding: 0.5em 1em;
+  border-radius: 1.5em;
+  display: inline-block;
+}
+.metablog_gradient-button:hover {
+  background: radial-gradient(
+    136.03% 6755.5% at 111.63% -36.03%,
+    #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%
+  );
+  color: white;
+}
+.metablog_gradient-filled-button {
+
+  background: radial-gradient(
+    136.03% 6755.5% at 111.63% -36.03%,
+    #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%
+  );
+  border: 1px solid transparent;
+  padding: 0.5em 1em;
+  border-radius: 1.5em;
+  display: inline-block;
+  color: white;
+}
+.metablog_gradient-square-button {
+  background: 
+    linear-gradient(white 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(-90deg, #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%) border-box;
+  border: 1px solid transparent;
+  padding: 0.2em 1em;
+  border-radius: .5em;
+  display: inline-block;
+}
+.metablog_gradient-square-button:hover {
+  background: radial-gradient(
+    136.03% 6755.5% at 111.63% -36.03%,
+    #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%
+  );
+  color: white;
+}
+
+/* gradient borderless button*/
+.metablog_gradient-borderless-button {
+  background: radial-gradient(
+      136.03% 6755.5% at 111.63% -36.03%,
+      #eb4a26 0%,
+      #a417d4 45.31%,
+      #0046b8 100%
+    )
+    /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  border: 0;
+}
+
+/* primary button */
+.metablog_primary-button {
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: 1px solid #0d6efd;
+  background: transparent;
+}
+.metablog_primary-button:hover {
+  background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
+  color: white;
+}
+
+/* filled primary button */
+.metablog_primary-filled-button {
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: 1px solid #0d6efd;
+  background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
+  color: white;
+
+}
+
+.metablog_primary-filled-button-red {
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: 1px solid #830000;
+  background: linear-gradient(102.66deg, #ff7878 -17.72%, #ff0000 80.89%);
+  color: white;
+}
+.metablog_primary-filled-button-green {
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: 1px solid #078300;
+  background: linear-gradient(102.66deg, #86ff78 -17.72%, #33ff00 80.89%);
+  color: rgb(0, 0, 0);
+}
+/* filled square primary button */
+.metablog_primary-filled-square-button {
+  border-radius: 0.5em;
+  padding: 0.2em 1.5em;
+  border: 1px solid #0d6efd;
+  background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.secondary-text {
+  color: #838383;
+}
+h1,h2,h3,h4,h5{
+  font-family: "LufgaRegular" !important;
+}
+/* global css for cards*/
+.metablog_cards {
+  cursor: pointer;
+  border-radius: 1em;
+  padding: 1em;
+}
+.metablog_cards:hover {
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.lufga {
+  font-family: "LufgaRegular";
+}
+.lufga-bold{
+  font-family: "LufgaBold";
+}
+.poppins {
+  font-family: "Poppins-Regular";
+}
+.raleway {
+  font-family: "Raleway-Regular";
+}
+
+.vertical-divider {
+  display: inline-block;
+  border-left: 1px solid #5a5a7c;
+  margin: 0 1px;
+  min-height: 100%;
+  opacity: 0.13;
+}
+
+.metabloq_img{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: .5em;
+  overflow:hidden;
+}
+
+.img-zoom-animation {
+  transition: transform 0.8s;
+}
+.img-zoom-animation:hover {
+  -ms-transform: scale(1.1); /* IE 9 */
+  -webkit-transform: scale(1.1); /* Safari 3-8 */
+  transform: scale(1.1);
+  transform-origin: 50% 50%;
+}
+
+/* container*/
+.metabloq_container {
+  padding: 0 10%;
+}
+.metabloq_container-fluid{
+  padding: 0 5%;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
+@media (max-width: 576px) {
+  .metabloq_container {
+    padding: 0 5%;
+  }
+  .App {
+    font-size: calc(15px + 0.390625vw);
+  }
+  
+}
+
+/* @media(min-width:968px) and (max-width:1400px){
+  .App {
+    font-size: calc(8px + 0.390625vw);
+  }
+} */

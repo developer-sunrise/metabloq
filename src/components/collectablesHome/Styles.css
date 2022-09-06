@@ -1,0 +1,21 @@
+
+
+.collections_home-banner{
+
+    background-color: lightgray;
+    border-radius: 1em 1em 0 0 ;
+    /* position: relative; */
+}
+.collection_logo-preview{
+    position: relative;
+    bottom: 40px;
+}
+.collections_home-info{
+    width: 100%;
+    background-color: red;
+}
+.responsive-img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}

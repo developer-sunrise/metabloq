@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="706px" height="768px" viewBox="0 0 706 768" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <defs>
+        <linearGradient x1="32.0422136%" y1="-6.32352666%" x2="50.000001%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#DDE6EB" offset="0%"></stop>
+            <stop stop-color="#EEF3F5" offset="23.8577%"></stop>
+            <stop stop-color="#F3F7F9" offset="33.9483%"></stop>
+            <stop stop-color="#E2EAEE" offset="46.0238%"></stop>
+            <stop stop-color="#CAD7DF" offset="100%"></stop>
+        </linearGradient>
+        <path d="M663.719016,331.720309 C663.719016,148.516309 515.202016,9.09494702e-13 331.998016,9.09494702e-13 C148.794016,9.09494702e-13 0.277832,148.516309 0.277832,331.720309 L0.277832,727.182309 L663.719016,727.182309 L663.719016,331.720309 Z" id="path-2"></path>
+        <linearGradient x1="-10.1388404%" y1="-0.137844546%" x2="110.974951%" y2="27.0685015%" id="linearGradient-4">
+            <stop stop-color="#78CEFF" offset="0%"></stop>
+            <stop stop-color="#0295FA" offset="80.2412%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Design" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group" transform="translate(1.000000, 0.000000)">
+            <g id="Group-12" transform="translate(39.583984, 0.000000)">
+                <path d="M0,332.916309 C0,149.166309 148.958016,0.208008 332.708016,0.208008 C516.458016,0.208008 665.416016,149.166309 665.416016,332.916309 L665.416016,727.672309 L0,727.672309 L0,332.916309 Z" id="Path" fill-opacity="0.2" fill="url(#linearGradient-1)" fill-rule="nonzero"></path>
+                <mask id="mask-3" fill="white">
+                    <use xlink:href="#path-2"></use>
+                </mask>
+                <g id="Path"></g>
+                <rect id="Rectangle" fill="#E7ECF0" fill-rule="nonzero" mask="url(#mask-3)" x="-32.321284" y="-21.605191" width="705.214" height="762.548"></rect>
+            </g>
+            <path d="M0,372.500309 C0,189.302309 148.511,40.791989 331.708,40.791989 C514.905,40.791989 663.416,189.302309 663.416,372.500309 L663.416,766.256309 L0,766.256309 L0,372.500309 Z" id="Path" stroke="url(#linearGradient-4)" stroke-width="2"></path>
+        </g>
+    </g>
+</svg>

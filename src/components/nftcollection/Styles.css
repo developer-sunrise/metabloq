@@ -1,0 +1,102 @@
+.nftcollection_filter-menu {
+  height: 100%;
+}
+.nftcollection_filter-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: none;
+  background: #ecf1f8;
+  color: #67808e;
+  cursor: pointer;
+}
+.nftcollection_filter-active-div{
+  background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: none;
+  cursor: pointer;
+}
+
+.nftcollection_filter-div-gradient {
+  background: linear-gradient(white 0 0) padding-box,
+    /*this is your grey background*/
+      linear-gradient(-90deg, #eb4a26 0%, #a417d4 45.31%, #0046b8 100%)
+      border-box;
+  padding: 0.5em 1em;
+  border: 1px solid transparent;
+  border-radius: 1.5em;
+  display: inline-block;
+  color: #0295fa;
+  cursor: pointer;
+}
+.nftcollection_mobile-category {
+  border-radius: .5em;
+  background: linear-gradient(white 0 0) padding-box,
+    /*this is your grey background*/
+      linear-gradient(-90deg, #eb4a26 0%, #a417d4 45.31%, #0046b8 100%)
+      border-box;
+  padding: 0.5em 1em;
+  border: 1px solid transparent;
+  display: inline-block;
+  color: #0295fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* web filter section*/
+.metabloq_webfilter-section{
+  padding: 2em;
+  height: 100%;
+  overflow-y: scroll;
+}
+.metabloq_webfilter-searchbox{
+  background-color: #F0F0F0;
+  border-radius: .5em;
+  padding: .3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.webfilter_search-input{
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  height: 100%;
+  background-color: transparent;
+}
+
+.webfilter_range .rangeslider-horizontal .rangeslider__fill {
+  height: 100%;
+  background-color: #0295fa!important;
+  border-radius: 10px;
+  top: 0;
+}
+
+.filter-tabs .nav-tabs {
+  display: flex;
+  justify-content: flex-start !important;
+  align-items: center;
+
+}
+.filter-tabs .nav-tabs .nav-link.active {
+  background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
+  color: white !important;
+  cursor: pointer;
+  border: 1px solid transparent;
+  display: inline-block;
+  border-radius: 1.5em;
+}
+
+@media(max-width:576px){
+  .metabloq_webfilter-section{
+    padding: 1em;
+  }
+}

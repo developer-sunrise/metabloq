@@ -1,0 +1,43 @@
+.land_nft-card{
+    border-radius: 1em;
+    background-color: white;
+    border: .5px solid lightgray;
+    cursor: pointer;
+}
+.land_nft-card:hover{
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}
+
+.img-placeholder{
+    background-color: lightgray;
+    min-height: 170px;
+    min-width: 100%;
+    border-radius: 1em 1em 0 0;
+    overflow: hidden;
+}
+.landnft_menu{
+    padding: .5em;
+    border-radius: .5em;
+    margin-bottom: 7px;
+    cursor: pointer;
+
+}
+.landnft_menu-active{
+    padding: .5em;
+    border-radius: .5em;
+    margin-bottom: 7px;
+    background-color:rgba(99, 99, 99, 0.1) ;
+    cursor: pointer;
+}
+.landnft_menu:hover{
+    background-color:rgba(99, 99, 99, 0.1) ;
+}
+/* .left-filter-column{
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+} */
+.input-revert{
+    border: none !important;
+    outline: none !important;
+    background-color: none !important;
+    margin-left: 1.5%;
+}

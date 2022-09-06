@@ -1,0 +1,11 @@
+.modal_header{
+    background: linear-gradient(90deg, #6DC6FE 0%, #0295FA 100%);
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 1em 1em 0 0;
+}
+.modal_body{
+    padding:1em
+}

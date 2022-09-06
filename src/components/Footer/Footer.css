@@ -1,0 +1,22 @@
+.footer_container{
+    padding: 0 10%;
+}
+.footer_inputbox{
+    background: #fdfdfd;
+    border-radius: 1em;
+}
+.footer_input{
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: transparent;
+    height: 100%;
+    padding: 1em 0 1em .5em;
+}
+
+@media(max-width:576px){
+    .footer_mobile-center{
+        display: flex;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,73 @@
+.createitem_input {
+  border: 0.5px solid lightgray !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: transparent;
+  height: 100%;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  width: 100%;
+}
+.createitem_uploadbox {
+  border: 1px dashed lightgray;
+  border-radius: 0.5em;
+  position: relative;
+}
+.createitem_upload-button {
+  background: #1c83e5;
+  border-radius: 1em;
+  padding: 0.5em 1em;
+  color: white;
+  border: 0.5px solid #1c83e5;
+  cursor: pointer;
+}
+.createitem_select .form-select {
+  display: block;
+  width: 100%;
+  padding: 0.5em 1em;
+  -moz-padding-start: calc(0.75rem - 3px);
+
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 0.5em;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.createitem_method-box {
+  background: rgba(230, 239, 250, 0.5);
+  border-radius: 1em;
+  padding: 2em 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.createitem_input::placeholder{
+  color: #838383;
+}
+.add-items{
+  background: white;
+  padding: .5em;
+  border-radius: .5em;
+  border: .5px solid lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 576px) {
+  .createitem_method-box {
+    padding: 1em;
+  }
+  .createitem_input {
+    border: 1px solid lightgray !important;
+  }
+}

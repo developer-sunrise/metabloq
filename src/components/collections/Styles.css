@@ -1,0 +1,15 @@
+.collections_cards{
+    background-color: white;
+    border:.5px solid lightgray;
+}
+.collections_cards-grid{
+    padding:0;
+    height: 100%;
+    overflow: hidden;
+}
+
+@media(max-width:567px){
+    .collections_cards{
+        border: 1px solid lightgray;
+    }
+}

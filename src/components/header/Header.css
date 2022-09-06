@@ -1,0 +1,87 @@
+.header_container {
+  background-color: rgb(255, 255, 255);
+  padding: 1em;
+}
+.header_search {
+  background-color: #f1f1f1;
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+}
+
+.header_search-input {
+  background-color: transparent;
+  height: 100%;
+  border-radius: 0.5em;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  margin: 0 0.5em;
+}
+
+.newitems-dropdown {
+  background-color: transparent;
+  text-align: center;
+}
+.nav-link .dropdown-toggle::after {
+  display: none;
+}
+.nav-link .dropdown-menu {
+  position: absolute;
+  z-index: 2000;
+  /* display: none; */
+  min-width: auto;
+  padding: 0.5em;
+  margin: 0;
+  color: #838383!important;
+  text-align: center !important;
+  list-style: none;
+  background-color: white !important;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.5em;
+}
+.metabloq_header-menu {
+  display: flex;
+  align-items: center;
+}
+
+.myprofile_userlogo{
+  background-color: lightgray;
+  border-radius: 100px;
+  border: 1px solid lightgray;
+}
+
+.admin-dropdown{
+  border-radius: 1em;
+  padding: 1em;
+  background: 
+    linear-gradient(white 0 0) padding-box, /*this is your grey background*/
+    linear-gradient(-90deg, #eb4a26 0%,
+    #a417d4 45.31%,
+    #0046b8 100%) border-box;
+  border: 2px solid transparent;
+  position: absolute;
+  top: 85%;
+  width: 270px;
+  z-index: 9999;
+}
+
+@media (max-width: 576px) {
+  .header_collapse_navbar {
+    display: inline;
+    
+  }
+  .header_container .nav-link {
+    text-align: right;
+  }
+  .metabloq_header-menu {
+    display: inline !important;
+
+  }
+  .nav-link .dropdown-menu {
+    text-align: right !important;
+    border: none!important;
+  }
+}

@@ -1,0 +1,7 @@
+.FAQs_accordion{
+    border: .5px solid lightgray;
+    padding: 1em;
+    border-radius: .7em;
+    margin-bottom: .5em;
+    cursor: pointer;
+}

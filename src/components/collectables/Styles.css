@@ -1,0 +1,35 @@
+.collectables_cards{
+    background-color: white;
+    border: .5px solid lightgray;
+}
+.collectables_cards-imgsection{
+    position: relative;
+   
+}
+
+.collectables_cards-likesbox{
+    position: absolute;
+    top:5%;
+    right: 5%;
+    background: #1C83E5;
+    border-radius: .5em;
+    padding: .2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color:white
+}
+.collectables_cards-avatarbox{
+    border:2px solid white;
+    position: absolute;
+    bottom: -15%;
+    left: 40%;
+    right: 40%;
+    border-radius: .5em;
+}
+
+@media(max-width:567px){
+    .collectables_cards{
+        border: 1px solid lightgray;
+    }
+}

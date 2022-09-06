@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="18px" viewBox="0 0 19 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Group</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group" stroke="#16255C" transform="translate(0.622528, 1.039060)">
+            <polyline id="Path-2-Copy" transform="translate(8.500000, 12.333333) rotate(-180.000000) translate(-8.500000, -12.333333) " points="1 9 16 9 16 15.6666667"></polyline>
+            <polyline id="Path-2-Copy-2" transform="translate(8.500000, 3.333333) rotate(-360.000000) translate(-8.500000, -3.333333) " points="1 1.33226763e-15 16 1.33226763e-15 16 6.66666667"></polyline>
+            <polyline id="Path-2-Copy-3" points="-2.40640841e-13 9.83333333 1 8.83333333 2 9.83333333"></polyline>
+            <polyline id="Path-2-Copy-4" transform="translate(16.000000, 6.333333) rotate(-180.000000) translate(-16.000000, -6.333333) " points="15 6.83333333 16 5.83333333 17 6.83333333"></polyline>
+        </g>
+    </g>
+</svg>

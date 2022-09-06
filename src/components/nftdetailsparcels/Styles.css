@@ -1,0 +1,43 @@
+.nftdetail-timebox {
+  background: #e6effa;
+  border-radius: 0.5em;
+  padding: 0.5em;
+}
+
+.nav-tabs .nav-link {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: none !important;
+}
+
+.nftdetails_cards-tabs .nav-tabs {
+  display: flex;
+  justify-content: flex-end !important;
+}
+.nav-tabs .nav-link.active {
+  border-bottom: solid 3px #1c83e5 !important;
+  color: #1c83e5 !important ;
+}
+
+.metabloq_comments-textarea {
+  background-color: #ecf1f8;
+  border-radius: 0.5em;
+  border: 0.5px solid lightgray;
+  width: 100%;
+  outline: none !important;
+  box-shadow: none !important;
+  padding: 0.5em;
+}
+
+@media (max-width: 576px) {
+  .nftdetails_cards-tabs .nav-tabs {
+    display: flex;
+    justify-content: flex-start !important;
+  }
+  .nav-tabs .nav-link {
+    padding: 0.5em;
+  }
+}

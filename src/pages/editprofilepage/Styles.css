@@ -1,0 +1,12 @@
+.editprofilepage_container {
+  /* background-image: url("../../assets/profile/editprofileBg.png");
+  background-repeat: no-repeat;
+  background-size: cover; */
+  padding: 5% 10%;
+}
+
+@media (max-width: 576px) {
+  .editprofilepage_container {
+    padding: 2.5%;
+  }
+}

@@ -1,0 +1,40 @@
+.ranking_input {
+  background-color: white;
+  border-radius: 2em;
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ranking_select-input .form-select {
+    display: block;
+    width: 100%;
+    -moz-padding-start: calc(0.75rem - 3px);
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: .5px solid lightgray !important;
+    border-radius: 2em !important;
+    transition: none !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+.rounded_img{
+    border-radius: .5em;
+}
+@media(max-width:576px){
+  .ranking_table-wrapper{
+
+  }
+  .ranking_table{
+    width: 700px;
+    height: auto;
+    display: inline-block;
+    overflow-x: auto!important;
+  }
+}

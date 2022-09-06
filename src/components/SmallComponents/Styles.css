@@ -1,0 +1,9 @@
+.primary_coloredunderline{
+    border-radius: .5em;
+    background-color:#1C83E5;
+    max-width: 50%;
+    min-height: 2px;
+}
+.mobileview_category-drawer{
+    padding: 10% 10%;
+}

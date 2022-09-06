@@ -1,0 +1,25 @@
+.join_container{
+    background: #ECF1F8;
+    border-radius: 400px 0px 0px 400px;
+    padding:1em;
+    margin-left: 25%
+}
+.join_img-box{
+    position: relative;
+}
+.join_img-responsive{
+    position: relative;
+    bottom: 0;
+    height: 90%;
+    width: 60%;
+}
+
+@media(max-width:576px){
+    .join_container{
+        border-radius: 400px 40px 40px 400px;
+        margin-left: 0%;
+    }
+    .join_img-responsive{
+        width: 90%;
+    }
+}

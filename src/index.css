@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "LufgaRegular";
+  src: local("LufgaRegular"),
+    url("./fonts/lufga/LufgaRegular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "LufgaBold";
+  src: local("LufgaBold"),
+    url("./fonts/lufga/LufgaBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Poppins-Regular";
+  src: local("Poppins-Regular"),
+    url("./fonts/poppins/Poppins-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Raleway-Regular";
+  src: local("Raleway-Regular"),
+    url("./fonts/raleway/Raleway-Regular.ttf") format("truetype");
+}

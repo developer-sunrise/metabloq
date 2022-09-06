@@ -1,0 +1,144 @@
+.forinputwithselectbox {
+    border-radius: 16px;
+  background-color: rgba(211,211,215,0.2);
+  padding: 10px 20px 10px 20px !important;
+ 
+}
+.forinputselectsec{
+    border-radius: .5em;
+  background-color: rgba(211,211,215,0.2);
+  padding: .4em !important;
+}
+.inputinnerselect{
+    border: none !important;
+    background-color: transparent;
+    outline: none !important;
+    width: 50% !important;
+}
+.inputinnerselectsec{
+    border: none !important;
+    background-color: transparent;
+    outline: none !important;
+    width: 90% !important;
+    padding: .3em;
+}
+.puton_modal-box{
+  border-radius: 1em;
+  color: white;
+  padding: 1em;
+  background-image: url('../../assets/putonbg.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.bg-sec-color{
+  background-color: lightgray;
+  border-radius: 100px;
+  padding: 10px;
+}
+
+  .forinputwithselectbox .css-319lph-ValueContainer{
+    width: 100px;
+    
+  }
+  .forinputwithselectbox .css-1s2u09g-control{
+    border-radius: 16px !important;
+    border: none !important;
+    width: 100px !important;
+    background-color: transparent !important;
+  }
+  .forinputwithselectbox .css-1pahdxg-control{
+    border-radius: 16px !important;
+    border: none !important;
+    width: 100px !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .forinputwithselectbox .css-1okebmr-indicatorSeparator{
+    display: none;
+  }
+  .switchgrid .css-1xjox0q-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checked+.MuiSwitch-track{
+    background-color: #10193C !important;
+  }
+
+  .switchgrid .css-1yjjitx-MuiSwitch-track{
+    background-color: #D3D3D7 !important;
+  }
+ .switchgrid .css-jsexje-MuiSwitch-thumb{
+    background-color: #4F5259 !important;
+  }
+  .listsalebtn {
+    background: #10193C;
+    border-radius: 100px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline-offset: 4px;
+    margin: 0px 10px ;
+
+  }
+  .listsalespan {
+    display: block;
+    padding: 15px 45px;
+    border-radius: 100px;
+    background-image: url('../../assets/Nftdetails/Buttonoffer.svg');
+    color: white;
+    transform: translateY(-6px);
+  }
+  .listsalebtn:active .listsalespan {
+    transform: translateY(-2px);
+  }
+  @media (max-width: 600px){
+
+  }
+
+
+.forinputwithselectboxmethod{
+    border-radius: .5em;
+  background-color: rgba(211,211,215,0.2);
+  padding: .3em !important;
+}
+
+  .forinputwithselectboxmethod .css-319lph-ValueContainer{
+    width: 100% !important;
+    
+  }
+  .forinputwithselectboxmethod .css-1pahdxg-control{
+    border-radius: 16px !important;
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
+  .forinputwithselectboxmethod .css-1s2u09g-control{
+    border-radius: 16px !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
+  .forinputwithselectboxmethod .css-1okebmr-indicatorSeparator{
+    display: none;
+  }
+  
+
+
+  .fordurationwithselectbox {
+    border-radius: 16px;
+    background-color: rgba(211,211,215,0.2);
+    padding: 10px 20px 10px 20px !important;
+  }
+  .fordurationwithselectbox .css-319lph-ValueContainer{
+    width: 100% !important;
+    
+  }
+  .fordurationwithselectbox .css-1s2u09g-control{
+    border-radius: 16px !important;
+    border: none !important;
+    background-color: transparent !important;
+  }
+  .fordurationwithselectbox .css-1okebmr-indicatorSeparator{
+    display: none;
+  }
+  .fordurationwithselectbox .css-1pahdxg-control{
+    border-radius: 16px !important;
+    border: none !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+  }
