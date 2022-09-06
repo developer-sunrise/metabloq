@@ -34,8 +34,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
 import { postMethod } from "../../helpers/API&Helpers";
 import ClaimxdcModal from "../claimxdcModal";
-const metablog_logo = require("../../assets/metablog_logo.png");
-const userlogo = require("../../assets/profile/profilepic.png");
+const metablog_logo = require("../../assets/metablog_logo.png").default
+const userlogo = require("../../assets/profile/profilepic.png").default
 
 const Header = () => {
   const [openWallet, setOpenWallet] = useState(false);

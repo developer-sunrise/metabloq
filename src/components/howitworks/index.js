@@ -4,9 +4,9 @@ import "./Styles.css";
 import Fade from 'react-reveal/Fade';
 import Bounce from 'react-reveal/Bounce';
 
-const icon1 = require("../../assets/howitworks/hiw_icon1.png");
-const icon2 = require("../../assets/howitworks/hiw_icon2.png");
-const icon3 = require("../../assets/howitworks/hiw_icon3.png");
+const icon1 = require("../../assets/howitworks/hiw_icon1.png").default
+const icon2 = require("../../assets/howitworks/hiw_icon2.png").default
+const icon3 = require("../../assets/howitworks/hiw_icon3.png").default
 
 const Datas = [
   {

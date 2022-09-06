@@ -29,12 +29,12 @@ function ActionWallet(props) {
     setSelectedValue(event.title);
     setSelectedwallet(event.wallet)
   };
-  const img1 = require("../../assets/walletImg/wallet.svg")
-  const img2 = require("../../assets/walletImg/time.svg")
-  const img3 = require("../../assets/walletImg/transaction.svg")
+  const img1 = require("../../assets/walletImg/wallet.svg").default
+  const img2 = require("../../assets/walletImg/time.svg").default
+  const img3 = require("../../assets/walletImg/transaction.svg").default
 
 
-  const loader = require("../../assets/loading.gif");
+  const loader = require("../../assets/loading.gif").default
   const link = "https://apothem.xinfinscan.com/tx/"+hashValue;
   return (
     <Box>

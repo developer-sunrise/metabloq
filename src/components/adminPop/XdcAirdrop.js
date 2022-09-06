@@ -21,7 +21,7 @@ import MuiAlert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const empty = require("../../assets/empty.png");
+const empty = require("../../assets/empty.png").default
 
 const style = {
   position: "absolute",
@@ -78,19 +78,11 @@ function XdcAirdrop() {
   const bannerImageChange = (e) => {
     var file = e.target.files[0];
     const reader = new FileReader();
-<<<<<<< HEAD
-    // reader.fileName = file.name // file came from a input file element. file = el.files[0];
-    let newData;
-    reader.onload = async (e) => {
-      // console.log("file",e.target.fileName);
-      // setFilename(e.target.fileName)
-=======
     reader.fileName = file.name // file came from a input file element. file = el.files[0];
     let newData;
     reader.onload = async (e) => {
       console.log("file",e.target.fileName);
       setFilename(e.target.fileName)
->>>>>>> 14e3929bfa76f3c74eba2039a57d0b11e267365f
       // console.log("reader",e)
       const data1 = e.target.result;
       const workbook = XLSX.read(data1, { type: "array" });
@@ -433,14 +425,9 @@ function XdcAirdrop() {
                   />
                 </label>
                 <br />
-<<<<<<< HEAD
-                    <small className="bold">{filename}</small>
-=======
                 <small className="bold">{filename}</small>
                 <br />
                 <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662385993107Logo.xlsx" download>Download File</a>
-                    
->>>>>>> 14e3929bfa76f3c74eba2039a57d0b11e267365f
               </div>
               {/* <div className="py-2 text-center h-100 mx-5">
                 <br />

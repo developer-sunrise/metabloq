@@ -22,7 +22,7 @@ const style = {
   borderRadius: "1em",
 };
 
-const bloqs = require('../../assets/logo_block.png');
+const bloqs = require('../../assets/logo_block.png').default
 
 function MakeOfferModal(props) {
   const reduxItems = useSelector((state) => state.WalletConnect);

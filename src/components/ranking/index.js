@@ -3,10 +3,10 @@ import { Col, Form, Image, Row, Stack } from "react-bootstrap";
 import './Styles.css';
 import Fade from 'react-reveal/Fade';
 
-const avatar1 = require('../../assets/nfts/1.png')
-const avatar2 = require('../../assets/nfts/2.png')
-const avatar3 = require('../../assets/nfts/3.png')
-const bloqs = require('../../assets/logo_block.png')
+const avatar1 = require('../../assets/nfts/1.png').default
+const avatar2 = require('../../assets/nfts/2.png').default
+const avatar3 = require('../../assets/nfts/3.png').default
+const bloqs = require('../../assets/logo_block.png').default
 
 const datas = [
   {

@@ -5,7 +5,7 @@ import Fade from 'react-reveal/Fade';
 import useSound from 'use-sound';
 import buttonSound from '../../assets/audio/button.wav';
 
-const img = require("../../assets/join/metablog_circle.svg");
+const img = require("../../assets/join/metablog_circle.svg").default
 
 function Join() {
   const [playSound] = useSound(buttonSound)

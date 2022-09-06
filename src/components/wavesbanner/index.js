@@ -1,7 +1,7 @@
 import React from 'react'
 import './Styles.css';
-const wave1 = require('../../assets/waves/blue.svg')
-const wave2 = require('../../assets/waves/gradient.svg')
+const wave1 = require('../../assets/waves/blue.svg').default
+const wave2 = require('../../assets/waves/gradient.svg').default
 
 function WavesBanner(props) {
   let {collections} = props;

@@ -1,57 +1,57 @@
 
-const avatar1 = require('../../assets/profilepics/face1.jpg')
-const avatar2 = require('../../assets/profilepics/face2.jpg')
-const avatar3 = require('../../assets/profilepics/face3.jpg')
+const avatar1 = require('../../assets/profilepics/face1.jpg').default
+const avatar2 = require('../../assets/profilepics/face2.jpg').default
+const avatar3 = require('../../assets/profilepics/face3.jpg').default
 
-const art1 = require('../../assets/category/art1.jpg')
-const art2 = require('../../assets/category/art2.jpg')
-const art3 = require('../../assets/category/art3.jpg')
-const art4 = require('../../assets/category/art4.jpg')
+const art1 = require('../../assets/category/art1.jpg').default
+const art2 = require('../../assets/category/art2.jpg').default
+const art3 = require('../../assets/category/art3.jpg').default
+const art4 = require('../../assets/category/art4.jpg').default
 
-const build1 = require('../../assets/category/build1.jpeg')
-const build2 = require('../../assets/category/build2.jpeg')
-const build3 = require('../../assets/category/build3.jpeg')
-const build4 = require('../../assets/category/build4.jpeg')
+const build1 = require('../../assets/category/build1.jpeg').default
+const build2 = require('../../assets/category/build2.jpeg').default
+const build3 = require('../../assets/category/build3.jpeg').default
+const build4 = require('../../assets/category/build4.jpeg').default
 
-const wearables1 = require('../../assets/category/wearables1.jpg')
-const wearables2 = require('../../assets/category/wearables2.jpg')
-const wearables3 = require('../../assets/category/wearables3.jpg')
-const wearables4 = require('../../assets/category/wearables4.jpg')
+const wearables1 = require('../../assets/category/wearables1.jpg').default
+const wearables2 = require('../../assets/category/wearables2.jpg').default
+const wearables3 = require('../../assets/category/wearables3.jpg').default
+const wearables4 = require('../../assets/category/wearables4.jpg').default
 
-const land1 = require('../../assets/category/land1.jpg')
-const land2 = require('../../assets/category/land2.jpg')
-const land3 = require('../../assets/category/land3.jpg')
-const land4 = require('../../assets/category/land4.jpg')
+const land1 = require('../../assets/category/land1.jpg').default
+const land2 = require('../../assets/category/land2.jpg').default
+const land3 = require('../../assets/category/land3.jpg').default
+const land4 = require('../../assets/category/land4.jpg').default
 
-const pets1 = require('../../assets/category/pets1.jpg')
-const pets2 = require('../../assets/category/pets2.jpg')
-const pets3 = require('../../assets/category/pets3.jpg')
-const pets4 = require('../../assets/category/pets4.jpg')
+const pets1 = require('../../assets/category/pets1.jpg').default
+const pets2 = require('../../assets/category/pets2.jpg').default
+const pets3 = require('../../assets/category/pets3.jpg').default
+const pets4 = require('../../assets/category/pets4.jpg').default
 
-const miscellaneous1 = require('../../assets/category/miscellaneous1.jpg')
-const miscellaneous2 = require('../../assets/category/miscellaneous2.jpg')
-const miscellaneous3 = require('../../assets/category/miscellaneous3.jpg')
-const miscellaneous4 = require('../../assets/category/miscellaneous4.jpg')
+const miscellaneous1 = require('../../assets/category/miscellaneous1.jpg').default
+const miscellaneous2 = require('../../assets/category/miscellaneous2.jpg').default
+const miscellaneous3 = require('../../assets/category/miscellaneous3.jpg').default
+const miscellaneous4 = require('../../assets/category/miscellaneous4.jpg').default
 
-const time_icon = require('../../assets/auction/time_icon.png')
+const time_icon = require('../../assets/auction/time_icon.png').default
 
 // const avatar1 = require('../../assets/profilepics/face7.jpg')
 // const avatar2 = require('../../assets/profilepics/face8.jpg')
 // const avatar3 = require('../../assets/profilepics/face9.jpg')
-const avatar4 = require('../../assets/profilepics/face10.jpg')
-const avatar5 = require('../../assets/profilepics/face11.jpg')
-const avatar6 = require('../../assets/profilepics/face12.jpg')
-const avatar7 = require('../../assets/profilepics/face13.jpg')
-const avatar8 = require('../../assets/profilepics/face14.jpg')
+const avatar4 = require('../../assets/profilepics/face10.jpg').default
+const avatar5 = require('../../assets/profilepics/face11.jpg').default
+const avatar6 = require('../../assets/profilepics/face12.jpg').default
+const avatar7 = require('../../assets/profilepics/face13.jpg').default
+const avatar8 = require('../../assets/profilepics/face14.jpg').default
 
-const nft1 = require('../../assets/nfts/12.png')
-const nft2 = require('../../assets/nfts/8.png')
-const nft3 = require('../../assets/nfts/11.png')
-const nft4 = require('../../assets/nfts/10.png')
-const nft5 = require('../../assets/nfts/3.png')
-const nft6 = require('../../assets/nfts/9.png')
-const nft7 = require('../../assets/nfts/2.png')
-const nft8 = require('../../assets/nfts/4.png')
+const nft1 = require('../../assets/nfts/12.png').default
+const nft2 = require('../../assets/nfts/8.png').default
+const nft3 = require('../../assets/nfts/11.png').default
+const nft4 = require('../../assets/nfts/10.png').default
+const nft5 = require('../../assets/nfts/3.png').default
+const nft6 = require('../../assets/nfts/9.png').default
+const nft7 = require('../../assets/nfts/2.png').default
+const nft8 = require('../../assets/nfts/4.png').default
 
 
 export const CollectionsData = [

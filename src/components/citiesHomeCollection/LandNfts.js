@@ -8,12 +8,12 @@ import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import MiniAtlas from "../atlasMini";
 import { useDispatch, useSelector } from "react-redux";
-const land1 = require("../../assets/cities/land1.png");
-const land2 = require("../../assets/cities/land2.png");
-const land3 = require("../../assets/cities/land3.png");
-const land4 = require("../../assets/cities/land4.png");
-const land5 = require("../../assets/cities/land5.png");
-const land6 = require("../../assets/cities/land6.png");
+const land1 = require("../../assets/cities/land1.png").default
+const land2 = require("../../assets/cities/land2.png").default
+const land3 = require("../../assets/cities/land3.png").default
+const land4 = require("../../assets/cities/land4.png").default
+const land5 = require("../../assets/cities/land5.png").default
+const land6 = require("../../assets/cities/land6.png").default
 
 function LandNfts({ onSelectGrid, parcels, filterType, filterTypeValue }) {
   const [visible, setVisible] = useState("land");

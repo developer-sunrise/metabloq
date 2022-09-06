@@ -34,8 +34,8 @@ import {
 import PlacebidModal from "../placebidModal";
 import CountdownTimer from "../timer/CountdownTimer";
 import { useCountdown } from "../timer/useCountdown";
-const image = require("../../assets/profile/coverpic.png");
-const preimg = require("../../assets/nfts/1.png");
+const image = require("../../assets/profile/coverpic.png").default
+const preimg = require("../../assets/nfts/1.png").default
 
 const urls = "https://apothem.xinfinscan.com/tx/";
 

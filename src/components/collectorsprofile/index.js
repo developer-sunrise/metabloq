@@ -13,8 +13,8 @@ import useSound from 'use-sound';
 import buttonSound from '../../assets/audio/button.wav';
 
 
-const coverpic = require('../../assets/profile/coverpic.png')
-const profilepic = require('../../assets/profile/profilepic.png')
+const coverpic = require('../../assets/profile/coverpic.png').default
+const profilepic = require('../../assets/profile/profilepic.png').default
 
 function CollectorsProfile() {
     const [playSound] = useSound(buttonSound)

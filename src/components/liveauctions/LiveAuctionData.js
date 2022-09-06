@@ -1,23 +1,23 @@
 
 const time_icon = require('../../assets/auction/time_icon.png')
 
-const avatar1 = require('../../assets/profilepics/face7.jpg')
-const avatar2 = require('../../assets/profilepics/face8.jpg')
-const avatar3 = require('../../assets/profilepics/face9.jpg')
-const avatar4 = require('../../assets/profilepics/face10.jpg')
-const avatar5 = require('../../assets/profilepics/face11.jpg')
-const avatar6 = require('../../assets/profilepics/face12.jpg')
-const avatar7 = require('../../assets/profilepics/face13.jpg')
-const avatar8 = require('../../assets/profilepics/face14.jpg')
+const avatar1 = require('../../assets/profilepics/face7.jpg').default
+const avatar2 = require('../../assets/profilepics/face8.jpg').default
+const avatar3 = require('../../assets/profilepics/face9.jpg').default
+const avatar4 = require('../../assets/profilepics/face10.jpg').default
+const avatar5 = require('../../assets/profilepics/face11.jpg').default
+const avatar6 = require('../../assets/profilepics/face12.jpg').default
+const avatar7 = require('../../assets/profilepics/face13.jpg').default
+const avatar8 = require('../../assets/profilepics/face14.jpg').default
 
-const nft1 = require('../../assets/nfts/12.png')
-const nft2 = require('../../assets/nfts/8.png')
-const nft3 = require('../../assets/nfts/11.png')
-const nft4 = require('../../assets/nfts/10.png')
-const nft5 = require('../../assets/nfts/3.png')
-const nft6 = require('../../assets/nfts/9.png')
-const nft7 = require('../../assets/nfts/2.png')
-const nft8 = require('../../assets/nfts/4.png')
+const nft1 = require('../../assets/nfts/12.png').default
+const nft2 = require('../../assets/nfts/8.png').default
+const nft3 = require('../../assets/nfts/11.png').default
+const nft4 = require('../../assets/nfts/10.png').default
+const nft5 = require('../../assets/nfts/3.png').default
+const nft6 = require('../../assets/nfts/9.png').default
+const nft7 = require('../../assets/nfts/2.png').default
+const nft8 = require('../../assets/nfts/4.png').default
 
 export const LiveAuctionData = [
     {

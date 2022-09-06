@@ -1,10 +1,10 @@
 
-const art = require('../../assets/category/Art.svg');
-const buildings = require('../../assets/category/building.svg')
-const wearables = require('../../assets/category/waerables.svg')
-const realestate = require('../../assets/category/real-estate.svg')
-const metapets = require('../../assets/category/pets.svg')
-const miscellaneous = require('../../assets/category/Miscellaneous.svg')
+const art = require('../../assets/category/Art.svg').default
+const buildings = require('../../assets/category/building.svg').default
+const wearables = require('../../assets/category/waerables.svg').default
+const realestate = require('../../assets/category/real-estate.svg').default
+const metapets = require('../../assets/category/pets.svg').default
+const miscellaneous = require('../../assets/category/Miscellaneous.svg').default
 
 export const ExploreCategoryData = [
     {

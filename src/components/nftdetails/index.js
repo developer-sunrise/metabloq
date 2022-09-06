@@ -24,10 +24,10 @@ import { FiEdit2 } from "react-icons/fi";
 import "./Styles.css";
 import { useCountdown } from "../timer/useCountdown";
 import ActionWallet from "../connectwallet/actionWallet";
-const avatar1 = require("../../assets/profilepics/face7.jpg");
-const avatar2 = require("../../assets/profilepics/face8.jpg");
-const avatar3 = require("../../assets/profilepics/face9.jpg");
-const avatar4 = require("../../assets/profilepics/face5.jpg");
+const avatar1 = require("../../assets/profilepics/face7.jpg").default
+const avatar2 = require("../../assets/profilepics/face8.jpg").default
+const avatar3 = require("../../assets/profilepics/face9.jpg").default
+const avatar4 = require("../../assets/profilepics/face5.jpg").default
 const bloqs = require("../../assets/logo_block.png");
 
 const urls = "https://apothem.xinfinscan.com/tx/"

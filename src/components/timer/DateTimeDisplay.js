@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-bootstrap';
-const time = require("../../assets/auction/time_icon.png")
+const time = require("../../assets/auction/time_icon.png").default
 
 const DateTimeDisplay = ({ dayValue,hourValue,minValue,secValue, isDanger }) => {
   return (

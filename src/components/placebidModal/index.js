@@ -10,9 +10,9 @@ import { postMethod } from "../../helpers/API&Helpers";
 import Swal from 'sweetalert2'
 import ActionWallet from "../connectwallet/actionWallet";
 
-const smallstar = require('../../assets/smallstar.png')
-const bigstar = require('../../assets/bigstar.png')
-const bloqs = require('../../assets/logo_block.png')
+const smallstar = require('../../assets/smallstar.png').default
+const bigstar = require('../../assets/bigstar.png').default
+const bloqs = require('../../assets/logo_block.png').default
 const style = {
     position: 'absolute',
     top: '50%',

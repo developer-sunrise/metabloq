@@ -7,12 +7,12 @@ import useSound from 'use-sound';
 import buttonSound from '../../assets/audio/button.wav';
 import {useNavigate} from 'react-router-dom';
 
-const img1 = require("../../assets/banner/banner_pic2.png");
-const img2 = require("../../assets/banner/banner_pic3.png");
-const img3 = require("../../assets/banner/banner_pic4.png");
-const img4 = require("../../assets/banner/banner_pic5.png");
-const img5 = require("../../assets/banner/banner_pic1.png");
-const img6 = require("../../assets/banner/banner_pic6.png");
+const img1 = require("../../assets/banner/banner_pic2.png").default
+const img2 = require("../../assets/banner/banner_pic3.png").default
+const img3 = require("../../assets/banner/banner_pic4.png").default
+const img4 = require("../../assets/banner/banner_pic5.png").default
+const img5 = require("../../assets/banner/banner_pic1.png").default
+const img6 = require("../../assets/banner/banner_pic6.png").default
 
 function Banner() {
   const [playSound] = useSound(buttonSound)

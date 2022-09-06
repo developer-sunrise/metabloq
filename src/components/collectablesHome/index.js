@@ -16,16 +16,12 @@ import MobileFilterBtn from "../SmallComponents/MobileFilterBtn";
 import useWindowDimensions from "../../helpers/useWindowDimensions";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-<<<<<<< HEAD
-import { postMethod, ReactS3Client3, ReactS3Client1 } from "../../helpers/API&Helpers";
-=======
 import { postMethod, ReactS3Client4, ReactS3Client1 } from "../../helpers/API&Helpers";
->>>>>>> 14e3929bfa76f3c74eba2039a57d0b11e267365f
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/system";
 import Bounce from "react-reveal/Bounce";
-const Loader = require("../../assets/loading.gif");
-const preimg = require("../../assets/nfts/1.png");
+const Loader = require("../../assets/loading.gif").default;
+const preimg = require("../../assets/nfts/1.png").default;
 
 function CollectablesHome() {
   const { state } = useLocation();
@@ -113,11 +109,8 @@ function CollectablesHome() {
       // if (extension == "glb") {
       //   setNft({ ...NFT, NFT_animation_url: 'https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/NaN.jpeg' })
       // }
-<<<<<<< HEAD
-      data = await ReactS3Client3.uploadFile(file, filename);
-=======
+
       data = await ReactS3Client4.uploadFile(file, filename);
->>>>>>> 14e3929bfa76f3c74eba2039a57d0b11e267365f
       if (data?.status === 204) {
         
         if(extension == ".glb"){

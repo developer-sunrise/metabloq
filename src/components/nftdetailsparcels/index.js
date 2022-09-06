@@ -12,12 +12,12 @@ import PlacebidModal from "../placebidModal";
 import BuynowModal from "../buynowModal";
 import Atlas from "../atlas";
 import { ReactS3Client2 } from "../../helpers/API&Helpers";
-const avatar1 = require("../../assets/profilepics/face7.jpg");
-const avatar2 = require("../../assets/profilepics/face8.jpg");
-const avatar3 = require("../../assets/profilepics/face9.jpg");
-const avatar4 = require("../../assets/profilepics/face5.jpg");
-const bloqs = require("../../assets/logo_block.png");
-const time_icon = require("../../assets/auction/time_icon.png");
+const avatar1 = require("../../assets/profilepics/face7.jpg").default
+const avatar2 = require("../../assets/profilepics/face8.jpg").default
+const avatar3 = require("../../assets/profilepics/face9.jpg").default
+const avatar4 = require("../../assets/profilepics/face5.jpg").default
+const bloqs = require("../../assets/logo_block.png").default
+const time_icon = require("../../assets/auction/time_icon.png").default
 function NFTDetails(props) {
   const { id } = useParams();
   let { LiveAuctionData } = props;

@@ -7,11 +7,11 @@ import {FaHandHolding} from 'react-icons/fa';
 import {BsStars} from 'react-icons/bs';
 import Fade from 'react-reveal/Fade';
 import { Slicer,FormatDate1 } from "../../helpers/API&Helpers";
-const avatar1 = require('../../assets/nfts/1.png')
-const avatar2 = require('../../assets/nfts/2.png')
-const avatar3 = require('../../assets/nfts/3.png')
-const avatar4 = require('../../assets/nfts/4.png')
-const bloqs = require('../../assets/logo_block.png')
+const avatar1 = require('../../assets/nfts/1.png').default
+const avatar2 = require('../../assets/nfts/2.png').default
+const avatar3 = require('../../assets/nfts/3.png').default
+const avatar4 = require('../../assets/nfts/4.png').default
+const bloqs = require('../../assets/logo_block.png').default
 
 const urls = "https://apothem.xinfinscan.com/tx/"
 

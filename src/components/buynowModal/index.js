@@ -6,9 +6,9 @@ import { Image, Stack } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { postMethod } from "../../helpers/API&Helpers";
 
-const smallstar = require('../../assets/smallstar.png')
-const bigstar = require('../../assets/bigstar.png')
-const bloqs = require('../../assets/logo_block.png')
+const smallstar = require('../../assets/smallstar.png').default
+const bigstar = require('../../assets/bigstar.png').default
+const bloqs = require('../../assets/logo_block.png').default
 
 const style = {
     position: 'absolute',

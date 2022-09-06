@@ -29,10 +29,10 @@ function ConenctWallet({ openWallet, setOpenWallet }) {
     setSelectedwallet(event.wallet)
   };
 
-  const img1 = require('../../assets/connectwallet/metamask.png')
-  const img2 = require('../../assets/connectwallet/coinbase.png')
-  const img3 = require('../../assets/connectwallet/wallet.png')
-  const img4 = require('../../assets/connectwallet/fortmatic.png')
+  const img1 = require('../../assets/connectwallet/metamask.png').default
+  const img2 = require('../../assets/connectwallet/coinbase.png').default
+  const img3 = require('../../assets/connectwallet/wallet.png').default
+  const img4 = require('../../assets/connectwallet/fortmatic.png').default
 
   const walletData = [
     {

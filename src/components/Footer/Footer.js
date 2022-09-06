@@ -8,7 +8,7 @@ import { SiDiscord } from "react-icons/si";
 import { BsInstagram } from "react-icons/bs";
 import useSound from "use-sound";
 import buttonSound from "../../assets/audio/button.wav";
-const logo = require("../../assets/metablog_logo.png");
+const logo = require("../../assets/metablog_logo.png").default
 
 function Footer() {
   const [playSound] = useSound(buttonSound);
