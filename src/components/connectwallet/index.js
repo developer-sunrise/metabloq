@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 // import Images from "../../assets/Images";
 import useStyles from "./styles";
-// import { useNavigate } from "react-router-dom";
 import { useDispatch, 
   // useSelector
  } from "react-redux";
@@ -19,7 +18,6 @@ import {MdOutlineCancel} from 'react-icons/md';
 function ConenctWallet({ openWallet, setOpenWallet }) {
   // const wallet = useSelector((state) => state.WalletConnect);
   const classes = useStyles();
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = React.useState("Metamask");
   const [selectedwallet, setSelectedwallet] = React.useState("metamask");

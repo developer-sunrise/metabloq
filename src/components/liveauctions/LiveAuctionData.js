@@ -1,5 +1,5 @@
 
-const time_icon = require('../../assets/auction/time_icon.png')
+const time_icon = require('../../assets/auction/time_icon.png').default
 
 const avatar1 = require('../../assets/profilepics/face7.jpg').default
 const avatar2 = require('../../assets/profilepics/face8.jpg').default

@@ -10,7 +10,7 @@ import WebFilter from "../SmallComponents/WebFilter";
 import Fade from "react-reveal/Fade";
 import MobileFilterBtn from "../SmallComponents/MobileFilterBtn";
 import useWindowDimensions from "../../helpers/useWindowDimensions";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import LandNfts from "./LandNfts";
 import NFTDetails from "../nftdetailsparcels";
 import { FiSearch } from "react-icons/fi";
@@ -34,7 +34,7 @@ import {
 import PlacebidModal from "../placebidModal";
 import CountdownTimer from "../timer/CountdownTimer";
 import { useCountdown } from "../timer/useCountdown";
-const image = require("../../assets/profile/coverpic.png").default
+const image = require("../../assets/profile/coverpic.png")
 const preimg = require("../../assets/nfts/1.png").default
 
 const urls = "https://apothem.xinfinscan.com/tx/";

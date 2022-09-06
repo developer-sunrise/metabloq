@@ -28,7 +28,7 @@ const avatar1 = require("../../assets/profilepics/face7.jpg").default
 const avatar2 = require("../../assets/profilepics/face8.jpg").default
 const avatar3 = require("../../assets/profilepics/face9.jpg").default
 const avatar4 = require("../../assets/profilepics/face5.jpg").default
-const bloqs = require("../../assets/logo_block.png");
+const bloqs = require("../../assets/logo_block.png").default
 
 const urls = "https://apothem.xinfinscan.com/tx/"
 

@@ -1,5 +1,5 @@
-const img1 = require('../../assets/collectables/collectables3.png').default
-const img2 = require('../../assets/collectables/collectables1.png').default
+const img1 = require('../../assets/collectables/collectables3.png').default;
+const img2 = require('../../assets/collectables/collectables1.png').default;
 const img3 = require('../../assets/collectables/collectables2.png').default
 
 const avatar1 = require('../../assets/profilepics/face4.jpg').default

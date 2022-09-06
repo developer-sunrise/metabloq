@@ -66,7 +66,7 @@ const datas = [
 function ClaimxdcModal(props) {
     let { claimmodal, setclaimmodal } = props;
     const returnItems = useSelector((state) => state.WalletConnect);
-    const { address, connected,XDC_AirDrop,web3 } = returnItems
+    const { address, connected,XDC_AirDrop ,web3 } = returnItems
     const [AirDropdata, setAirDropdata] = useState([])
     const Selectedid = []
     const [SelectedAmt, SetSelectedAmt] = useState(0)
@@ -170,7 +170,7 @@ function ClaimxdcModal(props) {
                                                 <div className="my-2">{data.airdrop_amt}</div>
                                             </Col>
                                             <Col className="text-right" xxl={4} xl={4} lg={4} md={4} >
-                                                <span className="my-2">{data.airdrop_claimed_status ? "claim" : "claimed"}</span>
+                                                <span className="my-2">{data.airdrop_claimed_status ? "claimed" : "claim"}</span>
                                                 {data.airdrop_claimed_status == false &&
                                                     <input type="checkbox" onChange={(e) => handlecheckbox(e, data)} className="ml-2" />
                                                 }

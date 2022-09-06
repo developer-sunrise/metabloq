@@ -27,12 +27,12 @@ import { Snackbar } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import { Navigate, useNavigate } from "react-router-dom";
 import ActionWallet from "../connectwallet/actionWallet";
-const time_icon = require("../../assets/auction/time_icon.png");
-const avatar1 = require("../../assets/profilepics/face7.jpg");
-const fixed = require("../../assets/createitem/fixed.png");
-const timed_auction = require("../../assets/createitem/timed_auction.png");
-const open_bids = require("../../assets/createitem/open_bids.svg");
-const empty = require("../../assets/empty.png");
+const time_icon = require("../../assets/auction/time_icon.png").default
+const avatar1 = require("../../assets/profilepics/face7.jpg").default
+const fixed = require("../../assets/createitem/fixed.png").default
+const timed_auction = require("../../assets/createitem/timed_auction.png").default
+const open_bids = require("../../assets/createitem/open_bids.svg").default
+const empty = require("../../assets/empty.png").default
 
 function CreateItem() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "dependencies": { 
+  "dependencies": {
     "@babylonjs/core": "^5.18.0",
     "@babylonjs/gui": "^5.18.0",
     "@babylonjs/loaders": "^5.18.0",
@@ -23,12 +23,18 @@
     "decentraland-ui": "^3.46.0",
     "formik": "^2.2.9",
     "jquery": "^3.6.0",
+    "mobx": "^5.15.0",
+    "mobx-react": "^6.1.4",
+    "moment": "^2.29.4",
+    "moment-timezone": "^0.5.37",
     "react": "^18.1.0",
     "react-3d-viewer": "^1.0.12",
     "react-aws-s3": "^1.5.0",
     "react-babylonjs": "^3.1.6",
     "react-bootstrap": "^2.0.2",
+    "react-datepicker": "^4.8.0",
     "react-dom": "^18.1.0",
+    "react-feather": "^2.0.10",
     "react-icons": "^4.4.0",
     "react-idle-timer": "^5.4.1",
     "react-phone-number-input": "^3.2.3",
@@ -40,13 +46,16 @@
     "react-scripts": "4.0.1",
     "react-select": "^5.4.0",
     "react-select-country-list": "^2.2.3",
+    "react-signature-pad-wrapper": "^3.2.1",
     "react-tile-map": "^0.3.3",
     "react-toastify": "^9.0.8",
     "react-transition-group": "^4.4.2",
     "react-wavify": "^1.6.1",
+    "reactstrap": "^8.1.1",
     "recharts": "^2.1.13",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.0",
+    "superagent": "^8.0.0",
     "sweetalert2": "^11.4.29",
     "swiper": "^8.0.0",
     "three": "^0.143.0",
@@ -54,10 +63,11 @@
     "use-sound": "^4.0.1",
     "web3": "^1.6.1",
     "web3modal": "^1.9.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "^0.18.5",
+    "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -65,16 +75,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
+  "browserslist": [
       ">0.2%",
       "not dead",
       "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
     ]
-  }
 }

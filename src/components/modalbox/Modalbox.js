@@ -11,7 +11,7 @@ import { postMethod } from "../../helpers/API&Helpers";
 import { useSelector } from "react-redux";
 import {  useNavigate } from "react-router-dom";
 import ActionWallet from "../connectwallet/actionWallet";
-const putonimg = require('../../assets/putonimg.png').default
+const putonimg = require('../../assets/putonimg.png')
 
 const style = {
     position: 'absolute',

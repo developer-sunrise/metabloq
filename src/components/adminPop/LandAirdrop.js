@@ -16,7 +16,7 @@ import MuiAlert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx/xlsx.mjs";
-const empty = require("../../assets/empty.png").default
+const empty = require("../../assets/empty.png");
 
 function LandAirdrop() {
   const [playSound] = useSound(buttonSound);

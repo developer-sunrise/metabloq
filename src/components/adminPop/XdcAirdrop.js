@@ -21,7 +21,7 @@ import MuiAlert from "@mui/material/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const empty = require("../../assets/empty.png").default
+const empty = require("../../assets/empty.png");
 
 const style = {
   position: "absolute",
@@ -78,11 +78,11 @@ function XdcAirdrop() {
   const bannerImageChange = (e) => {
     var file = e.target.files[0];
     const reader = new FileReader();
-    reader.fileName = file.name // file came from a input file element. file = el.files[0];
+    // reader.fileName = file.name // file came from a input file element. file = el.files[0];
     let newData;
     reader.onload = async (e) => {
-      console.log("file",e.target.fileName);
-      setFilename(e.target.fileName)
+      // console.log("file",e.target.fileName);
+      // setFilename(e.target.fileName)
       // console.log("reader",e)
       const data1 = e.target.result;
       const workbook = XLSX.read(data1, { type: "array" });
@@ -144,16 +144,18 @@ function XdcAirdrop() {
     } else if (airdropDetails.xdcairdrop_json == []) {
       handleClick("warning", "Upload xdcairdrop excel file");
       return;
+    } else if (airdropDetails.xdc_wallet == "") {
+      handleClick("warning", "Enter amount per wallet");
+      return;
     } else {
 
       let url = "createXdcAirdrop";
       let params = {
         campaign_name: airdropDetails.campaign_name,
         wallet: address,
-        xdc_per_wallet: total_xdc,
+        xdc_per_wallet: airdropDetails.xdc_wallet,
         xdcairdrop_json: airdropDetails.xdcairdrop_json,
       };
-      console.log("params",params)
       let authtoken = "";
       let response = await postMethod({ url, params, authtoken });
       console.log("fghjk", response);
@@ -166,6 +168,7 @@ function XdcAirdrop() {
     }
   };
   const getXdcAirdrops = async () => {
+    let address = "0xb8947443e494Ee062b6772C53a7734188c699Be9";
     if (address != "") {
       let url = "getXdcAirdrops";
       let params = {
@@ -371,7 +374,7 @@ function XdcAirdrop() {
                   <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
                     <Bounce>
                       <Stack gap={4}>
-                        {/* <div>
+                        <div>
                           <div className="bold">XDC per wallet</div>
                           <input
                             type="number"
@@ -385,7 +388,7 @@ function XdcAirdrop() {
                               });
                             }}
                           />
-                        </div> */}
+                        </div>
                         <div>
                           <div className="bold">Total XDC</div>
                           <input
@@ -425,9 +428,7 @@ function XdcAirdrop() {
                   />
                 </label>
                 <br />
-                <small className="bold">{filename}</small>
-                <br />
-                <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662385993107Logo.xlsx" download>Download File</a>
+                    <small className="bold">{filename}</small>
               </div>
               {/* <div className="py-2 text-center h-100 mx-5">
                 <br />

@@ -24,7 +24,15 @@ import SignIn from "../components/signin";
 import LandAirdrop from "../components/adminPop/LandAirdrop";
 import NftAirdrop from "../components/adminPop/NftAirdrop";
 import XdcAirdrop from "../components/adminPop/XdcAirdrop";
-
+import Login from '../pages/login/Login';
+import Register from '../pages/Register/Register';
+import Validate from '../pages/validate/Validate'
+import SubscriptionList from '../pages/Subscription/List';
+import SubscriptionNew from '../pages/Subscription/New'
+import SubscriptionPaymentStatus from '../pages/Subscription/PaymentStatus'
+import SubscriptionVideoConference from '../pages/Subscription/VideoConference'
+import SubscriptionVideoConferenceBooking from '../pages/Subscription/VideoConferenceBooking'
+import SubscriptionEdit from '../pages/Subscription/Edit'
 // export const AuthRoute = () => {
 //   return (
 //       <Routes>
@@ -41,45 +49,55 @@ export const AppRoutes = () => {
   const location = useLocation()
   return (
     <>
-        <Routes>
-            <Route path="/" element={<HomePage/>}/>
-            <Route path="/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="/collectionhome" element={<CollectablesHome/>}/>
-            <Route path="liveauction" element={<LiveAuctionPage/>}/>
-            <Route path="liveauction/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="assets" element={<NFTCollectionPage/>}/>
-            <Route path="collections/assets" element={<NFTCollectionPage/>}/>
-            <Route path="collections/assets/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="collections" element={<NFTCollectionPage collections="collections"/>}/>
-            <Route path="assets/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="collectors" element={<CollectorsPage/>}/>
-            <Route path="collectors/signin" element={<SignIn/>}/>
-            <Route path="collectors/activity" element={<Activity myprofile="myprofile"/>}/>
-            <Route path="collectors/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="collectors/editprofile" element={<EditProfilePage/>}/>
-            <Route path="collectors/collectionhome" element={<CollectablesHome/>}/>
-            <Route path="createcollection" element={<CreateCollectionPage/>}/>
-            <Route path="createnft" element={<CreateItemPage/>}/>
-            <Route path="ranking" element={<Ranking/>}/>
-            <Route path="activity" element={<Activity/>}/>
-            <Route path="collections/collectionhome" element={<CollectablesHome/>}/>
-            <Route path="/collectionhome/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="collections/citieshome" element={<CitiesHomeCollection/>}/>
-            <Route path="collections/citieshome/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData}/>}/>
-            <Route path="collections/landparcels/:id" element={<NftDetailsParcels/>}/>
-            <Route path="newpage" element={<LandPass/>}/>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="/collectionhome" element={<CollectablesHome />} />
+        <Route path="liveauction" element={<LiveAuctionPage />} />
+        <Route path="liveauction/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="assets" element={<NFTCollectionPage />} />
+        <Route path="collections/assets" element={<NFTCollectionPage />} />
+        <Route path="collections/assets/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="collections" element={<NFTCollectionPage collections="collections" />} />
+        <Route path="assets/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="collectors" element={<CollectorsPage />} />
+        <Route path="collectors/signin" element={<SignIn />} />
+        <Route path="collectors/activity" element={<Activity myprofile="myprofile" />} />
+        <Route path="collectors/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="collectors/editprofile" element={<EditProfilePage />} />
+        <Route path="collectors/collectionhome" element={<CollectablesHome />} />
+        <Route path="createcollection" element={<CreateCollectionPage />} />
+        <Route path="createnft" element={<CreateItemPage />} />
+        <Route path="ranking" element={<Ranking />} />
+        <Route path="activity" element={<Activity />} />
+        <Route path="collections/collectionhome" element={<CollectablesHome />} />
+        <Route path="/collectionhome/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="collections/citieshome" element={<CitiesHomeCollection />} />
+        <Route path="collections/citieshome/:id" element={<NFTDetailsPage LiveAuctionData={LiveAuctionData} />} />
+        <Route path="collections/landparcels/:id" element={<NftDetailsParcels />} />
+        <Route path="newpage" element={<LandPass />} />
+        {/* KYC */}
+        <Route path="/login" element={<Login />} />
+        <Route path="Register" element={<Register />} />
+        <Route path="Validate" element={<Validate />} />
+        <Route path={"Subscription"} element={<SubscriptionList />} />
+        <Route path={"Subscription/new"} element={<SubscriptionNew />} />
+        <Route path={`Subscription/:id`} element={<SubscriptionEdit />} />
+        <Route path={`Subscription/payment-status/:id`} element={<SubscriptionPaymentStatus />} />
+        <Route path={`Subscription/video-conference/:id`} element={<SubscriptionVideoConference />} />
+        <Route path={`Subscription/video-conference-booking/:id`} element={<SubscriptionVideoConferenceBooking />} />
 
-            <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/signin" element={<SignIn/>}/>
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/forgotemail" element={<ForgotPasswordEmail />} />
-            <Route path="/verifyemail" element={<VerifyEmail />} />
-            <Route path="/landairdrop" element={<LandAirdrop/>} />
-            <Route path="/nftairdrop" element={<NftAirdrop />} />
-            <Route path="/xdcairdrop" element={<XdcAirdrop />} />
-            <Route path="*" element={<h1 className="text-center">404 NOT FOUND</h1>}/>
-        </Routes>
-    
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/forgotpassword" element={<ForgotPassword />} />
+        <Route path="/forgotemail" element={<ForgotPasswordEmail />} />
+        <Route path="/verifyemail" element={<VerifyEmail />} />
+        <Route path="/landairdrop" element={<LandAirdrop />} />
+        <Route path="/nftairdrop" element={<NftAirdrop />} />
+        <Route path="/xdcairdrop" element={<XdcAirdrop />} />
+        <Route path="*" element={<h1 className="text-center">404 NOT FOUND</h1>} />
+      </Routes>
+
     </>
   );
 }

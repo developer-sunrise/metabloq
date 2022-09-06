@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 // import Images from "../../assets/Images";
 import useStyles from "./styles";
-// import { useNavigate } from "react-router-dom";
 import { useDispatch, 
   // useSelector
  } from "react-redux";
@@ -20,7 +19,6 @@ import {MdOutlineCancel} from 'react-icons/md';
 function ActionWallet(props) {
  let { walletOpen, setWalletOpen, playSound, loader1,loader2,hashValue } = props;
   const classes = useStyles();
-  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = React.useState("Metamask");
   const [selectedwallet, setSelectedwallet] = React.useState("metamask");
@@ -34,7 +32,7 @@ function ActionWallet(props) {
   const img3 = require("../../assets/walletImg/transaction.svg").default
 
 
-  const loader = require("../../assets/loading.gif").default
+  const loader = require("../../assets/loading.gif");
   const link = "https://apothem.xinfinscan.com/tx/"+hashValue;
   return (
     <Box>

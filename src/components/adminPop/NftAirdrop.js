@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx/xlsx.mjs";
 
-const empty = require("../../assets/empty.png").default
+const empty = require("../../assets/empty.png");
 
 function NftAirdrop() {
 
@@ -450,7 +450,7 @@ const style = {
                         <br />
                         <h5>{filename}</h5>
                         <br />
-                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662387927910Logo.xlsx" download>Download File</a>
+                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662099831195Logo.xlsx" download>Download File</a>
                       </div>
                     </Bounce>
                   </Col>
