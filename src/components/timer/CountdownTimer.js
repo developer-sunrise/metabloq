@@ -6,7 +6,7 @@ const ExpiredNotice = ({jsonUpdation}) => {
     return (
         <div className="expired-notice">
             <p className='text-danger'>Expired!!!</p>
-            {jsonUpdation()}
+            {/* {jsonUpdation()} */}
             {/* <p>Please select a future date and time.</p> */}
         </div>
     );

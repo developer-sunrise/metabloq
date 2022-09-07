@@ -404,6 +404,7 @@ function NFTDetails(props) {
     if (checkblc) {
       setWalletOpen(true);
       try{
+
         const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({from:address});
       try {
         setLoading2(true);
@@ -465,6 +466,7 @@ function NFTDetails(props) {
               let authtoken = "";
               let response = await postMethod({ url, params, authtoken });
               if (response.status) {
+                navigate("/")
                 setBuyModalOpen(false)
               }
             }

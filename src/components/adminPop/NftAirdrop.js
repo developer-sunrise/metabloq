@@ -450,7 +450,7 @@ const style = {
                         <br />
                         <h5>{filename}</h5>
                         <br />
-                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662099831195Logo.xlsx" download>Download File</a>
+                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662387927910Logo.xlsx" download>Download File</a>
                       </div>
                     </Bounce>
                   </Col>
