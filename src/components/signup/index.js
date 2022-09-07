@@ -6,8 +6,9 @@ import { useNavigate } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { PasswordValidator,EmailValidator, postMethod } from "../../helpers/API&Helpers";
 import MuiAlert from "@mui/material/Alert";
-
+import { useDispatch, useSelector } from "react-redux";
 function SignUp() {
+  const wallet = useSelector((state) => state.WalletConnect);
   const [username, setusername] = useState("");
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
@@ -15,6 +16,7 @@ function SignUp() {
     vertical: 'bottom',
     horizontal: 'center',
   });
+  const { address}= wallet
   const { vertical, horizontal } = states;
 
   const [viewPwd, setViewPwd] = useState(true);
@@ -47,6 +49,10 @@ function SignUp() {
   };
 
   const createAccount = async(e) => {
+    if(!address){
+      handleClick("warning", "Connect Wallet");
+      return
+    }
     e.preventDefault();
     if(username == ""){
       handleClick("warning", "Enter your name");
@@ -74,6 +80,7 @@ function SignUp() {
         email: mail,
         password: pass,
         username: username,
+        address:address
       };
       let authtoken="";
       let response = await postMethod({ url, params,authtoken });

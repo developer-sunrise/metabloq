@@ -44,9 +44,7 @@ function MakeOfferModal(props) {
       setWalletOpen(true);
       setLoading1(true);
       let priceInWei = web3.utils.toWei(makeOfferPrice, "ether");
-      const makeOffer = await Token.methods
-      .approve(process.env.REACT_APP_Marketplace_CONTRACT,priceInWei )
-      .send({ from: address })
+      const makeOffer = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT,priceInWei ).send({ from: address })
       setLoading1(false);
       sethashValue(makeOffer?.hash);
       setLoading2(true);

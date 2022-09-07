@@ -29,9 +29,6 @@ class SubscriptionStore {
   };
 
   getSubscription(id) {
-    console.log('getSubscription',id)
-    console.log('observable',this.subscriptionRegistry.get('62c56ae5050ee87d0e52c52b'))
-
     return this.subscriptionRegistry.get(id);
   }
 

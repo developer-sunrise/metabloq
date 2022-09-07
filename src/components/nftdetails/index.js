@@ -284,6 +284,7 @@ function NFTDetails(props) {
   const balance = async (address, amtInWei) => {
     try {
       const balance = await Token.methods.balanceOf(address).call();
+      console.log("balance",balance)
       if (parseInt(balance) > amtInWei) {
         return true;
       } else {
@@ -398,8 +399,12 @@ function NFTDetails(props) {
   };
   const buy = async () => {
     let priceInWei = web3.utils.toWei(nft.nftcollections_price.toString(), "ether");
-    if (await balance(address, priceInWei)) {
+    var checkblc =await balance(address, priceInWei)
+      console.log("checkblc",checkblc)
+    if (checkblc) {
       setWalletOpen(true);
+      try{
+        const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({from:address});
       try {
         setLoading2(true);
         let date = new Date();
@@ -472,6 +477,12 @@ function NFTDetails(props) {
         setLoading1(false)
         setLoading2(false)
       }
+    }catch(err){
+      console.log("balance",err)
+      setWalletOpen(false)
+      setLoading1(false)
+      setLoading2(false)
+    }
       setWalletOpen(false)
     } else {
       alert("check balance");

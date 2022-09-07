@@ -32,7 +32,7 @@ function ActionWallet(props) {
   const img3 = require("../../assets/walletImg/transaction.svg").default
 
 
-  const loader = require("../../assets/loading.gif");
+  const loader = require("../../assets/loading.gif").default
   const link = "https://apothem.xinfinscan.com/tx/"+hashValue;
   return (
     <Box>

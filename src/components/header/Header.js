@@ -286,7 +286,13 @@ setOpen(true)
                   Ranking
                 </NavDropdown.Item>
               </NavDropdown>
-
+              <Link
+                className="nav-link"
+                to={"login"}
+                onClick={() => setExpanded(false)}
+              >
+                KYC
+              </Link>
               <Link
                 className="nav-link"
                 to={"#"}

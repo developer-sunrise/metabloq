@@ -727,7 +727,9 @@ function CitiesHomeCollection({selectedItem}) {
       console.log("dsddssd", tile);
       let priceInWei = web3.utils.toWei(tile.bloqs_price, "ether");
       console.log("priceInWei", priceInWei);
-      if (await balance(address, priceInWei)) {
+      var checkblc =await balance(address, priceInWei)
+      console.log("checkblc",checkblc)
+      if (checkblc) {
         let date = new Date();
         let timestamp = date.getTime();
         let url = "signature";
