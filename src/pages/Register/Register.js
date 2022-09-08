@@ -61,51 +61,53 @@ function Register(props) {
   }
   const proceeds = async()=>{
     const {address } = wallet;
-    navigate('/validate',{ state: email })
-    // if(address!=""){
-    //   // console.log("address",address)
-    //   var myHeaders = new Headers();
-    //   myHeaders.append("Content-Type", "application/json");
-    //   var raw = JSON.stringify({
-    //     address: address,
-    //     email:email
-    //   });
-    //   var requestOptions = {
-    //     method: "POST",
-    //     headers: myHeaders,
-    //     body: raw,
-    //     redirect: "follow",
-    //   };
-    //   fetch(process.env.REACT_APP_BASE_URL+"findusersreg",requestOptions)
-    //     .then((response) => response.json())
-    //     .then((result) => {
-    //       // console.log("result",result)
-    //       if (result.status != true) {
-    //         // console.log("findusersreg",result)
-    //         // console.log(username,password,email)
-    //         AccountStore.register()
-    //           .then( async (res) => { 
-    //             await register();
-    //             console.log("res",res); 
-    //             navigate('/validate',{email:email})})
-    //           .catch(err => { console.log("error",err)})
-    //       } else{ 
-    //         console.log("/findusersreg",result)
-    //         alert("wallet already register")
-    //         navigate('/login')
-    //       }
-    //     })
-    //     .catch((err)=>{console.log("ERRor",err)})
-    //   }else{
-    //     alert("please connect wallet")
-    //   }
+    // navigate('/validate',{ state: email })
+   
+      // console.log("address",address)
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify({
+        address: address,
+        email:email
+      });
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+      fetch(process.env.REACT_APP_BASE_URL+"findusersreg",requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+           console.log("result",result)
+          // if (result.status != true) {
+            console.log("findusersreg",result)
+            // console.log(username,password,email)
+            AccountStore.register()
+              .then( async (res) => { 
+                await register();
+                console.log("res",res); 
+                navigate('/validate',{state:email})})
+              .catch(err => { console.log("error",err)})
+          // } else{ 
+          //   console.log("/findusersreg",result)
+          //   alert("wallet already register")
+          //   navigate('/login')
+          // }
+        })
+        .catch((err)=>{console.log("ERRor",err)})
+      
       }
   function handleUsernameChange(e) { AccountStore.setUsername(e.target.value);setUsername(e.target.value) }
   function handleEmailChange(e) { AccountStore.setEmail(e.target.value);setEmail(e.target.value) }
   function handlePasswordChange(e) { AccountStore.setPassword(e.target.value);setPassword(e.target.value) }
   async function handleSubmitForm(e) {
     e.preventDefault();
+    if(address!=""){
     await proceeds();
+  }else{
+    alert("please connect wallet")
+  }
     // console.log(username,password,email)
     // console.log("data1",data1)
     // if(data1 == true){

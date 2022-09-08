@@ -37,11 +37,8 @@ function Validate(props) {
 
 
   const proceed = async()=>{
-    let email =state
-    if(!address){
-      alert("Connect Wallet")
-      return
-    }
+    let email = state
+    console.log("email",email)
     if(email){
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");

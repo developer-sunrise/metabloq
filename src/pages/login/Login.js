@@ -8,9 +8,9 @@ import { Container, Col, Row, Button, Spinner, Form, FormGroup, Input } from 're
 function Login(props) {
   const { AccountStore } = props;
   const { values, errors, loading } = AccountStore;
-  const [username,setusername]= useState("nandha@123");
-  const [password,setpassword]=useState("Hello@123");
-  const [email,setemail]=useState("developer22.sunrisetechs@gmail.com");
+  const [username,setusername]= useState("");
+  const [password,setpassword]=useState("");
+  const [email,setemail]=useState("");
   const [tokens,settokens]=useState("");
   const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
@@ -19,13 +19,18 @@ function Login(props) {
     // console.log('props1',props.location.state.data.username)
     // console.log('props2',props.location.state.data.password)
     // if(props.location.state && props.location.state.data.username !=" " && props.location.state.data.username != null && props.location.state.data.username != undefined ){
-    if(username !=" " && username != null && username != undefined ){
-      // if(props.location.state.data.password !=" " && props.location.state.data.password != null && props.location.state.data.password != undefined ){
-      if(password !=" " && password != null && password != undefined ){
-          AccountStore.setUsername(username); 
-          AccountStore.setPassword(password); 
-        tokencreate();
-      }
+    // if(username !=" " && username != null && username != undefined ){
+    //   // if(props.location.state.data.password !=" " && props.location.state.data.password != null && props.location.state.data.password != undefined ){
+    //   if(password !=" " && password != null && password != undefined ){
+    //       AccountStore.setUsername(username); 
+    //       AccountStore.setPassword(password); 
+    //     tokencreate();
+    //   }
+    // }
+    var userprofile = JSON.parse(localStorage.getItem('Userdata'))
+    if (userprofile) {
+      // console.log("User", userprofile.profileImage)
+      setemail(userprofile.email)
     }
     return () => { AccountStore.reset(); }
   }, [AccountStore]);
@@ -107,17 +112,19 @@ const inserttoken =async(token)=>{
 
  }
 
-  function handleUsernameChange(e) { AccountStore.setUsername(e.target.value); }
-  function handlePasswordChange(e) { AccountStore.setPassword(e.target.value); }
+  function handleUsernameChange(e) { setusername (e.target.value);AccountStore.setUsername(e.target.value); }
+  function handlePasswordChange(e) {setpassword(e.target.value); AccountStore.setPassword(e.target.value); }
   function handleSubmitForm(e) {
     e.preventDefault();
-    AccountStore.login()
-      .then(() => {navigate('/Subscription')})
-      .catch(err => {
-        if (err && err.response && err.response.status === 403) {
-          navigate('/validate')
-        }
-      })
+    tokencreate()
+
+    // AccountStore.login()
+    //   .then(() => {navigate('/Subscription')})
+    //   .catch(err => {
+    //     if (err && err.response && err.response.status === 403) {
+    //       navigate('/validate')
+    //     }
+    //   })
       ;
   };
 

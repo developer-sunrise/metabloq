@@ -44,22 +44,23 @@ function SubscriptionListWrapper(props) {
                 <td>{statusParser(subscription.status)}</td>
                 <td className="text-right">
                   <ButtonGroup vertical size="sm">
-                    {
+                    {/* {
                       subscription.deletable
                       &&
-                      <Button
-                        color="danger"
-                        onClick={() => {
-                          SubscriptionStore.deleteSubscription(subscription.id)
-                            .then(res => {
-                            })
-                            .catch(err => {
-                            });
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    }
+                      // <Button
+                      //   color="danger"
+                      //   onClick={() => {
+                      //     SubscriptionStore.deleteSubscription(subscription.id)
+                      //       .then(res => {
+                      //       })
+                      //       .catch(err => {
+                      //       });
+                      //   }}
+                      // >
+                      //   Delete
+                      // </Button>
+                      <> </>
+                    } */}
                     <Link to={`/subscription/${subscription.id}`} className="btn btn-primary">Edit</Link>
                     {
                       subscription.status !== 'subscription_pending'

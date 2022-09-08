@@ -100,19 +100,32 @@ function SignIn() {
               payload: response.user,
             })
           }
-          if(user.user_wallet==address){
-            const jsonValue = JSON.stringify(response.userToken);
-            console.log("jsonValue",jsonValue)
-            localStorage.setItem("UserToken", jsonValue);
-            var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet}
-            const jsonObj = JSON.stringify(data);
-            localStorage.setItem("Userdata", jsonObj);
-            navigate("/");
-            setemail("");
-            setpassword("");
+          if(user.user_wallet){
+            if(user.user_wallet==address){
+              const jsonValue = JSON.stringify(response.userToken);
+              console.log("jsonValue",jsonValue)
+              localStorage.setItem("UserToken", jsonValue);
+              var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet}
+              const jsonObj = JSON.stringify(data);
+              localStorage.setItem("Userdata", jsonObj);
+              navigate("/");
+              setemail("");
+              setpassword("");
+            }else{
+              handleClick("error", 'you can’t switch the wallet');
+            }
           }else{
-            handleClick("error", 'you can’t switch the wallet');
+            const jsonValue = JSON.stringify(response.userToken);
+              console.log("jsonValue",jsonValue)
+              localStorage.setItem("UserToken", jsonValue);
+              var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet}
+              const jsonObj = JSON.stringify(data);
+              localStorage.setItem("Userdata", jsonObj);
+              navigate("/");
+              setemail("");
+              setpassword("");
           }
+          
           
         } else if (response.message == "User not found") {
           handleClick("error", response.message);

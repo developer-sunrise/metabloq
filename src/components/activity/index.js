@@ -29,13 +29,14 @@ function Activity({myprofile,collectionhome,details,activityDatas}) {
 
   const [Activitys,setActivity]=useState([])
   useEffect(()=>{
+
     if(!activityDatas){
       console.log("Activity",state)
       setActivity(state)
     }else{
       setActivity(activityDatas)
     }
-  },[])
+  },[activityDatas])
   return (
     <div style={{overflow:"auto"}}>
     <div style={{maxHeight:"400px"}} className = {collectionhome || details ? "p-0" : "metabloq_container mt-sm-5"}>

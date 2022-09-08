@@ -34,7 +34,9 @@ import {
 import PlacebidModal from "../placebidModal";
 import CountdownTimer from "../timer/CountdownTimer";
 import { useCountdown } from "../timer/useCountdown";
+import ActionWallet from "../connectwallet/actionWallet";
 const image = require("../../assets/profile/coverpic.png")
+const loaderimg = require("../../assets/loading.gif").default
 const preimg = require("../../assets/nfts/1.png").default
 
 const urls = process.env.REACT_APP_SCAN_baseuri_HASH;
@@ -68,6 +70,13 @@ function CitiesHomeCollection({ selectedItem }) {
   const [Xvalue, setxvalue] = useState(null);
   const [Yvalue, setyvalue] = useState(null);
 
+  const [Loading, setLoading] = useState(false);
+
+  const [walletOpen, setWalletOpen] = useState(false);
+  const [Loading1, setLoading1] = useState(false);
+  const [Loading2, setLoading2] = useState(false);
+  const [hashValue, sethashValue] = useState("");
+
   const getCoords = (x, y) => `${x},${y}`;
   const handleFormat = (event, newFormats) => {
     console.log("tesss", newFormats);
@@ -95,7 +104,6 @@ function CitiesHomeCollection({ selectedItem }) {
       setSelectedGrid(null);
       dispatch({ type: "ADJCENT", payload: [] });
     }
-
     setFormats("map");
   };
   const getDetails = useCallback(
@@ -251,6 +259,8 @@ function CitiesHomeCollection({ selectedItem }) {
       return;
     }
     if (selectedGrid.length == 1) {
+      setWalletOpen(true)
+      setLoading1(true)
       let Staticimgurl =
         "https://pbs.twimg.com/media/FD_IeOOXIA4JiIj.jpg:large";
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
@@ -316,7 +326,6 @@ function CitiesHomeCollection({ selectedItem }) {
                 filename
               ); // for json update
               console.log("tesss", jsonData);
-
               if (jsonData.status == 204) {
                 const tokenId = await LandRegistry.methods
                   .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
@@ -342,23 +351,38 @@ function CitiesHomeCollection({ selectedItem }) {
                     params,
                     authtoken,
                   });
+
+                  setLoading1(false)
+                  setLoading2(true)
+                  getdata();
+                  setLoading2(false)
+                  setWalletOpen(false)
                 } catch (e) {
+                  setLoading1(false)
+                  setWalletOpen(false)
                   console.log(e);
                 }
                 // setTimeout(window.location.reload(), 3000);
               }
             } catch (err) {
+              setWalletOpen(false)
               console.log("err", err);
               alert("failed");
             }
           }
         } catch (err) {
+          setWalletOpen(false)
+          setLoading1(false)
           console.log("err in signature", err);
         }
       } catch (err) {
+        setWalletOpen(false)
+        setLoading1(false)
         console.log("allowance", err);
       }
     } else {
+      setWalletOpen(true)
+      setLoading1(true)
       console.log("start bulk", selectedGrid);
       let x = [];
       let y = [];
@@ -398,8 +422,6 @@ function CitiesHomeCollection({ selectedItem }) {
           console.log("approveToken", approveToken);
         }
         try {
-          console.log("ssss");
-
           let date = new Date();
           let timestamp = date.getTime();
           let url = "signature";
@@ -453,20 +475,33 @@ function CitiesHomeCollection({ selectedItem }) {
                     params,
                     authtoken,
                   });
+                  setLoading1(false)
+                  setLoading2(true)
+                  getdata()
+                  setLoading2(false)
+                  setWalletOpen(false)
                 } catch (e) {
+                  setWalletOpen(false)
+                  setLoading1(false)
                   console.log(e);
                 }
                 // setTimeout(window.location.reload(), 3000);
               }
               // setTimeout(window.location.reload(), 3000);
             } catch (err) {
+              setWalletOpen(false)
+              setLoading1(false)
               console.log("err bulk", err);
             }
           }
         } catch (err) {
+          setWalletOpen(false)
+          setLoading1(false)
           console.log("err in signature", err);
         }
       } catch (err) {
+        setWalletOpen(false)
+        setLoading1(false)
         console.log("allowance", err);
       }
     }
@@ -490,6 +525,8 @@ function CitiesHomeCollection({ selectedItem }) {
   // putonsale
   const putonsale = async (tokenId, price, time) => {
     try {
+      setWalletOpen(true)
+      setLoading1(true)
       console.log("tokenIdtokenId", tokenId);
       const NftFixedSale = await LandRegistry.methods
         .approve(process.env.REACT_APP_Marketplace_CONTRACT, tokenId)
@@ -536,13 +573,23 @@ function CitiesHomeCollection({ selectedItem }) {
             params,
             authtoken,
           });
+          console.log("response", response)
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
         } catch (e) {
+          setWalletOpen(false)
+          setLoading1(false)
           console.log(e);
         }
         // setTimeout(window.location.reload(), 3000);
       }
       // setTimeout(window.location.reload(), 3000);
     } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
       console.log("dsdds", err);
     }
   };
@@ -612,6 +659,8 @@ function CitiesHomeCollection({ selectedItem }) {
     var parcelsSelected = parcels;
     console.log(parcelsSelected[id].owner);
     try {
+      setWalletOpen(true)
+      setLoading1(true)
       const tokenId = await LandRegistry.methods
         .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
         .call();
@@ -654,11 +703,20 @@ function CitiesHomeCollection({ selectedItem }) {
             params,
             authtoken,
           });
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
         } catch (e) {
+          setWalletOpen(false)
+          setLoading2(false)
           console.log(e);
         }
       }
     } catch (err) {
+      setWalletOpen(false)
+      setLoading2(false)
       console.log("ddsds", err);
     }
   };
@@ -666,6 +724,8 @@ function CitiesHomeCollection({ selectedItem }) {
   const placeBid = async (price) => {
     console.log("ddddddddbifddddd", price);
     try {
+      setWalletOpen(true)
+      setLoading1(true)
       const tokenId = await LandRegistry.methods
         .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
         .call();
@@ -707,17 +767,28 @@ function CitiesHomeCollection({ selectedItem }) {
             params,
             authtoken,
           });
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
         } catch (e) {
+          setWalletOpen(false)
+          setLoading1(false)
           console.log(e);
         }
       }
     } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
       console.log("ddsds", err);
     }
   };
   //buy
   const realBuy = async () => {
     try {
+      setWalletOpen(true)
+      setLoading1(true)
       var parcelsSelected = parcels;
       const tokenId = await LandRegistry.methods
         .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
@@ -786,6 +857,11 @@ function CitiesHomeCollection({ selectedItem }) {
                   params,
                   authtoken,
                 });
+                setLoading1(false)
+                setLoading2(true)
+                getdata()
+                setWalletOpen(false)
+                setLoading2(false)
               } catch (e) {
                 console.log(e);
               }
@@ -795,9 +871,13 @@ function CitiesHomeCollection({ selectedItem }) {
           }
         }
       } else {
+        setWalletOpen(false)
+        setLoading1(false)
         console.log("check balanceeee");
       }
     } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
       console.log("ddd", err);
     }
   };
@@ -806,7 +886,10 @@ function CitiesHomeCollection({ selectedItem }) {
   const acceptMakeOffer = async (buyerAddress, amt, token) => {
     let priceInWei = web3.utils.toWei(amt.toString(), "ether");
     if (await balance(buyerAddress, priceInWei)) {
+
       try {
+        setWalletOpen(true)
+        setLoading1(true)
         let date = new Date();
         let timestamp = date.getTime();
         let url = "signature";
@@ -866,7 +949,13 @@ function CitiesHomeCollection({ selectedItem }) {
                   params,
                   authtoken,
                 });
+                setLoading2(true)
+                getdata()
+                setWalletOpen(false)
+                setLoading2(false)
               } catch (e) {
+                setWalletOpen(false)
+                setLoading1(false)
                 console.log(e);
               }
               // setTimeout(window.location.reload(), 3000);
@@ -875,6 +964,8 @@ function CitiesHomeCollection({ selectedItem }) {
           }
         }
       } catch (e) {
+        setWalletOpen(false)
+        setLoading1(false)
         console.log(e);
       }
     } else {
@@ -986,7 +1077,12 @@ function CitiesHomeCollection({ selectedItem }) {
 
   // relist
   const relist = async () => {
+    setLoading(true)
+    const tokenId = await LandRegistry.methods
+      .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
+      .call();
     const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+    console.log("TOKEN ID", tokenId)
     var parcelsSelected = parcels;
     parcelsSelected[id] = {
       ...parcelsSelected[id],
@@ -1003,8 +1099,31 @@ function CitiesHomeCollection({ selectedItem }) {
       }),
       filename
     );
+
     console.log("json updateee actionnn", jsonData);
-    // setTimeout(window.location.reload(), 3000);
+    let url = "createActivities";
+    let params = {
+      wallet: address,
+      hash: "",
+      from: address,
+      to: "",
+      type: "Delist",
+      price: 0,
+      quantity: 1,
+      collection: data.collection_id,
+      nft: tokenId,
+      transfer: "",
+      Land: true,
+    };
+    let authtoken = "";
+    let response = await postMethod({
+      url,
+      params,
+      authtoken,
+    });
+    console.log("response", response)
+    getdata()
+    setLoading(false)
   };
   // create esate
   const createEstate = async () => {
@@ -1104,7 +1223,7 @@ function CitiesHomeCollection({ selectedItem }) {
     console.log("tokenId item activity", tokenId);
     if (tokenId) {
       try {
-        let url = "getNftTransferActivitesLand";
+        let url = "getNftTransferActivitesLand" //"getNftTransferActivites";
         let params = {
           token_id: tokenId,
         };
@@ -1125,7 +1244,7 @@ function CitiesHomeCollection({ selectedItem }) {
       <p>time over</p>
     )
   }
-  const filtervalues=()=>{
+  const filtervalues = () => {
 
   }
 
@@ -1289,10 +1408,10 @@ function CitiesHomeCollection({ selectedItem }) {
               :
               null
             }
-            
-             
-               {formats != "map" &&
-               <>
+
+
+            {formats != "map" &&
+              <>
                 <input
                   type="text"
                   placeholder="X value"
@@ -1303,9 +1422,9 @@ function CitiesHomeCollection({ selectedItem }) {
                   type="text"
                   placeholder="Y value"
                   className="input-revert"
-                  onChange={(e) => {console.log("Xvalue",Xvalue); setyvalue(e.target.value)}}
+                  onChange={(e) => { console.log("Xvalue", Xvalue); setyvalue(e.target.value) }}
                 />
-                </>
+              </>
             }
             <FormGroup>
               <FormControlLabel
@@ -1424,9 +1543,13 @@ function CitiesHomeCollection({ selectedItem }) {
                             <>
                               <button
                                 onClick={() => relist()}
+                                disabled={Loading}
                                 className="mr-2 nftcollection_mobile-category"
                               >
-                                <span>Relist</span>
+                                <span>Delist</span>{
+                                  Loading &&
+                                  <img src={loaderimg} style={{ width: "30px", height: "30px" }} />
+                                }
                               </button>
                             </>
                           )
@@ -1488,7 +1611,7 @@ function CitiesHomeCollection({ selectedItem }) {
                               onClick={buyClick}
                               className="mx-2 metablog_primary-filled-square-button"
                             >
-                              <span>Buy Now 1s</span>
+                              <span>Buy Now </span>
                             </button>
                           </>
                         )
@@ -1744,6 +1867,13 @@ function CitiesHomeCollection({ selectedItem }) {
         playSound={playSound}
         from={"atlas"}
         action={realBuy}
+      />
+      <ActionWallet
+        walletOpen={walletOpen}
+        loader1={Loading1}
+        loader2={Loading2}
+        hashValue={hashValue}
+        setWalletOpen={setWalletOpen}
       />
     </div>
   );
