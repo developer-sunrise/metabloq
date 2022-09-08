@@ -27,7 +27,10 @@ function Validate(props) {
     }
     e.preventDefault();
     AccountStore.validate()
-      .then(() =>{proceed()})
+      .then(() =>{
+        // proceed()
+        navigate("/login")
+      })
       .catch(err => {
         if (err && err.response && err.response.status === 401) {
           navigate('/')
