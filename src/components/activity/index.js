@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Form, Image, Row, Stack } from "react-bootstrap";
 import './Styles.css';
 import {HiShoppingCart} from 'react-icons/hi';
@@ -7,13 +7,14 @@ import {FaHandHolding} from 'react-icons/fa';
 import {BsStars} from 'react-icons/bs';
 import Fade from 'react-reveal/Fade';
 import { Slicer,FormatDate1 } from "../../helpers/API&Helpers";
+import { useLocation } from "react-router-dom";
 const avatar1 = require('../../assets/nfts/1.png').default
 const avatar2 = require('../../assets/nfts/2.png').default
 const avatar3 = require('../../assets/nfts/3.png').default
 const avatar4 = require('../../assets/nfts/4.png').default
 const bloqs = require('../../assets/logo_block.png').default
 
-const urls = "https://apothem.xinfinscan.com/tx/"
+const urls = process.env.REACT_APP_SCAN_baseuri_HASH
 
 
 const days = [
@@ -24,6 +25,17 @@ const days = [
   {id:5,days:"Today"}
 ]
 function Activity({myprofile,collectionhome,details,activityDatas}) {
+  const {state} =useLocation()
+
+  const [Activitys,setActivity]=useState([])
+  useEffect(()=>{
+    if(!activityDatas){
+      console.log("Activity",state)
+      setActivity(state)
+    }else{
+      setActivity(activityDatas)
+    }
+  },[])
   return (
     <div style={{overflow:"auto"}}>
     <div style={{maxHeight:"400px"}} className = {collectionhome || details ? "p-0" : "metabloq_container mt-sm-5"}>
@@ -69,7 +81,7 @@ function Activity({myprofile,collectionhome,details,activityDatas}) {
             <Col className="text-center">Time</Col> 
           </Row>
           <br />
-          {activityDatas?.length> 0 && activityDatas.map((data) => (
+          {Activitys?.length> 0 && Activitys.map((data) => (
             <>
               <Row className="ranking_table-body d-flex justify-content-between align-items-center">
                 <Col>

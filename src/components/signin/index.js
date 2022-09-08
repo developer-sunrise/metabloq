@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import {Snackbar} from "@mui/material";
 import { EmailValidator, PasswordValidator, postMethod } from "../../helpers/API&Helpers";
 import MuiAlert from "@mui/material/Alert";
-
+import { useDispatch, useSelector } from "react-redux";
 
 function SignIn() {
+  const dispatch =useDispatch()
+  const wallet = useSelector((state) => state.WalletConnect);
+  const { address}= wallet
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
   const navigate = useNavigate();
@@ -48,6 +51,12 @@ function SignIn() {
 
   const LoginSubmit = async(e) => {
     e.preventDefault();
+    if(!address){
+      handleClick("warning", "Connect Wallet , Please ensure you will continue to use same wallet for all your transactions in Metablogs ");
+      return;
+    }else{
+      handleClick("warning", "Please ensure you will continue to use same wallet for all your transactions in Metablogs");
+    }
     if (email == "") {
       handleClick("warning", "Enter your email");
       return;
@@ -64,6 +73,7 @@ function SignIn() {
       let params = {
         email: mail,
         password: pass,
+        address:address,
       };
       let authtoken = "";
       let response = await postMethod({ url, params, authtoken });
@@ -81,18 +91,35 @@ function SignIn() {
         
       } else {
         if (response.status) {
-          const jsonValue = JSON.stringify(response.userToken);
-          localStorage.setItem("UserToken", jsonValue);
-          navigate("/");
-          setemail("");
-          setpassword("");
+          
+          const user =response.user
+          console.log("user",user)
+          if(response.user){
+            dispatch({
+              type: "UPDATE_USER",
+              payload: response.user,
+            })
+          }
+          if(user.user_wallet==address){
+            const jsonValue = JSON.stringify(response.userToken);
+            console.log("jsonValue",jsonValue)
+            localStorage.setItem("UserToken", jsonValue);
+            var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet}
+            const jsonObj = JSON.stringify(data);
+            localStorage.setItem("Userdata", jsonObj);
+            navigate("/");
+            setemail("");
+            setpassword("");
+          }else{
+            handleClick("error", 'you can’t switch the wallet');
+          }
+          
         } else if (response.message == "User not found") {
           handleClick("error", response.message);
         } else {
           handleClick("error", "Something went wrong, please try again later");
         }
       }
-
     }
 
   };
@@ -110,6 +137,7 @@ function SignIn() {
           <font size="1">English (IN)</font>
         </div>
         <h4 className="font-weight-bold text-center">Welcome</h4>
+        {/* <h5 className="font-weight-bold text-center">Please ensure you will continue to use same wallet for all your transactions in Metablogs</h5> */}
         <form className="signup-form" onSubmit={LoginSubmit}>
           <Stack gap={3}>
             <input

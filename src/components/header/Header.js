@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { connectFailed, connectWallet } from "../../redux/WalletAction";
 import "./Header.css";
@@ -32,31 +32,34 @@ import {
 import { FaUserCircle } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
-import { postMethod } from "../../helpers/API&Helpers";
+import { postMethod, getMethod } from "../../helpers/API&Helpers";
 import ClaimxdcModal from "../claimxdcModal";
 const metablog_logo = require("../../assets/metablog_logo.png").default;
-const userlogo = require("../../assets/profile/profilepic.png").default;
+const userlogo = require("../../assets/profile/blankprofile.png").default;
 
 const Header = () => {
   const [openWallet, setOpenWallet] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [adminDropdown, setAdminDropdown] = useState(false);
-  const [amount1,setamount]=useState(0);
-  const [xdcToken,setXdcToken]=useState(0);
-  const [claimmodal,setclaimmodal] = useState(false);
-
+  const [amount1, setamount] = useState(0);
+  const [xdcToken, setXdcToken] = useState(0);
+  const [claimmodal, setclaimmodal] = useState(false);
+  const [AllActivity, setAllActivity] = useState([])
+  const [AllCollections, setAllCollections] = useState([])
+  const [profileImage, setProfileImage] = useState(null)
 
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wallet = useSelector((state) => state.WalletConnect);
-  const { XDC_AirDrop,address,web3 } = wallet;
+  const { XDC_AirDrop, address, web3 } = wallet;
   const { width } = useWindowDimensions();
   const connect = () => {
+    playSound();
     setExpanded(false);
     setOpenWallet(true);
-    playSound();
-    dispatch(connectWallet());
+
+    // dispatch(connectWallet());
   };
 
   const errorDiv = () => {
@@ -71,7 +74,7 @@ const Header = () => {
   };
   const [playSound] = useSound(buttonSound);
 
-  
+
   const adminDropClick = () => {
     if (adminDropdown == false) {
       setAdminDropdown(true);
@@ -80,31 +83,60 @@ const Header = () => {
     }
   };
 
-  const depositXDC= async ()=>{
-          const Amount=  web3.utils.toWei(xdcToken,"ether");   
-          console.log("Amount",Amount)
-        var depositXDC = await XDC_AirDrop.methods.deposit().send({from:address, value:Amount});
-        console.log("desposit",depositXDC)
+  const depositXDC = async () => {
+    const Amount = web3.utils.toWei(xdcToken, "ether");
+    console.log("Amount", Amount)
+    var depositXDC = await XDC_AirDrop.methods.deposit().send({ from: address, value: Amount });
+    console.log("desposit", depositXDC)
 
   };
 
-  const AvailableBalance= async ()=>{
-    console.log("XDC_",XDC_AirDrop)
-    try{
-      var  AvailableAmount= await XDC_AirDrop.methods.AvailableXDC().call();
-      AvailableAmount= web3.utils.fromWei(AvailableAmount, "ether");
+  const AvailableBalance = async () => {
+    console.log("XDC_", XDC_AirDrop)
+    try {
+      var AvailableAmount = await XDC_AirDrop.methods.AvailableXDC().call();
+      AvailableAmount = web3.utils.fromWei(AvailableAmount, "ether");
       setamount(AvailableAmount)
-      console.log("available",AvailableAmount);}
-      catch(error){
-        console.log("error",error);
-      }
+      console.log("available", AvailableAmount);
+    }
+    catch (error) {
+      console.log("error", error);
+    }
   };
-
-  useEffect(()=>{
-    if(wallet.connected){
+  const getactivity = async () => {
+    let url = "getAllAppActivities";
+    let authtoken = "";
+    let response = await getMethod({ url, authtoken });
+    setAllActivity(response.result)
+  }
+  const getallcollections = async () => {
+    let url = "getAllCollection";
+    let authtoken = "";
+    let colllections = await getMethod({ url, authtoken })
+    console.log("colllections", colllections.result)
+    setAllCollections(colllections.result)
+  }
+  useEffect(() => {
+    getallcollections()
+    getactivity()
+    var userprofile = JSON.parse(localStorage.getItem('Userdata'))
+    if (userprofile) {
+      console.log("User", userprofile.profileImage)
+      setProfileImage(userprofile.profileImage)
+    }
+    if (wallet.connected) {
+      if(userprofile){
+        if(userprofile.wallet!=address){
+          alert("you can’t switch the wallet and will be logged out")
+          localStorage.removeItem('UserToken')
+          localStorage.removeItem('Userdata')
+          navigate('/signin')
+        }
+      }
+      
       AvailableBalance()
     }
-  },[wallet.connected])
+  }, [wallet.connected])
 
   const style = {
     position: "absolute",
@@ -118,11 +150,11 @@ const Header = () => {
     p: 2,
     borderRadius: "1em",
   };
-  const[open,setOpen]=useState(false)
-  const handleOpen=()=>{
-setOpen(true)
+  const [open, setOpen] = useState(false)
+  const handleOpen = () => {
+    setOpen(true)
   }
-  const handleClose=()=>{
+  const handleClose = () => {
     setOpen(false)
   }
   return (
@@ -239,7 +271,7 @@ setOpen(true)
                 >
                   Meta Pets
                 </NavDropdown.Item>
-               
+
                 <NavDropdown.Item
                   onClick={() => {
                     setExpanded(false);
@@ -272,7 +304,7 @@ setOpen(true)
                 <NavDropdown.Item
                   onClick={() => {
                     setExpanded(false);
-                    navigate("activity");
+                    navigate("activity", { state: AllActivity })
                   }}
                 >
                   Activity
@@ -280,7 +312,7 @@ setOpen(true)
                 <NavDropdown.Item
                   onClick={() => {
                     setExpanded(false);
-                    navigate("ranking");
+                    navigate("ranking", { state: AllCollections });
                   }}
                 >
                   Ranking
@@ -379,7 +411,7 @@ setOpen(true)
                         <AiOutlinePlus
                           color="#1a69a4"
                           size={20}
-                          onClick={() =>handleOpen() }
+                          onClick={() => handleOpen()}
                         />
                       </div>
                       <hr
@@ -476,7 +508,20 @@ setOpen(true)
                   )}
                 </div>
               )}
-              <div className="myprofile_userlogo d-flex">
+
+              {localStorage.getItem("UserToken") ? (
+                <div className="myprofile_userlogo d-flex">
+                  {
+                    profileImage ?
+                      <Image
+                        fluid
+                        src={profileImage}
+                        height={40}
+                        width={40}
+                        style={{ objectFit: "cover", borderRadius: "100px" }}
+                        onClick={() => navigate("collectors")}
+                      />
+                      :
                       <Image
                         fluid
                         src={userlogo}
@@ -485,7 +530,14 @@ setOpen(true)
                         style={{ objectFit: "cover", borderRadius: "100px" }}
                         onClick={() => navigate("collectors")}
                       />
+                  }
+
                 </div>
+              )
+                :
+                null
+              }
+
             </Nav>
             <Modal
               open={open}
@@ -518,7 +570,7 @@ setOpen(true)
         </Container>
       </Navbar>
       <ConenctWallet openWallet={openWallet} setOpenWallet={setOpenWallet} />
-      <ClaimxdcModal claimmodal={claimmodal} setclaimmodal={setclaimmodal}/>
+      <ClaimxdcModal claimmodal={claimmodal} setclaimmodal={setclaimmodal} />
     </>
   );
 };

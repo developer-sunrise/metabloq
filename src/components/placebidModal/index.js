@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { postMethod } from "../../helpers/API&Helpers";
 import Swal from 'sweetalert2'
 import ActionWallet from "../connectwallet/actionWallet";
+import { useNavigate } from "react-router-dom";
 
 const smallstar = require('../../assets/smallstar.png').default
 const bigstar = require('../../assets/bigstar.png').default
@@ -29,7 +30,7 @@ const style = {
   
 function PlacebidModal(props) {
   let { placeModalOpen, setPlaceModalOpen,placeModalClose,data,highestBid,from,action } = props;
-
+  const navigate =useNavigate()
   const [successModal,setSuccessModal] = useState(false);
   const [placeBidPrice,setPlaceBidPrice] = useState("");
   const reduxItems = useSelector((state) => state.WalletConnect);
@@ -47,8 +48,6 @@ function PlacebidModal(props) {
   const placebidClick = async()=>{
     if(from=="atlas"){
       action(placeBidPrice) 
-
-
     }else{
     if(parseFloat(data?.nftcollections_price) > parseFloat(placeBidPrice)){
       setPlaceModalOpen(false)
@@ -97,7 +96,9 @@ function PlacebidModal(props) {
             params,
             authtoken,
           })
+
           console.log("actvies",response)
+          navigate("/")
         }catch(e){
           console.log(e)
         }

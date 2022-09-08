@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate ,useLocation } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Container, Col, Row, Button, Spinner, Form, FormGroup, Input } from 'reactstrap';
 import FormErrors from '../../components/FormErrors';
@@ -9,10 +9,13 @@ import {useSelector } from "react-redux";
 function Validate(props) {
   const { AccountStore } = props;
   const { values, errors, loading } = AccountStore;
+  const { state } = useLocation();
+
   const navigate = useNavigate();
   const wallet = useSelector((state) => state.WalletConnect);
   const {address } = wallet;
   useEffect(() => {
+    console.log("state",state);
     return () => { AccountStore.reset(); }
   }, [AccountStore]);
 
@@ -34,7 +37,7 @@ function Validate(props) {
 
 
   const proceed = async()=>{
-    let email =props.location.state.data.email
+    let email =state
     if(!address){
       alert("Connect Wallet")
       return

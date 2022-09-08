@@ -30,7 +30,7 @@ const avatar3 = require("../../assets/profilepics/face9.jpg").default
 const avatar4 = require("../../assets/profilepics/face5.jpg").default
 const bloqs = require("../../assets/logo_block.png").default
 
-const urls = "https://apothem.xinfinscan.com/tx/"
+const urls = process.env.REACT_APP_SCAN_baseuri_HASH;
 
 // const days = [
 //   { value: "Last 7 days", label: "Last 7 days" },
@@ -116,7 +116,7 @@ function NFTDetails(props) {
       let params = {
         nft_id: nft.nftcollections_id,
         comments_text: commentsInput,
-        wallet: nft.nftcollections_wallet,
+        wallet: address //nft.nftcollections_wallet,
       };
       let authtoken = "";
       let response = await postMethod({
@@ -284,7 +284,7 @@ function NFTDetails(props) {
   const balance = async (address, amtInWei) => {
     try {
       const balance = await Token.methods.balanceOf(address).call();
-      console.log("balance",balance)
+      console.log("balance", balance)
       if (parseInt(balance) > amtInWei) {
         return true;
       } else {
@@ -399,92 +399,92 @@ function NFTDetails(props) {
   };
   const buy = async () => {
     let priceInWei = web3.utils.toWei(nft.nftcollections_price.toString(), "ether");
-    var checkblc =await balance(address, priceInWei)
-      console.log("checkblc",checkblc)
+    var checkblc = await balance(address, priceInWei)
+    console.log("checkblc", checkblc)
     if (checkblc) {
       setWalletOpen(true);
-      try{
-
-        const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({from:address});
       try {
-        setLoading2(true);
-        let date = new Date();
-        let timestamp = date.getTime();
-        let url = "signature";
-        let params = {
-          seller: nft.nftcollections_wallet,
-          buyer: address,
-          nftAddress: process.env.REACT_APP_COLLECTION_CONTRACT,
-          amount: priceInWei,
-          tokenId: nft.nftcollections_token_id,
-          nonce: timestamp,
-        };
-        let authtoken = "";
-        let signresponse = await postMethod({ url, params, authtoken });
-        if (signresponse.status) {
-          setLoading1(true)
-          const accept = await executeOrder(signresponse.signtuple);
-          sethashValue(accept?.hash);
-          setLoading1(false);
-          if (accept) {
-            let url = "updateNft";
-            let params = {
-              nft_id: id,
-              type: "transfer",
-              wallet: address,
-            };
-            let authtoken = "";
-            let response = await postMethod({ url, params, authtoken });
-            if (response.status) {
-              try {
-                let url = "createActivities";
-                let params = {
-                  wallet: address,
-                  hash: accept?.transactionHash,
-                  from: nft.nftcollections_wallet,
-                  to: address,
-                  type: "buy",
-                  price: nft.nftcollections_price,
-                  quantity: 1,
-                  collection: nft.nftcollections_id,
-                  nft: nft.nftcollections_token_id,
-                  transfer: "transfered",
-                };
-                let authtoken = "";
-                let response = await postMethod({
-                  url,
-                  params,
-                  authtoken,
-                })
-              } catch (e) {
-                console.log(e)
-              }
-              let url = "deleteOffer";
+
+        const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({ from: address });
+        try {
+          setLoading2(true);
+          let date = new Date();
+          let timestamp = date.getTime();
+          let url = "signature";
+          let params = {
+            seller: nft.nftcollections_wallet,
+            buyer: address,
+            nftAddress: process.env.REACT_APP_COLLECTION_CONTRACT,
+            amount: priceInWei,
+            tokenId: nft.nftcollections_token_id,
+            nonce: timestamp,
+          };
+          let authtoken = "";
+          let signresponse = await postMethod({ url, params, authtoken });
+          if (signresponse.status) {
+            setLoading1(true)
+            const accept = await executeOrder(signresponse.signtuple);
+            sethashValue(accept?.hash);
+            setLoading1(false);
+            if (accept) {
+              let url = "updateNft";
               let params = {
-                offer_bid_nft_token_id: nft.nftcollections_token_id,
+                nft_id: id,
+                type: "transfer",
+                wallet: address,
               };
               let authtoken = "";
               let response = await postMethod({ url, params, authtoken });
               if (response.status) {
-                navigate("/")
-                setBuyModalOpen(false)
+                try {
+                  let url = "createActivities";
+                  let params = {
+                    wallet: address,
+                    hash: accept?.transactionHash,
+                    from: nft.nftcollections_wallet,
+                    to: address,
+                    type: "buy",
+                    price: nft.nftcollections_price,
+                    quantity: 1,
+                    collection: nft.nftcollections_id,
+                    nft: nft.nftcollections_token_id,
+                    transfer: "transfered",
+                  };
+                  let authtoken = "";
+                  let response = await postMethod({
+                    url,
+                    params,
+                    authtoken,
+                  })
+                } catch (e) {
+                  console.log(e)
+                }
+                let url = "deleteOffer";
+                let params = {
+                  offer_bid_nft_token_id: nft.nftcollections_token_id,
+                };
+                let authtoken = "";
+                let response = await postMethod({ url, params, authtoken });
+                if (response.status) {
+                  navigate("/")
+                  setBuyModalOpen(false)
+                }
               }
+              setLoading2(false)
             }
-            setLoading2(false)
           }
+        } catch (e) {
+          console.log(e);
+          setWalletOpen(false)
+          setLoading1(false)
+          setLoading2(false)
         }
-      } catch (e) {
-        console.log(e);
+      } catch (err) {
+        console.log("balance", err)
         setWalletOpen(false)
         setLoading1(false)
         setLoading2(false)
       }
-    }catch(err){
-      console.log("balance",err)
-      setWalletOpen(false)
-      setLoading1(false)
-      setLoading2(false)
-    }
       setWalletOpen(false)
     } else {
       alert("check balance");
@@ -664,174 +664,174 @@ function NFTDetails(props) {
   }, [address]);
   const [days, hours, minutes, seconds] = useCountdown(parseInt(nft.nftcollections_auction_time));
   const createNFT = async () => {
-  console.log("nft",nft)
-  const nftDetails =nft
+    console.log("nft", nft)
+    const nftDetails = nft
     // if (address == "") {
     //   handleClick("warning", "Connect your wallet");
     //   return;
     //  }
+    try {
+      // setWalletOpen(true);
+      // setLoading1(true);
+      const LastMintId = await Collection.methods.totalSupply().call();
+      var mintid = parseInt(LastMintId) + 1;
+      console.log("LastMintId", mintid);
+      setWalletOpen(true)
+      // sethashValue(LastMintId?.hash)
+      // setLoading1(false);
+      // setLoading2(true);
+      try {
+        // let imageUrl = data3.location;
+        // console.log("preeeeevvv", imageUrl);
+        // let filename2 = mintid + ".json";
+        // let jsonData = JSON.stringify({
+        //   name: nftDetails.name,
+        //   description: nftDetails.description,
+        //   image: imageUrl,
+        //   attributes: nftDetails.attributes,
+        // });
+        console.log("aaaaa", jsonData);
         try {
-          // setWalletOpen(true);
-          // setLoading1(true);
-          const LastMintId = await Collection.methods.totalSupply().call();
-          var mintid = parseInt(LastMintId) + 1;
-          console.log("LastMintId", mintid);
-          setWalletOpen(true)
-          // sethashValue(LastMintId?.hash)
-          // setLoading1(false);
-          // setLoading2(true);
           try {
-            // let imageUrl = data3.location;
-            // console.log("preeeeevvv", imageUrl);
-            // let filename2 = mintid + ".json";
-            // let jsonData = JSON.stringify({
-            //   name: nftDetails.name,
-            //   description: nftDetails.description,
-            //   image: imageUrl,
-            //   attributes: nftDetails.attributes,
-            // });
-            console.log("aaaaa", jsonData);
+            let amt = 1;
+            let amt2 = amt.toString();
+            let priceInWei = web3.utils.toWei(amt2, "ether");
+            console.log("starttttt");
+            const allowance = await Token.methods
+              .allowance(
+                address,
+                process.env.REACT_APP_Marketplace_CONTRACT
+              )
+              .call();
+            if (allowance < priceInWei) {
+              const approveToken = await Token.methods
+                .approve(
+                  process.env.REACT_APP_Marketplace_CONTRACT,
+                  "999999999999999999999"
+                )
+                .send({ from: address });
+              console.log("approveToken", approveToken);
+            }
+
+
             try {
+              console.log("dfghjkl", priceInWei);
+              let date = new Date();
+              let timestamp = date.getTime();
+              let url = "signature";
+              let params = {
+                seller: address,
+                buyer: address,
+                nftAddress: process.env.REACT_APP_Marketplace_CONTRACT,//nftAddress
+                amount: 0,
+                tokenId: 1,
+                nonce: timestamp,
+              };
+              let authtoken = "";
+              let response = await postMethod({ url, params, authtoken });
+              console.log("fghj", response);
+              try {
+                const signer = await Marketplace.methods.getSigner(response.signtuple).call()
+                console.log("signer", signer)
+              } catch (err) {
+                setWalletOpen(false)
+                console.log("Error", err)
+              }
+              if (response?.status) {
                 try {
-                  let amt = 1;
-                  let amt2 = amt.toString();
-                  let priceInWei = web3.utils.toWei(amt2, "ether");
-                  console.log("starttttt");
-                  const allowance = await Token.methods
-                    .allowance(
-                      address,
-                      process.env.REACT_APP_Marketplace_CONTRACT
+                  setLoading1(true)
+                  setLoading2(true)
+                  console.log("start", response.signtuple);
+                  const mintNFT = await Marketplace.methods
+                    .buyCollections(
+                      response.signtuple,
+                      nftDetails.nftcollections_metadata_url,
+                      parseInt(0)
                     )
-                    .call();
-                  if (allowance < priceInWei) {
-                    const approveToken = await Token.methods
-                      .approve(
-                        process.env.REACT_APP_Marketplace_CONTRACT,
-                        "999999999999999999999"
-                      )
-                      .send({ from: address });
-                    console.log("approveToken", approveToken);
-                  }
-                  
+                    .send({ from: address });
+                  setLoading1(false)
+                  console.log("tesss", mintNFT);
+
+                  let url = "updatepremintedNFT";
+                  let params = {
+                    wallet: address,
+                    id: mintid,
+                    nft_id: nft.nftcollections_id
+                  };
+                  let authtoken = "";
+                  let responsenft = await postMethod({ url, params, authtoken });
+                  console.log("responsenft", responsenft)
 
                   try {
-                    console.log("dfghjkl", priceInWei);
-                    let date = new Date();
-                    let timestamp = date.getTime();
-                    let url = "signature";
+                    let url = "createActivities";
                     let params = {
-                      seller: address,
-                      buyer: address,
-                      nftAddress: process.env.REACT_APP_Marketplace_CONTRACT,//nftAddress
-                      amount: 0,
-                      tokenId: 1,
-                      nonce: timestamp,
+                      wallet: address,
+                      hash: mintNFT?.transactionHash,
+                      from: "",
+                      to: address,
+                      type: "Mint",
+                      price: "",
+                      quantity: 1,
+                      collection: nftDetails.nftcollections_collection_id,
+                      nft: mintid,
+                      transfer: "transfered"
                     };
                     let authtoken = "";
-                    let response = await postMethod({ url, params, authtoken });
-                    console.log("fghj", response);
-                    try{ 
-                      const signer = await Marketplace.methods.getSigner(response.signtuple).call()
-                      console.log("signer",signer)
-                    }catch(err){
-                      setWalletOpen(false)
-                      console.log("Error",err)
+                    let responseactive = await postMethod({
+                      url,
+                      params,
+                      authtoken,
+                    })
+                    console.log("actvies", responseactive)
+
+                    sethashValue(mintNFT?.transactionHash)
+                    setLoading2(false)
+                    if (response.status) {
+                      navigate("/");
                     }
-                    if (response?.status) {
-                      try {
-                        setLoading1(true)
-                        setLoading2(true)
-                        console.log("start", response.signtuple);
-                        const mintNFT = await Marketplace.methods
-                          .buyCollections(
-                            response.signtuple,
-                            nftDetails.nftcollections_metadata_url,
-                            parseInt(0)
-                          )
-                          .send({ from: address });
-                          setLoading1(false)
-                        console.log("tesss", mintNFT);
-                        
-                        let url = "updatepremintedNFT";
-                        let params = {
-                          wallet:address,
-                          id:mintid,
-                          nft_id:nft.nftcollections_id
-                        };
-                        let authtoken = "";
-                        let responsenft = await postMethod({ url, params, authtoken });
-                        console.log("responsenft",responsenft)
-                       
-                        try{
-                          let url = "createActivities";
-                          let params = {
-                            wallet: address,
-                            hash: mintNFT?.transactionHash,
-                            from: "",
-                            to: address,
-                            type: "Mint",
-                            price:"",
-                            quantity: 1,
-                            collection: nftDetails.nftcollections_collection_id,
-                            nft: mintid,
-                            transfer:"transfered"
-                          };
-                          let authtoken = "";
-                          let responseactive = await postMethod({
-                            url,
-                            params,
-                            authtoken,
-                          })
-                          console.log("actvies",responseactive)
-                          
-                          sethashValue(mintNFT?.transactionHash)
-                          setLoading2(false)
-                          if (response.status) {
-                            navigate("/");
-                          }
-                        }catch(e){
-                          console.log(e)
-                        }
-                      } catch (err) {
-                        setWalletOpen(false)
-                        console.log("err", err);
-                      }
-                    }
-                  } catch (err) {
-                    setWalletOpen(false)
-                    console.log("err in signature", err);
+                  } catch (e) {
+                    console.log(e)
                   }
                 } catch (err) {
                   setWalletOpen(false)
-                  console.log("tess", err);
+                  console.log("err", err);
                 }
-   
+              }
             } catch (err) {
               setWalletOpen(false)
-              console.log("error json uploading", err);
-            //   setWalletOpen(false);
-            // setLoading1(false);
-            // setLoading2(false)
+              console.log("err in signature", err);
             }
-            // setLoading2(false)
-          } 
-          catch (err) {
+          } catch (err) {
             setWalletOpen(false)
-            console.log("error thumpnail uploading", err);
+            console.log("tess", err);
+          }
+
+        } catch (err) {
+          setWalletOpen(false)
+          console.log("error json uploading", err);
           //   setWalletOpen(false);
           // setLoading1(false);
           // setLoading2(false)
-          }
-          // setWalletOpen(false);
-        } catch (err) {
-          setWalletOpen(false)
-          console.log("err in last supply", err);
-          // setWalletOpen(false);
-          // setLoading1(false);
-          // setLoading2(false)
         }
+        // setLoading2(false)
+      }
+      catch (err) {
+        setWalletOpen(false)
+        console.log("error thumpnail uploading", err);
+        //   setWalletOpen(false);
+        // setLoading1(false);
+        // setLoading2(false)
+      }
+      // setWalletOpen(false);
+    } catch (err) {
+      setWalletOpen(false)
+      console.log("err in last supply", err);
+      // setWalletOpen(false);
+      // setLoading1(false);
+      // setLoading2(false)
+    }
 
-    
+
   };
   return (
     <div className="metabloq_container nftdetails_container">
@@ -885,7 +885,7 @@ function NFTDetails(props) {
                   <div className="d-flex justify-content-between">
                     <div className="text-left">Contract address</div>
                     <a
-                      href="https://explorer.apothem.network/address/xdc5328f106b9087714ecf2a71b2186e7ef4671d15f#transactions"
+                      href={`${process.env.REACT_APP_SCAN_baseuri + process.env.REACT_APP_COLLECTION_CONTRACT}`}
                       className="text-right"
                       style={{ textDecoration: "inherit" }}
                       target="_blank"
@@ -996,7 +996,7 @@ function NFTDetails(props) {
                     nft.nftcollections_premintnft == true &&
                     <div className="d-flex">
                       <button
-                        onClick={()=>createNFT()}
+                        onClick={() => createNFT()}
                         className="mr-2 nftcollection_mobile-category"
                       >
                         <span>Mint</span>
@@ -1046,7 +1046,7 @@ function NFTDetails(props) {
                         onClick={relistClick}
                         className="mx-2 nftcollection_mobile-category"
                       >
-                        <span>Relist</span>
+                        <span>Delist</span>
                       </button>
                       : null}
                   </div>
@@ -1112,7 +1112,7 @@ function NFTDetails(props) {
                                       <FiEdit2 size={15} />
                                     </small>
                                   )}
-                                  {item.comments_wallet == address && (
+                                  {item.comments_wallet == address || nft.nftcollections_wallet == address ? (
                                     <small
                                       onClick={() =>
                                         deleteComments(item.comments_id)
@@ -1121,7 +1121,9 @@ function NFTDetails(props) {
                                     >
                                       <AiOutlineDelete size={17} />
                                     </small>
-                                  )}
+                                  )
+                                : null
+                                }
                                 </div>
                               </div>
                             ))}
@@ -1153,8 +1155,16 @@ function NFTDetails(props) {
                               offerData.map((offer, i) => (
                                 <div key={i} className="d-flex justify-content-between align-items-start comments_box mb-2">
                                   <div clasName="p-2">
-                                    <small >{offer.offer_bid_wallet.slice(0, 5) + "..." + offer.offer_bid_wallet.slice(-5)}</small><br />
+                                    <small className="fw-bold"> Wallet</small><br />
+                                    <small >{offer.offer_bid_wallet.slice(0, 5) + "..." + offer.offer_bid_wallet.slice(-5)}</small>
+                                  </div>
+                                  <div clasName="p-2">
+                                    <small className="fw-bold"> Price</small><br />
                                     <small className="fw-bold">{offer.offer_bid_amount} BLOQS</small>
+                                  </div>
+                                  <div clasName="p-2">
+                                    <small className="fw-bold"> Date</small><br />
+                                    <small className="fw-bold">{offer.offer_bid_createdat?offer.offer_bid_createdat.slice(0,10):''} </small>
                                   </div>
                                   <div className="d-flex">
                                     {

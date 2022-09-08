@@ -10,7 +10,8 @@ import MiniAtlas from "../atlasMini";
 import { useSelector } from "react-redux";
 
 
-function LandNfts2({onSelectGrid,parcels,filterType,address,result}) {
+function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
+  
     const [visible,setVisible] = useState("land");
     const navigate = useNavigate();
  
@@ -25,10 +26,6 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}) {
             return(
               <Col key={index.toString()+"parcels"} xxl={3} xl={3} lg={3} md={6} sm={6} xs={6} className="mb-3">
                 <div
-                // onClick={()=> {onSelectGrid([{x:parcels[data].x,y:parcels[data].y} ])}}
-                // onClick={()=> navigate("citieshome",{
-                //   state: {data:result},
-                // })}
                     className="land_nft-card">
                   <div className=" h-170 w-100 ">
                     <MiniAtlas parcels={parcels} selectedParcels={[ {x:parcels[data].x,y:parcels[data].y} ]}/>

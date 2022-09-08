@@ -3,29 +3,30 @@ import { Link, useNavigate} from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Container, Col, Row, Button, Spinner, Form, FormGroup, Input } from 'reactstrap';
  import FormErrors from '../../components/FormErrors';
-
+ import { useDispatch, useSelector } from "react-redux";
 
 function Login(props) {
   const { AccountStore } = props;
   const { values, errors, loading } = AccountStore;
-  const [username,setusername]= useState("Deepan");
-  const [password,setpassword]=useState("Deepan@123");
-  const [email,setemail]=useState("deepan.sunrisetechs@gmail.com");
+  const [username,setusername]= useState("nandha@123");
+  const [password,setpassword]=useState("Hello@123");
+  const [email,setemail]=useState("developer22.sunrisetechs@gmail.com");
   const [tokens,settokens]=useState("");
   const navigate = useNavigate();
-
+  const reduxItems = useSelector((state) => state.WalletConnect);
+  const { address } = reduxItems;
   useEffect(() => {
     // console.log('props1',props.location.state.data.username)
     // console.log('props2',props.location.state.data.password)
     // if(props.location.state && props.location.state.data.username !=" " && props.location.state.data.username != null && props.location.state.data.username != undefined ){
-    // if(username !=" " && username != null && username != undefined ){
-    //   // if(props.location.state.data.password !=" " && props.location.state.data.password != null && props.location.state.data.password != undefined ){
-    //   if(password !=" " && password != null && password != undefined ){
-    //       AccountStore.setUsername(username); 
-    //       AccountStore.setPassword(password); 
-    //     tokencreate();
-    //   }
-    // }
+    if(username !=" " && username != null && username != undefined ){
+      // if(props.location.state.data.password !=" " && props.location.state.data.password != null && props.location.state.data.password != undefined ){
+      if(password !=" " && password != null && password != undefined ){
+          AccountStore.setUsername(username); 
+          AccountStore.setPassword(password); 
+        tokencreate();
+      }
+    }
     return () => { AccountStore.reset(); }
   }, [AccountStore]);
 
@@ -37,10 +38,10 @@ const tokencreate =async()=>{
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify({
-    username: props.location.state.data.username,
-    password: props.location.state.data.password,
-    // username: username,
-    // password: password,
+    // username: props.location.state.data.username,
+    // password: props.location.state.data.password,
+    username: username,
+    password: password,
   });
   var requestOptions = {
     method: "POST",
@@ -62,10 +63,11 @@ const tokencreate =async()=>{
 }
 
 const inserttoken =async(token)=>{
+  console.log("inserttoken")
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   var raw = JSON.stringify({
-    walletaddress: '',
+    walletaddress: address,
     token: token,
     // email: props.location.state.data.email,
     useremail: email,
@@ -80,6 +82,7 @@ const inserttoken =async(token)=>{
   fetch(process.env.REACT_APP_BASE_URL+"inserttoken", requestOptions)
     .then((response) => response.json())
     .then((result) => {
+      console.log("result",result)
       if (result.status ==true){
         var ico = result.subscriptionsid
         loginfunction(ico)

@@ -37,14 +37,14 @@ import { useCountdown } from "../timer/useCountdown";
 const image = require("../../assets/profile/coverpic.png")
 const preimg = require("../../assets/nfts/1.png").default
 
-const urls = "https://apothem.xinfinscan.com/tx/";
+const urls = process.env.REACT_APP_SCAN_baseuri_HASH;
 
-function CitiesHomeCollection({selectedItem}) {
+function CitiesHomeCollection({ selectedItem }) {
   const { width } = useWindowDimensions();
   const location = useLocation();
   const dispatch = useDispatch();
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { address, Marketplace, web3, Token, LandRegistry,EstateRegistry } = reduxItems;
+  const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry } = reduxItems;
   const [playSound] = useSound(buttonSound);
   const { id, type, data } = location.state;
   const [parcels, setParcels] = useState(null);
@@ -65,6 +65,8 @@ function CitiesHomeCollection({selectedItem}) {
   const [offerData, setOfferData] = useState([]);
   const [bidData, setBidData] = useState([]);
   const [tokenAddress, settokenAddress] = useState("");
+  const [Xvalue, setxvalue] = useState(null);
+  const [Yvalue, setyvalue] = useState(null);
 
   const getCoords = (x, y) => `${x},${y}`;
   const handleFormat = (event, newFormats) => {
@@ -173,12 +175,11 @@ function CitiesHomeCollection({selectedItem}) {
   };
 
   // adjcent
-
   const findAdjcent = async (data) => {
     console.log("data", data);
     let arr = selectedGrid == null ? [...data] : [...selectedGrid, ...data];
     let newArr = [];
-    console.log("tesss",arr)
+    console.log("tesss", arr)
     arr.map((item) => {
       newArr.push(
         {
@@ -216,7 +217,7 @@ function CitiesHomeCollection({selectedItem}) {
     console.log("uniqueArr", uniqueArr);
     setAdjcent(uniqueArr);
     dispatch({ type: "ADJCENT", payload: uniqueArr });
-   
+
   };
   //   balance
   const balance = async (address, amtInWei) => {
@@ -316,7 +317,7 @@ function CitiesHomeCollection({selectedItem}) {
               ); // for json update
               console.log("tesss", jsonData);
 
-              if (jsonData.status==204) {
+              if (jsonData.status == 204) {
                 const tokenId = await LandRegistry.methods
                   .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
                   .call();
@@ -427,7 +428,7 @@ function CitiesHomeCollection({selectedItem}) {
                 filename
               ); // for json update
               console.log("tesss", jsonData);
-              if (jsonData.status==204) {
+              if (jsonData.status == 204) {
                 const tokenId = await LandRegistry.methods
                   .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
                   .call();
@@ -470,7 +471,6 @@ function CitiesHomeCollection({selectedItem}) {
       }
     }
   };
-
   // putonsale and bid
   const action = async (type, price, time) => {
     try {
@@ -514,7 +514,7 @@ function CitiesHomeCollection({selectedItem}) {
         filename
       ); // for json update
       console.log("json updateee", jsonData);
-      if (jsonData.status==204) {
+      if (jsonData.status == 204) {
         try {
           let url = "createActivities";
           let params = {
@@ -574,7 +574,7 @@ function CitiesHomeCollection({selectedItem}) {
         filename
       ); // for json update
       console.log("json updateee actionnn", jsonData);
-      if (jsonData.status==204) {
+      if (jsonData.status == 204) {
         try {
           let url = "createActivities";
           let params = {
@@ -727,8 +727,8 @@ function CitiesHomeCollection({selectedItem}) {
       console.log("dsddssd", tile);
       let priceInWei = web3.utils.toWei(tile.bloqs_price, "ether");
       console.log("priceInWei", priceInWei);
-      var checkblc =await balance(address, priceInWei)
-      console.log("checkblc",checkblc)
+      var checkblc = await balance(address, priceInWei)
+      console.log("checkblc", checkblc)
       if (checkblc) {
         let date = new Date();
         let timestamp = date.getTime();
@@ -765,7 +765,7 @@ function CitiesHomeCollection({selectedItem}) {
               }),
               filename
             );
-            if (jsonData.status==204) {
+            if (jsonData.status == 204) {
               try {
                 let url = "createActivities";
                 let params = {
@@ -844,7 +844,7 @@ function CitiesHomeCollection({selectedItem}) {
               }),
               filename
             );
-            if (jsonData.status==204) {
+            if (jsonData.status == 204) {
               try {
                 let url = "createActivities";
                 let params = {
@@ -923,7 +923,7 @@ function CitiesHomeCollection({selectedItem}) {
               }),
               filename
             );
-            if (jsonData.status==204) {
+            if (jsonData.status == 204) {
               try {
                 let url = "createActivities";
                 let params = {
@@ -1028,7 +1028,7 @@ function CitiesHomeCollection({selectedItem}) {
           ...parcelsSelected[id],
           type: 3,
           isEstate: true,
-          estateId:Estatemintid,
+          estateId: Estatemintid,
           top: 1,
           left: 1,
           topLeft: 1,
@@ -1120,10 +1120,13 @@ function CitiesHomeCollection({selectedItem}) {
     }
   };
 
-  const jsonUpdation = ()=>{
-    return(
+  const jsonUpdation = () => {
+    return (
       <p>time over</p>
     )
+  }
+  const filtervalues=()=>{
+
   }
 
   useEffect(() => {
@@ -1158,17 +1161,17 @@ function CitiesHomeCollection({selectedItem}) {
                 borderRadius: "1em",
                 border: "5px solid white",
                 boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-                height:width > 600 ? "170px" : "150px",
-                width:width > 600 ? "170px" : "150px"
+                height: width > 600 ? "170px" : "150px",
+                width: width > 600 ? "170px" : "150px"
               }}
             />
             <div className="mx-3">
               <h2>{data?.collection_name}</h2>
-              <span>created by {data?.collection_wallet.slice(0,5)+"..."+data?.collection_wallet.slice(-5)}</span>
+              <span>created by {data?.collection_wallet.slice(0, 5) + "..." + data?.collection_wallet.slice(-5)}</span>
             </div>
           </div>
           <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
-            <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
+            {/* <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
               <div className="d-flex flex-column ">
                 {width < 600 ? (
                   <>
@@ -1222,7 +1225,7 @@ function CitiesHomeCollection({selectedItem}) {
                   </>
                 )}
               </div>
-            </Stack>
+            </Stack> */}
           </div>
         </div>
       </Fade>
@@ -1231,15 +1234,17 @@ function CitiesHomeCollection({selectedItem}) {
         // !selectedGrid &&
         <div className="d-flex mb-4 align-items-center justify-content-between">
           <div className="d-flex align-items-center">
-            {/* <FiSearch size={20} />
-            <input
+            {/* <FiSearch size={20} /> */}
+            {/* <input
               type="text"
               placeholder="NFTs Name"
               className="input-revert"
             /> */}
           </div>
           <div className="d-flex align-items-center justify-content-between">
-            <select
+            {formats != "map" ?
+              <>
+                {/* <select
               id="cars"
               name="carlist"
               form="carform"
@@ -1258,28 +1263,50 @@ function CitiesHomeCollection({selectedItem}) {
               <option value="3">3</option>
               <option value="4">4</option>
               <option value={{ start: "0", to: "1" }}>5 too</option>
-            </select>
-            <select
-              id="cars"
-              name="carlist"
-              form="carform"
-              className="input-revert mr-4"
-              onChange={(e) => {
-                if (e.target.value == "") {
-                  setFilterType(null);
-                } else {
-                  setFilterType(e.target.value);
-                }
-              }}
-            >
-              <option value={""}>Filter</option>
-              <option value="8">8-Public places</option>
-              <option value="1">1-parcels on sale</option>
-              <option value="2">2-parcels on aution</option>
-              <option value="9">9-Already owned</option>
-              <option value="11">11-Available (ready to buy)</option>
-              <option value="12">12-comming soon (under process)</option>
-            </select>
+            </select> */}
+                <select
+                  id="cars"
+                  name="carlist"
+                  form="carform"
+                  className="input-revert mr-4"
+                  onChange={(e) => {
+                    if (e.target.value == "") {
+                      setFilterType(null);
+                    } else {
+                      setFilterType(e.target.value);
+                    }
+                  }}
+                >
+                  <option value={""}>Filter</option>
+                  <option value="8">8-Public places</option>
+                  <option value="1">1-parcels on sale</option>
+                  <option value="2">2-parcels on aution</option>
+                  <option value="9">9-Already owned</option>
+                  <option value="11">11-Available (ready to buy)</option>
+                  <option value="12">12-comming soon (under process)</option>
+                </select>
+              </>
+              :
+              null
+            }
+            
+             
+               {formats != "map" &&
+               <>
+                <input
+                  type="text"
+                  placeholder="X value"
+                  className="input-revert"
+                  onChange={(e) => setxvalue(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Y value"
+                  className="input-revert"
+                  onChange={(e) => {console.log("Xvalue",Xvalue); setyvalue(e.target.value)}}
+                />
+                </>
+            }
             <FormGroup>
               <FormControlLabel
                 control={
@@ -1322,6 +1349,8 @@ function CitiesHomeCollection({selectedItem}) {
             parcels={parcels}
             filterType={filterType}
             onSelectGrid={onSelectGrid}
+            xvalue={Xvalue}
+            yvalue={Yvalue}
             adjcent={adjcent}
             filterTypeValue={filterTypeValue}
           />
@@ -1366,8 +1395,8 @@ function CitiesHomeCollection({selectedItem}) {
                       {status() == "auction" && (
                         <div>
                           <CountdownTimer
-                          targetDate={parseInt(auctionTime())}
-                          jsonUpdation={jsonUpdation}
+                            targetDate={parseInt(auctionTime())}
+                            jsonUpdation={jsonUpdation}
                           />
                         </div>
                       )}
@@ -1473,13 +1502,11 @@ function CitiesHomeCollection({selectedItem}) {
                       ) : (
                         <button
                           onClick={buyClick}
-                          className="mx-2 metablog_primary-filled-square-button"
-                        >
+                          className="mx-2 metablog_primary-filled-square-button">
                           <span>Buy Now 1</span>
                         </button>
                       )}
                     </div>
-
                     <div className="nftdetails_tabs-small"></div>
                   </Stack>
                 </Fade>
@@ -1500,7 +1527,7 @@ function CitiesHomeCollection({selectedItem}) {
                     <div className="d-flex justify-content-between">
                       <div className="text-left">Contract address</div>
                       <a
-                        href="https://explorer.apothem.network/address/xdc5328f106b9087714ecf2a71b2186e7ef4671d15f#transactions"
+                        href={process.env.REACT_APP_SCAN_baseuri + process.env.REACT_APP_LAND_REGISTRY_CONTRACT}
                         className="text-right"
                         style={{ textDecoration: "inherit" }}
                         target="_blank"
@@ -1550,53 +1577,53 @@ function CitiesHomeCollection({selectedItem}) {
                         >
                           {offerData.length > 0
                             ? offerData.map((offer, i) => (
-                                <div
-                                  key={i}
-                                  className="d-flex justify-content-between align-items-start comments_box mb-2"
-                                >
-                                  <div clasName="p-2">
-                                    <small>
-                                      {offer.offer_bid_land_wallet.slice(0, 5) +
-                                        "..." +
-                                        offer.offer_bid_land_wallet.slice(-5)}
-                                    </small>
-                                    <br />
-                                    <small className="fw-bold">
-                                      {offer.offer_bid_land_amount} BLOQS
-                                    </small>
-                                  </div>
-                                  <div className="d-flex">
-                                    {owner() == address && (
-                                      <button
-                                        onClick={() =>
-                                          acceptMakeOffer(
-                                            offer.offer_bid_land_wallet,
-                                            offer.offer_bid_land_amount,
-                                            offer.offer_bid_land_token_id
-                                          )
-                                        }
-                                        className="metablog_primary-filled-square-button"
-                                      >
-                                        <font size="1">Accept</font>
-                                      </button>
-                                    )}
-                                    &nbsp;
-                                    {owner() == address && (
-                                      <button
-                                        onClick={() =>
-                                          rejectMakeOffer(
-                                            offer.offer_bid_land_id,
-                                            offer.offer_bid_land_token_id
-                                          )
-                                        }
-                                        className="metablog_gradient-square-button"
-                                      >
-                                        <font size="1">Reject</font>
-                                      </button>
-                                    )}
-                                  </div>
+                              <div
+                                key={i}
+                                className="d-flex justify-content-between align-items-start comments_box mb-2"
+                              >
+                                <div clasName="p-2">
+                                  <small>
+                                    {offer.offer_bid_land_wallet.slice(0, 5) +
+                                      "..." +
+                                      offer.offer_bid_land_wallet.slice(-5)}
+                                  </small>
+                                  <br />
+                                  <small className="fw-bold">
+                                    {offer.offer_bid_land_amount} BLOQS
+                                  </small>
                                 </div>
-                              ))
+                                <div className="d-flex">
+                                  {owner() == address && (
+                                    <button
+                                      onClick={() =>
+                                        acceptMakeOffer(
+                                          offer.offer_bid_land_wallet,
+                                          offer.offer_bid_land_amount,
+                                          offer.offer_bid_land_token_id
+                                        )
+                                      }
+                                      className="metablog_primary-filled-square-button"
+                                    >
+                                      <font size="1">Accept</font>
+                                    </button>
+                                  )}
+                                  &nbsp;
+                                  {owner() == address && (
+                                    <button
+                                      onClick={() =>
+                                        rejectMakeOffer(
+                                          offer.offer_bid_land_id,
+                                          offer.offer_bid_land_token_id
+                                        )
+                                      }
+                                      className="metablog_gradient-square-button"
+                                    >
+                                      <font size="1">Reject</font>
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            ))
                             : "no offers"}
                         </div>
                       </Stack>
@@ -1613,54 +1640,54 @@ function CitiesHomeCollection({selectedItem}) {
                         >
                           {bidData.length > 0
                             ? bidData.map((bid, i) => (
-                                <div
-                                  key={i}
-                                  className="d-flex justify-content-between align-items-start comments_box mb-2"
-                                >
-                                  <div clasName="p-2">
-                                    <small>
-                                      {bid.offer_bid_land_wallet.slice(0, 5) +
-                                        "..." +
-                                        bid.offer_bid_land_wallet.slice(-5)}
-                                    </small>
-                                    <br />
-                                    <small className="fw-bold">
-                                      {bid.offer_bid_land_amount} BLOQS
-                                    </small>
-                                  </div>
-                                  <div className="">
-                                    {FormatDate1(bid.offer_bid_land_createdat)}
-                                  </div>
-                                  <a
-                                    style={{ textDecoration: "none" }}
-                                    href={urls + `${bid.offer_bid_land_hash}`}
-                                    target="_blank"
-                                  >
-                                    {bid.offer_bid_land_hash.slice(0, 5) +
+                              <div
+                                key={i}
+                                className="d-flex justify-content-between align-items-start comments_box mb-2"
+                              >
+                                <div clasName="p-2">
+                                  <small>
+                                    {bid.offer_bid_land_wallet.slice(0, 5) +
                                       "..." +
-                                      bid.offer_bid_land_hash.slice(-5)}
-                                  </a>
-                                  <div className="d-flex">
-                                    {
-                                      // (days + hours + minutes + seconds <= 0) &&
-                                      owner() == address ? (
-                                        <button
-                                          onClick={() =>
-                                            transferNft(
-                                              bid.offer_bid_land_wallet,
-                                              bid.offer_bid_land_amount,
-                                              bid.offer_bid_land_token_id
-                                            )
-                                          }
-                                          className="metablog_primary-filled-square-button"
-                                        >
-                                          <font size="1">Settle</font>
-                                        </button>
-                                      ) : null
-                                    }
-                                  </div>
+                                      bid.offer_bid_land_wallet.slice(-5)}
+                                  </small>
+                                  <br />
+                                  <small className="fw-bold">
+                                    {bid.offer_bid_land_amount} BLOQS
+                                  </small>
                                 </div>
-                              ))
+                                <div className="">
+                                  {FormatDate1(bid.offer_bid_land_createdat)}
+                                </div>
+                                <a
+                                  style={{ textDecoration: "none" }}
+                                  href={urls + `${bid.offer_bid_land_hash}`}
+                                  target="_blank"
+                                >
+                                  {bid.offer_bid_land_hash.slice(0, 5) +
+                                    "..." +
+                                    bid.offer_bid_land_hash.slice(-5)}
+                                </a>
+                                <div className="d-flex">
+                                  {
+                                    // (days + hours + minutes + seconds <= 0) &&
+                                    owner() == address ? (
+                                      <button
+                                        onClick={() =>
+                                          transferNft(
+                                            bid.offer_bid_land_wallet,
+                                            bid.offer_bid_land_amount,
+                                            bid.offer_bid_land_token_id
+                                          )
+                                        }
+                                        className="metablog_primary-filled-square-button"
+                                      >
+                                        <font size="1">Settle</font>
+                                      </button>
+                                    ) : null
+                                  }
+                                </div>
+                              </div>
+                            ))
                             : "no bid history"}
                         </div>
                       </Stack>

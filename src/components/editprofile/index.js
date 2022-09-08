@@ -220,10 +220,21 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import { Country, State, City }  from 'country-state-city';
 import { useFormik } from "formik";
-import { ReactS3Client1,ReactS3Client2 } from "../../helpers/API&Helpers";
-const uploadimg = require("../../assets/profile/upload.png").default
+import { useSelector } from "react-redux";
+import { ReactS3Client1,ReactS3Client2 ,ReactS3Client4, postMethod} from "../../helpers/API&Helpers";
+import { Navigate, useNavigate } from "react-router-dom";
+const uploadimg = require("../../assets/loading.gif").default
+const profilepic = require('../../assets/profile/blankprofile.png').default
 function EditProfile() {
+   const wallet = useSelector((state)=> state.WalletConnect )
+   const navigate= useNavigate()
+   const {address , User} =wallet
   const [uploadedImg, setUploadedImg] = useState();
+  const [phoneCode, setPhoneCode] = useState();
+  const [Email, setEmail] = useState();
+  const [Username, setUsername] = useState();
+  const [Profile, setProfile] = useState();
+  const [loading, setLoading] = useState(false);
 
   const getBase64 =async (e) => {
     var date=new Date()
@@ -232,12 +243,12 @@ function EditProfile() {
     let name = file.name;
     let extension = "." + name.split(".").pop();
     let filename = timeStamp +extension;
-   
+
     try {
-      var final=await fetch("http://localhost:8000/api/json")
+      var final=await fetch(process.env.REACT_APP_BASE_URL+"json")
       var  finalJson=await final.json()
       console.log("filenamegsadb",finalJson.ok)
-      const data = await ReactS3Client2.uploadFile(JSON.stringify(finalJson.result), "land.json");
+      const data = await ReactS3Client2.uploadFile(JSON.stringify(finalJson.result), filename);
       console.log("teasssa",data)
       if (data.status === 204) {
         // setProfilePicture(data.location);
@@ -256,15 +267,49 @@ function EditProfile() {
     //   console.log("Error: ", error);
     // };
   };
+  const insertImageintoS3 = async (e, type) => {
+    setLoading(true)
+    var file = e.target.files[0];
+    var timeStamp = Date.now()
+    let name = file.name;
+    let extension = "." + name.split(".").pop();
+    let filename = timeStamp + extension;
+    try {
+      console.log("filename", filename, file);
+      const data = await ReactS3Client4.uploadFile(file, filename);
+      console.log("teasssa", data);
+      var userprofile = JSON.parse(localStorage.getItem('Userdata'))
+      userprofile.profileImage = data.location
+      const jsonObj = JSON.stringify(userprofile);
+      console.log("userprofile",userprofile)
+      localStorage.setItem("Userdata", jsonObj);
+      setProfile(data.location)
+       navigate("/collectors") 
+      if(Email){
+        let url = "updateimage";
+        let params ={
+            image:data.location,
+            email:Email
+        }
+        let authtoken = "";
+        let response = await postMethod({ url,params, authtoken })
+        console.log("response",response)
+      }
 
-  const [phoneCode, setPhoneCode] = useState();
+      setLoading(false)
+    }catch(err){
+      console.log("ERROR",err)
+      setLoading(false)
+    }
+  }
+
   const addressFromik = useFormik({
     initialValues: {
       country: "India",
       state: null,
       city: null
     },
-    onSubmit: (values) => console.log(JSON.stringify(values))
+    onSubmit: (values) => console.log("submit",JSON.stringify(values))
   });
 
   const countries = Country.getAllCountries();
@@ -285,7 +330,18 @@ function EditProfile() {
 
   const { values, handleSubmit, setFieldValue, setValues } = addressFromik;
 
-  useEffect(() => {}, [values]);
+  useEffect(() => {
+    var userprofile = JSON.parse(localStorage.getItem('Userdata'))
+    console.log("User",userprofile.email)
+    if( userprofile){
+      setUsername(userprofile.user_name)
+      setEmail(userprofile.email)
+      if(userprofile.profileImage){
+        setProfile(userprofile.profileImage)
+      }
+    }
+    // setUsername()
+  }, [User]);
 
   return (
     <div className="editprofile_container">
@@ -296,26 +352,47 @@ function EditProfile() {
             {!uploadedImg ? (
               <div>
                 <Stack gap={2}>
-                  <Image
+                  {
+                    Profile?
+                    <Image
                     fluid
-                    src={uploadimg}
+                    src={Profile}
                     alt="upload"
                     height={80}
                     width={80}
                     className="mx-auto"
                   />
-                  <h4 className="text-center">
+                  :
+                  <Image
+                    fluid
+                    src={profilepic}
+                    alt="upload"
+                    height={80}
+                    width={80}
+                    className="mx-auto"
+                  />
+                  
+                  }
+                  
+                  {/* <h4 className="text-center">
                     Drag and drop <br />
                     files to upload
-                  </h4>
-                  <div className="text-center">OR</div>
+                  </h4> */}
+                  {/* <div className="text-center">OR</div> */}
                   <label class="metablog_primary-filled-square-button">
                     <small>Browse</small>
                     <input
                       type="file"
                       style={{ display: "none" }}
-                      onChange={getBase64}
+                      onChange={insertImageintoS3}
                     />
+                    {
+                      loading?
+                      <img src={uploadimg} style={{width:"30px",height:"30px"}} />
+                      :
+                      null
+                    }
+                    
                   </label>
                 </Stack>
               </div>
@@ -334,16 +411,18 @@ function EditProfile() {
                 type="text"
                 placeholder="mobina"
                 className="editprofile_input"
+                value={Username}
+                // onChange={(e)=>setUsername(e.target.value)}
               />
             </div>
-            <div>
+            {/* <div>
               <span>Surname</span>
               <input
                 type="text"
                 placeholder="Mr"
                 className="editprofile_input"
               />
-            </div>
+            </div> */}
           </Stack>
           <div>
             <span>Email</span>
@@ -351,9 +430,11 @@ function EditProfile() {
               type="text"
               placeholder="Enter value"
               className="editprofile_input"
+              value={Email}
+              // onChange={(e)=>setEmail(e.target.value)}
             />
           </div>
-          <div className="checking-div">
+          {/* <div className="checking-div">
             <span>Phone Number</span>
             <Stack gap={2} direction="horizontal">
               <div className="w-25">
@@ -372,8 +453,8 @@ function EditProfile() {
                 />
               </div>
             </Stack>
-          </div>
-          <div className="dummy-wrapper">
+          </div> */}
+          {/* <div className="dummy-wrapper">
             <span>Country</span>
             <Select
               id="country"
@@ -385,8 +466,8 @@ function EditProfile() {
                 setValues({ country: value, state: null, city: null }, false);
               }}
             />
-          </div>
-          <div className="dummy-wrapper">
+          </div> */}
+          {/* <div className="dummy-wrapper">
             <span>State</span>
             <Select
               id="state"
@@ -399,9 +480,8 @@ function EditProfile() {
                 setValues({ state: value, city: null }, false);
               }}
             />
-          </div>
-
-          <div className="dummy-wrapper">
+          </div> */}
+          {/* <div className="dummy-wrapper">
             <span>City</span>
             <Select
               id="city"
@@ -410,7 +490,7 @@ function EditProfile() {
               value={values.city}
               onChange={(value) => setFieldValue("city", value)}
             />
-          </div>
+          </div> */}
           <div className="d-flex mt-2">
             <button type="submit" className="metablog_primary-filled-square-button">
               <font size="2">Save</font>

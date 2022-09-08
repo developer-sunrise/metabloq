@@ -15,14 +15,14 @@ const land4 = require("../../assets/cities/land4.png").default
 const land5 = require("../../assets/cities/land5.png").default
 const land6 = require("../../assets/cities/land6.png").default
 
-function LandNfts({ onSelectGrid, parcels, filterType, filterTypeValue }) {
+function LandNfts({ onSelectGrid, parcels, filterType, filterTypeValue,xvalue,yvalue }) {
   const [visible, setVisible] = useState("land");
   const reduxItems = useSelector((state) => state.WalletConnect);
   const [start, setStart] = useState(0);
   const [end, setEnd] = useState(100);
   const { address } = reduxItems;
   const navigate = useNavigate();
-  console.log("parcels",typeof(parcels));
+  // console.log("parcels",parcels);
   return (
     <div>
       <Row>
@@ -72,13 +72,15 @@ function LandNfts({ onSelectGrid, parcels, filterType, filterTypeValue }) {
                           (filterTypeValue == null
                             ? 1
                             : parseInt(filterTypeValue))
-                      : (x) =>
-                          parcels[x]?.type ==
-                          (filterType == null ? 11 : parseInt(filterType))
+                      : 
+                      xvalue!=null && xvalue!='' ? 
+                      (x)  =>  parcels[x].x ==xvalue &&  parcels[x].y ==yvalue
+                      :
+                      (x) =>  parcels[x]?.type == (filterType == null ? 11 : parseInt(filterType))
                   )
                   .slice(0, end)
                   .map((data, index) => {
-                    console.log("data",data)
+                    //  console.log("data",data)
                     return (
                       <Col
                         key={index.toString() + "parcels"}
@@ -118,7 +120,7 @@ function LandNfts({ onSelectGrid, parcels, filterType, filterTypeValue }) {
                             <div>
                           {parcels[data]?.status == "onsale" ? <button className="nftcollection_mobile-category w-100 py-2">On Sale</button>
                             : parcels[data]?.status == "auction" ? <button className="nftcollection_mobile-category w-100 py-2">On Sale</button>
-                            : <button className="metablog_primary-filled-square-button w-100 py-2">Put On Sale</button> }
+                            : <button className="metablog_primary-filled-square-button w-100 py-2">View</button> }
                         </div>
                           </div>
                         </div>

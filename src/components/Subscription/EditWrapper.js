@@ -69,7 +69,7 @@ function SubscriptionEditWrapper(props) {
     <>
       <Media className="mb-3">
         <Media left top className="align-self-start mr-3">
-          <IcoLogo icoId={subscription.ico_subscribed[0].ico.id} />
+          {/* <IcoLogo icoId={subscription.ico_subscribed[0].ico.id} style={{width:"70px",height:"30px"}} /> */}
         </Media>
         <Media body>
           <Media heading tag="h3">

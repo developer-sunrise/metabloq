@@ -33,7 +33,7 @@ function ActionWallet(props) {
 
 
   const loader = require("../../assets/loading.gif").default
-  const link = "https://apothem.xinfinscan.com/tx/"+hashValue;
+  const link = process.env.REACT_APP_SCAN_baseuri_HASH+hashValue;
   return (
     <Box>
 <Modal open={walletOpen} onClose={() => setWalletOpen(false)}>

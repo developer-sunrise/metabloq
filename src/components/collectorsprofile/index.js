@@ -11,24 +11,39 @@ import { useSelector } from "react-redux";
 import {useNavigate} from 'react-router-dom'
 import useSound from 'use-sound';
 import buttonSound from '../../assets/audio/button.wav';
-
+import { postMethod, getMethod } from "../../helpers/API&Helpers";
+import { connected } from 'process';
 
 const coverpic = require('../../assets/profile/coverpic.png').default
-const profilepic = require('../../assets/profile/profilepic.png').default
+const profilepic = require('../../assets/profile/blankprofile.png').default
 
 function CollectorsProfile() {
     const [playSound] = useSound(buttonSound)
     const navigate = useNavigate()
     const [copySuccess,setCopySuccess] = useState(null);
     const [showElement,setShowElement] = useState(false);
+    const [AllActivity,setAllActivity] = useState([]);
+    const [profileImage, setprofileImage]=useState(null)
+    const [userEmail, setUserEmail]=useState('')
+    const [userName, setuserName]=useState('')
     const wallet = useSelector((state) => state.WalletConnect);
-
+    const { connected , address} =wallet
     useEffect(()=>{
         setTimeout(function() {
           setShowElement(false)
              }, 3000);
-           },[showElement])
-
+         },[showElement])
+         useEffect(()=>{
+            var userprofile =JSON.parse(localStorage.getItem('Userdata'))
+            if(userprofile){
+                setprofileImage(userprofile.profileImage)
+                setUserEmail(userprofile.email)
+                setuserName(userprofile.user_name)
+            }
+            if(connected){
+                getactivity()
+            }
+         },[connected])
     const copytoclipboard = ()=>{
         navigator.clipboard.writeText(wallet.address);
         setCopySuccess("Copied!");
@@ -39,9 +54,18 @@ function CollectorsProfile() {
         playSound();
         navigate("editprofile");
     }
-
+    const getactivity =async()=>{
+        let url = "getAllUserActivites";
+        let params ={
+            wallet:address
+        }
+        let authtoken = "";
+        let response = await postMethod({ url,params, authtoken })
+        // console.log("userActivity",response.result)
+        setAllActivity(response.result)
+    }
     const activityClick = ()=>{
-        navigate("activity")
+        navigate("activity",{state:AllActivity})
         playSound();
     }
   return (
@@ -53,13 +77,19 @@ function CollectorsProfile() {
         <Row className='h-75 d-flex collectors_profile-imgdiv'>
             <Col xxl={7} xl={7} lg={7} md={7} sm={12} xs={12} className='d-flex mb-3'>
                 <div className=''>
-                    <Image src={profilepic} fluid alt="profile" style={{borderRadius:'1em'}} height={200} width={200}/>
+                    {
+                        profileImage?
+                        <Image src={profileImage} fluid alt="profile" style={{borderRadius:'1em'}} height={200} width={200}/>
+                        :
+                        <Image src={profilepic} fluid alt="profile" style={{borderRadius:'1em'}} height={200} width={200}/>
+                    }
+                   
                 </div>
                 <div className='mx-3 d-flex align-items-center'>
                     <div>
                     <Stack gap={1}>
-                        <h2>{localStorage.getItem('@user')}<font size="2" className='secondary-text'>(@hitstony)</font></h2> 
-                        <span>www.iamironman.com</span>
+                        <h2>{localStorage.getItem('@user')}<font size="2" className='secondary-text'>({userName})</font></h2> 
+                        <span>{userEmail}</span>
                         {
                             wallet.connected && 
                             <div className='collectors_profile-walletbox'>
@@ -92,6 +122,7 @@ function CollectorsProfile() {
                         </button>
                         <button className='metablog_primary-filled-button' onClick={()=>{
                           localStorage.removeItem('UserToken')
+                          localStorage.removeItem('Userdata')
                           navigate("signin")
                         }}>
                             <span><TbLogout size={20} /></span>

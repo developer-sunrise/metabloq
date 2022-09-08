@@ -43,6 +43,7 @@ const initialState = {
   // application data
   allCollection: [],
   adjcent: [],
+  User:null
 };
 
 const walletConnectReducer = (state = initialState, action) => {
@@ -79,6 +80,11 @@ const walletConnectReducer = (state = initialState, action) => {
       return {
         ...state,
         address: action.payload.address,
+      };
+    case "UPDATE_USER":
+      return {
+        ...state,
+        User: action.payload,
       };
     case "GETALLCOLLECTION":
       return {

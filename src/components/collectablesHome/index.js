@@ -248,11 +248,11 @@ function CollectablesHome() {
             />
             <div className="mx-3">
               <h2>{state?.data?.collection_name}</h2>
-              <span>created by ronney {state?.data?.collection_id}</span>
+              <span>created by {state?.data?.user_name? state?.data?.user_name : state?.data?.collection_wallet.slice(0,5)+"..."+state?.data?.collection_wallet.slice(-5) } {state?.data?.collection_id}</span>
             </div>
           </div>
           <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
-            <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
+            {/* <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
               <div className="d-flex flex-column ">
                 {width < 600 ? (
                   <>
@@ -306,7 +306,7 @@ function CollectablesHome() {
                   </>
                 )}
               </div>
-            </Stack>
+            </Stack> */}
           </div>
           {state?.data?.collection_ispreminted &&
             <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
@@ -380,7 +380,7 @@ function CollectablesHome() {
         <>
           <MobileFilterBtn />
           <div className="nftdetails_cards-tabs">
-            <Tabs
+            {/* <Tabs
               defaultActiveKey="default"
               id="uncontrolled-tab-example"
               className="mb-3"
@@ -409,7 +409,8 @@ function CollectablesHome() {
                   }
                 ></Tab>
               ) : null}
-            </Tabs>
+            </Tabs> */}
+            <NFTDetailsList collectionhome="collectionhome" collectionNfts={collectionNfts} />
             <Drawer
               anchor="right"
               open={showFilter}
@@ -433,7 +434,7 @@ function CollectablesHome() {
         </>
       ) : (
         <div className="ms-auto nftdetails_cards-tabs">
-          <Tabs
+          {/* <Tabs
             defaultActiveKey="default"
             id="uncontrolled-tab-example"
             className="mb-3"
@@ -460,7 +461,8 @@ function CollectablesHome() {
                 </div>
               }
             ></Tab>
-          </Tabs>
+          </Tabs> */}
+           <NFTDetailsList collectionhome="collectionhome" collectionNfts={collectionNfts} data={state?.data} type={state?.type} />
           <Drawer
             anchor="right"
             open={showFilter}

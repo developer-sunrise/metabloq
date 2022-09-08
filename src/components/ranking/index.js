@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Form, Image, Row, Stack } from "react-bootstrap";
 import './Styles.css';
 import Fade from 'react-reveal/Fade';
-
+import { useLocation } from "react-router-dom";
 const avatar1 = require('../../assets/nfts/1.png').default
 const avatar2 = require('../../assets/nfts/2.png').default
 const avatar3 = require('../../assets/nfts/3.png').default
@@ -53,6 +53,7 @@ const days = [
 ]
 
 function Ranking() {
+  const {state}=useLocation()
   return (
     <div className="metabloq_container mt-sm-5">
       <Stack gap={4}>
@@ -99,18 +100,18 @@ function Ranking() {
             <Col className="text-center">Owner</Col>
           </Row>
           <br />
-          {datas.map((data,i) => (
+          {state.length!=0 && state.map((data,i) => (
             <>
               <Row className="ranking_table-body d-flex justify-content-between align-items-center" key={i}>
                 <Col className="text-center">
                   <Stack gap={2} direction="horizontal">
                   <span className="lufga-bold">{data.id}</span>
-                  <Image fluid src={data.avatar} height={35} width={35} className="rounded_img"/>
-                    <small className="text-left">{data.name}</small>
+                  <Image fluid src={data.collection_logo_image} height={35} width={35} className="rounded_img"/>
+                    <small className="text-left">{data.collection_name}</small>
                   </Stack>
                 </Col>
                 <Col className="text-center">
-                  <small>{data.volume}</small>
+                  <small>{data.collection_category}</small>
                 </Col>
                 <Col className="text-center">
                   <small style={{color:data.color}}>{data.percentage}</small>
@@ -122,7 +123,7 @@ function Ranking() {
                   <small>{data.asset}</small>
                 </Col>
                 <Col className="text-center">
-                  <small>{data.owner}</small>
+                  <small>{data.user_name? data.user_name : data.collection_wallet? data.collection_wallet.slice(0,5)+"..."+data.collection_wallet.slice(-5) :''}</small>
                 </Col>
               </Row>
               <hr style={{ backgroundColor: "gray" }} />
