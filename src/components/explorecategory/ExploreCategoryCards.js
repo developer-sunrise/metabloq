@@ -14,10 +14,9 @@ function ExploreCategoryCards() {
 
   const categoryClick = (name)=>{
     setClickedId(name);
-    console.log("clickedId what?",name );
     if(name == "Art"){
       dispatch(artAction())
-    }else if(name == "Buildings"){
+    }else if(name == "Land"){
       dispatch(buildingAction())
     }else if(name == "Virtual Real Estate"){
       dispatch(virtualrealestateAction())

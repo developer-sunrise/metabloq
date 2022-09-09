@@ -9,6 +9,7 @@ import Zoom from "react-reveal/Zoom";
 import Fade from "react-reveal/Fade";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { postMethod } from "../../helpers/API&Helpers";
 
 const collectionsPerRow = 6;
 
@@ -22,6 +23,7 @@ function ArtCollection(props) {
     };
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { allCollection } = reduxItems;
+
   return (
     <Stack gap={3}>
       <Row>
@@ -65,10 +67,10 @@ function ArtCollection(props) {
                         <span className="mx-1 poppins">{item.collection_likes}</span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-between poppins">
-                      <small>Floor price</small>
-                      <small className="fw-bold">1.85</small>
-                    </div>
+                    {/* <div className="d-flex justify-content-between poppins">
+                      <small>No of NFTs</small>
+                      <small className="fw-bold">1</small>
+                    </div> */}
                   </Stack>
                 </div>
               </Fade>

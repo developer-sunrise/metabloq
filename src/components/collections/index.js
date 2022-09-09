@@ -7,7 +7,7 @@ import Fade from 'react-reveal/Fade';
 import { useNavigate } from "react-router-dom";
 
 const data = {
-  name: "Popular Collections",
+  name: "Avatar Collections",
 };
 
 function Collections() {

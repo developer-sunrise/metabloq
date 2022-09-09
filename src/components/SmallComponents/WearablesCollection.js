@@ -58,10 +58,10 @@ function WearablesCollection(props) {
                       <span className="mx-1 poppins">{item.collection_likes}</span>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-between poppins">
+                  {/* <div className="d-flex justify-content-between poppins">
                       <small>Floor price</small>
                       <small className="fw-bold">1.85</small>
-                </div>
+                </div> */}
                 </Stack>
               </div>
             </Fade>
