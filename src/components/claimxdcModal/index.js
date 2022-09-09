@@ -4,6 +4,7 @@ import { Row, Col, Stack } from "react-bootstrap";
 import { Box, Modal } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { Address } from 'decentraland-ui';
+import ActionWallet from "../connectwallet/actionWallet";
 import {
     ReactS3Client4,
     ReactS3Client2,
@@ -68,8 +69,14 @@ function ClaimxdcModal(props) {
     const returnItems = useSelector((state) => state.WalletConnect);
     const { address, connected,XDC_AirDrop ,web3 } = returnItems
     const [AirDropdata, setAirDropdata] = useState([])
-    const Selectedid = []
+    const [Selectedid, setselectedid] = useState([])
     const [SelectedAmt, SetSelectedAmt] = useState(0)
+
+    const [walletOpen, setWalletOpen] = useState(false);
+    const [Loading1, setLoading1] = useState(false);
+    const [Loading2, setLoading2] = useState(false);
+    const [hashValue, sethashValue] = useState("");
+
     const getXDCairdroplist = async () => {
         let url = "xdcAirdroplist";
         let params = {
@@ -85,6 +92,13 @@ function ClaimxdcModal(props) {
     }
     const Claimairdrop = async() => {
         //ClaimAirDrops
+        setWalletOpen(true)
+        setLoading1(true)
+        console.log("Selectedid",Selectedid)
+        if(!Selectedid){
+            alert("select")
+            return 
+        }   
         var time = Date.now()
         let url = "signatureXDCAirdrop";
         let amount = web3.utils.toWei(String(SelectedAmt),"")
@@ -94,10 +108,10 @@ function ClaimxdcModal(props) {
             amount:amount, 
             nonce:time
         };
-        console.log("params",params)
+        // console.log("params",params)
         let authtoken = "";
         let responses = await postMethod({ url, params, authtoken });
-        console.log("response",responses)
+        // console.log("response",responses)
         //  console.log("response",response.signtuple)
         console.log("XDC_AirDrop.methods",XDC_AirDrop.methods)
         if(responses.signtuple){
@@ -106,22 +120,34 @@ function ClaimxdcModal(props) {
                 console.log("Claim",Claim)
                 let url = "UpdateXDCAirdrop";
                 let params = {id:Selectedid };
-                console.log("params",params)
+                console.log("paramss",params)
                 let authtoken = "";
-                let response = await putMethod({ url, params, authtoken });
+                let response = await postMethod({ url, params, authtoken });
+                console.log("response",response)
+                setLoading2(true)
+                getXDCairdroplist()
+                setLoading1(false)
+                setLoading2(false)
+                setWalletOpen(false)
               }catch(err){
+                setLoading1(false)
+                setWalletOpen(false)
                 console.log("ERROR",err)
               }
+        }else{
+            setLoading1(false)
+            setWalletOpen(false)
         }
     }
     const handlecheckbox = (e, data) => {
         var id = data.airdrop_wallets_id
         var amt = data.airdrop_amt
-        
+        console.log("Selectedid",Selectedid)
         if (e.target.checked) {
             Selectedid.push(id)
             var data = SelectedAmt+Number(amt)
             SetSelectedAmt(data)
+            
         } else {
             var amount =Math.abs(SelectedAmt-Number(amt))
             // console.log("amount",amount)
@@ -188,6 +214,13 @@ function ClaimxdcModal(props) {
                     </Stack>
                 </Box>
             </Modal>
+            <ActionWallet
+        walletOpen={walletOpen}
+        loader1={Loading1}
+        loader2={Loading2}
+        hashValue={hashValue}
+        setWalletOpen={setWalletOpen}
+      />
         </div>
     )
 }

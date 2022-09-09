@@ -14,12 +14,43 @@ function CollectorsPage() {
   const [collectionNfts, setcollectionNfts] = useState([]);
   const [parcels, setParcels] = useState({});
   // const [userCollection,setuserCollection] = useState([]);
-
+  var data ={
+    "collection_id": "49",
+    "collection_name": "test land",
+    "collection_wallet": "0xeBA41eAa32841629B1d4F64852d0dadf70b0c665",
+    "collection_nfts": null,
+    "collection_category": "Land",
+    "collection_blockchain": "xdc",
+    "collection_royalties": 0,
+    "collection_description": "des",
+    "collection_logo_image": "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662701392552Logo.jpeg",
+    "collection_featured_image": "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1661751903229Featured.jpg",
+    "collection_banner_image": "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662701397606Banner.jpeg",
+    "collection_likes": "0",
+    "collection_status": true,
+    "collection_land_json": "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/nft/1661751917404testLand.json",
+    "collection_createdat": "2022-08-29T00:15:58.736Z",
+    "collection_ispreminted": false,
+    "user_id": "42",
+    "user_name": "pradeep",
+    "user_email": "pradeep.sunrisetechs@gmail.com",
+    "user_password": "Hello@123",
+    "user_otp": "2658",
+    "user_otp_expiration": "1662536819293",
+    "user_created_at": "2022-09-07T02:01:59.575Z",
+    "user_updated_at": "2022-09-07T02:01:59.575Z",
+    "user_status": "active",
+    "user_wallet": "0xeBA41eAa32841629B1d4F64852d0dadf70b0c665",
+    "token": null,
+    "subscriptionsid": null,
+    "subscriptions_status": null,
+    "icoID": null,
+    "user_image": "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662560194844.png"
+}
   const result = allCollection.filter(data=> data.collection_category == "Land")
 
   const getdata = async () => {
     let staticUrl =  "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/nft/1661751917404testLand.json";
-      
     const res = await fetch(staticUrl, { cache: "no-store" });
     const json = await res.json();
     console.log("resss", json?.ok);
@@ -99,6 +130,7 @@ function CollectorsPage() {
       getdata();
       getUserCollection();
     }
+    console.log("result",Collection)
   }, [address]);
 
   return (
@@ -106,13 +138,12 @@ function CollectorsPage() {
       <Stack gap={5}>
         <CollectorsProfile />
         <CollectorsCollectionCard myprofile="myprofile" />
-        {/* <NFTDetailsCards collectors="collectors" myprofile="myprofile"/> */}
         <NFTDetailsList
           collectionhome="collectionhome"
           collectionNfts={collectionNfts}
           myprofile="myprofile"
         />
-        {address!='' && <LandNfts2 result={result[0]}  parcels={parcels} address={address} />}
+        {address!='' && <LandNfts2 result={data}  parcels={parcels} address={address} />}
       </Stack>
     </div>
   );

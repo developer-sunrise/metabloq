@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as XLSX from "xlsx/xlsx.mjs";
 const empty = require("../../assets/empty.png");
+const loader = require("../../assets/loading.gif").default
 
 function LandAirdrop() {
   const [playSound] = useSound(buttonSound);
@@ -26,6 +27,7 @@ function LandAirdrop() {
   const [title, setTitle] = useState("");
   const [bannerImg, setBannerImg] = useState(empty);
   const [featuredImg, setFeaturedImg] = useState(empty);
+  const [loading, setloading] = useState(false);
   const [collection, setCollection] = useState({
     collection_name: "",
     category: "Land",
@@ -36,6 +38,7 @@ function LandAirdrop() {
     featured_image: "",
     banner_image: "",
     Land: "",
+    nfts:''
   });
   const [logoImgFileName,setlogoImgFileName] = useState("");
   const [featureImgFileName,setfeatureImgFileName] = useState("");
@@ -44,6 +47,7 @@ function LandAirdrop() {
 
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState("");
+  const [Filename, setFilename] = useState("");
   const [type, setType] = useState("");
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -68,6 +72,7 @@ function LandAirdrop() {
     let extension = "." + name.split(".").pop();
     let filename;
     try {
+      setloading(true)
       var data;
       if (type == "Land") {
         filename = (
@@ -107,13 +112,17 @@ function LandAirdrop() {
               setCollection({ ...collection, Land: newData.location });
             }
           };
-
           reader.readAsArrayBuffer(e.target.files[0]);
+          setloading(false)
+        }else{
+          setloading(false)
         }
       } else {
         filename = timeStamp + type + extension;
         data = await ReactS3Client4.uploadFile(file, filename);
+        setloading(true)
       }
+      setloading(true)
       if (data?.status === 204) {
         if (type == "Logo") {
           setCollection({ ...collection, logo_image: data.location });
@@ -127,8 +136,25 @@ function LandAirdrop() {
         }
       }
     } catch (err) {
+      setloading(false)
       console.log("error image uploading", err);
     }
+  };
+  const bannerImageChange = (e) => {
+    var file = e.target.files[0];
+    const reader = new FileReader();
+    reader.fileName = file.name
+    reader.onload = async (e) => {
+      setFilename(e.target.fileName)
+      const data1 = e.target.result;
+      const workbook = XLSX.read(data1, { type: "array" });
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const json = XLSX.utils.sheet_to_json(worksheet);
+      console.log("fgdnewDatahsk", json.length);
+      setCollection({ ...collection, nfts: json });
+    };
+    reader.readAsArrayBuffer(e.target.files[0]);
   };
   const createLandCollection = async (e) => {
     if (address == "") {
@@ -160,8 +186,16 @@ function LandAirdrop() {
       };
       let authtoken = "";
       let response = await postMethod({ url, params, authtoken });
-      console.log("fghjk", response);
+      console.log("fghjk", response.insertedid);
       if (response.status) {
+        let url = "createlandairdropNFT";
+        let params = {
+          nfts: collection.nfts,
+          collection_id:response.insertedid
+        };
+        console.log("params",params)
+        let response1 = await postMethod({ url, params, authtoken });
+        console.log("response1",response1)
         handleClick("success", "Collection created successfully");
         setTimeout(navigate("/collections"), 2000);
       } else {
@@ -403,13 +437,46 @@ function LandAirdrop() {
                       <br />
                       <label class="createitem_upload-button">
                         <RiUploadCloudFill color="white" />{" "}
-                        <small>Upload</small>
+                        <small>Upload </small>
+                        {
+                          loading?
+                          <img src={loader} style={{width:"30px",height:"30px"}} />
+                          :
+                          null
+                        }
                         <input
                           type="file"
                           accept=".xlsx, .xls, .csv"
                           style={{ display: "none" }}
                           onChange={(e) => {
                             insertImageintoS3(e, "Land");
+                          }}
+                        />
+                      </label>
+                    </div>
+                  </Bounce>
+                </Col>
+                <Col xxl={12} xl={12} lg={12} sm={12} xs={12} className="mb-3">
+                  <div className="bold">Wallet Details</div>
+                  <Bounce>
+                    <div className="p-4 createitem_uploadbox text-center h-100">
+                    { 
+                      Filename == "" ?
+                      <small className="bold">Upload Files</small> : 
+                      <small className="bold">{Filename}</small>
+                    }
+                      <br />
+                      <small>Upload to XSL format only</small>
+                      <br />
+                      <label class="createitem_upload-button">
+                        <RiUploadCloudFill color="white" />{" "}
+                        <small>Upload</small>
+                        <input
+                          type="file"
+                          accept=".xlsx, .xls, .csv"
+                          style={{ display: "none" }}
+                          onChange={(e) => {
+                            bannerImageChange(e);
                           }}
                         />
                       </label>

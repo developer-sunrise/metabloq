@@ -100,6 +100,7 @@ function NFTDetails(props) {
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
   const [hashValue, sethashValue] = useState("");
+  const [BalanceToken, setBalance] = useState(0);
 
   const placebidClick = () => {
     setPlaceModalOpen(true);
@@ -280,7 +281,16 @@ function NFTDetails(props) {
       return false;
     }
   };
-
+  const usertokenbalance = async () => {
+    try {
+      var balance = await Token.methods.balanceOf(address).call();
+      balance =web3.utils.fromWei(balance,'ether')
+      console.log("balance",balance)
+      setBalance(balance)
+    }catch{
+      console.log("ERROR")
+    }
+  }
   const balance = async (address, amtInWei) => {
     try {
       const balance = await Token.methods.balanceOf(address).call();
@@ -404,7 +414,7 @@ function NFTDetails(props) {
     if (checkblc) {
       setWalletOpen(true);
       try {
-
+        setLoading1(true)
         const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({ from: address });
         try {
           setLoading2(true);
@@ -422,7 +432,7 @@ function NFTDetails(props) {
           let authtoken = "";
           let signresponse = await postMethod({ url, params, authtoken });
           if (signresponse.status) {
-            setLoading1(true)
+           
             const accept = await executeOrder(signresponse.signtuple);
             sethashValue(accept?.hash);
             setLoading1(false);
@@ -560,7 +570,6 @@ function NFTDetails(props) {
           const accept = await executeOrder(signresponse.signtuple);
           sethashValue(accept?.hash);
           setLoading1(false);
-
           if (accept) {
             let url = "updateNft";
             let params = {
@@ -598,10 +607,11 @@ function NFTDetails(props) {
                   params,
                   authtoken,
                 })
+                getdata();
+                navigate("/")
               } catch (e) {
                 console.log(e)
               }
-
             }
           }
         }
@@ -660,6 +670,7 @@ function NFTDetails(props) {
       getComments();
       getMakeOffers();
       getItemActivity();
+      usertokenbalance()
     }
   }, [address]);
   const [days, hours, minutes, seconds] = useCountdown(parseInt(nft.nftcollections_auction_time));
@@ -1245,11 +1256,14 @@ function NFTDetails(props) {
         setBuyModalOpen={setBuyModalOpen}
         buyModalClose={buyModalClose}
         playSound={playSound}
+        tokenblc={BalanceToken}
+        // amount={nft.nftcollections_price}
         action={buy}
         data={nft}
       />
       <MakeOfferModal
         makeModalOpen={makeModalOpen}
+        tokenblc={BalanceToken}
         setMakeModalOpen={setMakeModalOpen}
         makeModalClose={makeModalClose}
         data={nft}

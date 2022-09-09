@@ -27,7 +27,7 @@ const bloqs = require('../../assets/logo_block.png').default
 function MakeOfferModal(props) {
   const reduxItems = useSelector((state) => state.WalletConnect);
     const { wallet,address, Token,web3 } = reduxItems;
-  let { makeModalOpen, setMakeModalOpen, makeModalClose, data ,from,action} = props;
+  let { makeModalOpen, setMakeModalOpen, makeModalClose, data ,from,action ,Totalamt,tokenblc} = props;
   const [makeOfferPrice, setMakeOfferPrice] = useState("");
   const [balanceAmount, setBalanceAmount] = useState("");
   //action wallet states
@@ -134,8 +134,8 @@ function MakeOfferModal(props) {
                 </small>
               </div>
               <div className="d-flex justify-content-between align-items-center">
-                <span>Price</span>
-                <span>Balance {balanceAmount}</span>
+                <span>Price { Totalamt ? Totalamt : data?data.nftcollections_price:0}</span>
+                <span>Balance {tokenblc}</span>
               </div>
               <div className="d-flex makeoffer_input-holder">
                 <small><Image src={bloqs} fluid height={15} width={15} />&nbsp;BLOQS</small>

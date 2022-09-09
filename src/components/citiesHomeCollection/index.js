@@ -98,6 +98,8 @@ function CitiesHomeCollection({ selectedItem }) {
   const [bannerImgFileName, setbannerImgFileName] = useState("");
   const [logoImgFileName, setLogoImgFileName] = useState("");
   const [CollectionNmae, setCollectionNmae] = useState("");
+  const [BalanceToken, setBalance] = useState(0);
+  const [Totalamt, setTotalamt] = useState(0);
 
   const getCoords = (x, y) => `${x},${y}`;
   const handleFormat = (event, newFormats) => {
@@ -117,6 +119,7 @@ function CitiesHomeCollection({ selectedItem }) {
     setPlaceModalOpen(false);
   };
   const onSelectGrid = (item) => {
+    console.log("onSelectGrid",item)
     if (item.length > 0) {
       setSelectedGrid(item);
       getMakeOffers(item[0]);
@@ -136,7 +139,6 @@ function CitiesHomeCollection({ selectedItem }) {
     },
     [parcels]
   );
-
   const price = () => {
     let total = 0;
     selectedGrid.map((item) => {
@@ -189,12 +191,62 @@ function CitiesHomeCollection({ selectedItem }) {
     }
   };
   const buyClick = () => {
-    // if (selectedGrid.length == 1) {
-    //   const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
-    //   let amt = parcelsSelected[id].bloqs_price;
-    // }
+    if (selectedGrid.length == 1) {
+      const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      var parcelsSelected = parcels;
+      let amt = parcelsSelected[id].bloqs_price;
+      console.log("amt",amt)
+      setTotalamt(amt)
+    }else{
+      var parcelsSelected = parcels;
+      let price = 0;
+      selectedGrid.map((item) => {
+        price = price + parcelsSelected[id].bloqs_price;
+      });
+      let amt = price;
+      let amt2 = amt.toString();
+      setTotalamt(amt2)
+    }
     setBuyModalOpen(true);
     playSound();
+  };
+  const buyClick2 = () => {
+    if (selectedGrid.length == 1) {
+      const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      var parcelsSelected = parcels;
+      let amt = parcelsSelected[id].bloqs_price;
+      console.log("amt",amt)
+      setTotalamt(amt)
+    }else{
+      var parcelsSelected = parcels;
+      let price = 0;
+      selectedGrid.map((item) => {
+        price = price + parcelsSelected[id].bloqs_price;
+      });
+      let amt = price;
+      let amt2 = amt.toString();
+      setTotalamt(amt2)
+    }
+    setBuyModalOpen2(true)
+  };
+  const makeofferClick = () => {
+    if (selectedGrid.length == 1) {
+      const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      var parcelsSelected = parcels;
+      let amt = parcelsSelected[id].bloqs_price;
+      console.log("amt",amt)
+      setTotalamt(amt)
+    }else{
+      var parcelsSelected = parcels;
+      let price = 0;
+      selectedGrid.map((item) => {
+        price = price + parcelsSelected[id].bloqs_price;
+      });
+      let amt = price;
+      let amt2 = amt.toString();
+      setTotalamt(amt2)
+    }
+    setMakeModalOpen(true)
   };
   const executeOrder = async (signtuple) => {
     try {
@@ -207,7 +259,6 @@ function CitiesHomeCollection({ selectedItem }) {
       return false;
     }
   };
-
   // adjcent
   const findAdjcent = async (data) => {
     console.log("data", data);
@@ -236,6 +287,7 @@ function CitiesHomeCollection({ selectedItem }) {
     });
     console.log("newwewew", newArr);
     var parcelsSelected = parcels;
+    console.log("parcelsSelected",parcels)
     let newArr2 = [];
     newArr.map((item) => {
       let id = getCoords(item.x, item.y);
@@ -907,7 +959,6 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("ddd", err);
     }
   };
-
   // accept make offer
   const acceptMakeOffer = async (buyerAddress, amt, token) => {
     let priceInWei = web3.utils.toWei(amt.toString(), "ether");
@@ -1100,7 +1151,16 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log(e);
     }
   };
-
+  const usertokenbalance = async () => {
+    try {
+      var balance = await Token.methods.balanceOf(address).call();
+      balance =web3.utils.fromWei(balance,'ether')
+      console.log("balance",balance)
+      setBalance(balance)
+    }catch{
+      console.log("ERROR")
+    }
+  }
   // relist
   const relist = async () => {
     setLoading(true)
@@ -1205,6 +1265,7 @@ function CitiesHomeCollection({ selectedItem }) {
     const json = await res.json();
     setAtlasLoader(false);
     console.log("resss", json?.ok);
+    console.log("getdata", json);
     if (json.ok) {
       setParcels(json.data);
     }
@@ -1332,12 +1393,19 @@ function CitiesHomeCollection({ selectedItem }) {
       setLogoImgFileName(data.collection_logo_image)
       setbannerImgFileName(data.collection_banner_image)
     }
+    if(location.state.item){
+      console.log("state",location.state.item)
+      // setTimeout(function() {  onSelectGrid(location.state.item)}, 8000);
+      // onSelectGrid(location.state.item)
+    }
+
     getdata();
   }, [data]);
-
-  // let value = auctionTime ? auctionTime() : ""
-  // const [days, hours, minutes, seconds] = useCountdown(parseInt(value));
-
+  useEffect(()=>{
+    if(address){
+      usertokenbalance()
+    }
+  },[address])
   return (
     <div className="metabloq_container">
       <Fade bottom>
@@ -1649,7 +1717,7 @@ function CitiesHomeCollection({ selectedItem }) {
                           status() == "Mint" ? (
                             <>
                               <button
-                                onClick={() => setMakeModalOpen(true)}
+                                onClick={() => makeofferClick () }
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1659,12 +1727,12 @@ function CitiesHomeCollection({ selectedItem }) {
                             <>
                               <button
                                 className="mx-2 metablog_primary-filled-square-button"
-                                onClick={() => setBuyModalOpen2(true)}
+                                onClick={() => buyClick2()}
                               >
                                 <span>Buy Now</span>
                               </button>
                               <button
-                                onClick={() => setMakeModalOpen(true)}
+                                onClick={() => makeofferClick()   }
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1681,7 +1749,7 @@ function CitiesHomeCollection({ selectedItem }) {
                                 <span>Place a Bid</span>
                               </button>
                               <button
-                                onClick={() => setMakeModalOpen(true)}
+                                onClick={() => makeofferClick() }
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1690,7 +1758,8 @@ function CitiesHomeCollection({ selectedItem }) {
                           ) : (
                             <>
                               <button
-                                onClick={() => setMakeModalOpen(true)}
+                                  onClick={() => makeofferClick() }
+                                // onClick={() => setMakeModalOpen(true)}
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1940,6 +2009,8 @@ function CitiesHomeCollection({ selectedItem }) {
         setMakeModalOpen={setMakeModalOpen}
         makeModalClose={makeModalClose}
         // data={nft}
+        tokenblc={BalanceToken}
+        Totalamt={Totalamt}
         from={"atlas"}
         action={makeOffer}
       />
@@ -1958,6 +2029,8 @@ function CitiesHomeCollection({ selectedItem }) {
         buyModalClose={buyModalClose2}
         playSound={playSound}
         from={"atlas"}
+        Totalamt={Totalamt}
+        tokenblc={BalanceToken}
         action={realBuy}
       />
       <ActionWallet

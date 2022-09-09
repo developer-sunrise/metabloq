@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Image, Row, Stack } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./styles.css";
@@ -14,7 +14,9 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
   
     const [visible,setVisible] = useState("land");
     const navigate = useNavigate();
- 
+ useEffect(()=>{
+  console.log("result",result)
+ },[])
   return (
     <div>
       parcels
@@ -26,7 +28,14 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
             return(
               <Col key={index.toString()+"parcels"} xxl={3} xl={3} lg={3} md={6} sm={6} xs={6} className="mb-3">
                 <div
+                 onClick={() => {
+                  navigate("/collections/citieshome",{  state:{  id: '49',data:result, item:[{ x: parcels[data].x, y: parcels[data].y }]} })
+                  // onSelectGrid([
+                  //   { x: parcels[data].x, y: parcels[data].y },
+                  // ]);
+                }}
                     className="land_nft-card">
+                      
                   <div className=" h-170 w-100 ">
                     <MiniAtlas parcels={parcels} selectedParcels={[ {x:parcels[data].x,y:parcels[data].y} ]}/>
                   </div>

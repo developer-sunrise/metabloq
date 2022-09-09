@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import { Image, Stack } from "react-bootstrap";
@@ -24,15 +24,23 @@ const style = {
   };
   
 function BuynowModal(props) {
-  let { buyModalOpen, setBuyModalOpen,buyModalClose,playSound,data,action,from} = props;
+  let { buyModalOpen, setBuyModalOpen,buyModalClose,playSound,data,action,from,tokenblc,Totalamt} = props;
   const [successModal,setSuccessModal] = useState(false);
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { wallet,address, Token,web3,Marketplace } = reduxItems;
-
+  const [Balance,setBalance]=useState(0)
   const successModalClose = ()=>{
     setSuccessModal(false)
   }
-
+  const balance = async () => {
+    try {
+      const balance = await Token.methods.balanceOf(address).call();
+      console.log("balance",balance)
+      setBalance(balance)
+    }catch{
+      console.log("ERROR")
+    }
+  }
   const buyNow = async()=>{
     playSound();
 
@@ -42,7 +50,10 @@ function BuynowModal(props) {
       action();
     }
   }
-
+useEffect(()=>{
+  console.log("Totalamt",Totalamt)
+  balance()
+},[Totalamt])
   return (
     <>
       <Modal
@@ -62,17 +73,17 @@ function BuynowModal(props) {
               <div>
                 <Stack gap={1}>
                   <div className=" d-flex justify-content-between align-items-center">
-                    <small>1.005</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;BLOQS</small>
+                    <small>{ Totalamt ? Totalamt : data?data.nftcollections_price:0} BLOQS</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;BLOQS</small>
                   </div>
                   <hr/>
                   <div className=" d-flex justify-content-between align-items-center">
-                    <small>Your balance</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;8.498 BLOQS</small>
+                    <small>Your balance</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;{tokenblc?tokenblc:0} BLOQS</small>
                   </div>
                   <div className=" d-flex justify-content-between align-items-center">
                     <small>Service fee</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;0 BLOQS</small>
                   </div>
                   <div className=" d-flex justify-content-between align-items-center">
-                    <small>You pay will</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp; 0.007 BLOQS</small>
+                    <small>You pay will</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp; { Totalamt ? Totalamt : data? data.nftcollections_price:0} BLOQS</small>
                   </div>
                 </Stack>
               </div>
