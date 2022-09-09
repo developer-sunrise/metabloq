@@ -117,12 +117,13 @@ function LandAirdrop() {
         }else{
           setloading(false)
         }
+        setloading(false)
       } else {
         filename = timeStamp + type + extension;
         data = await ReactS3Client4.uploadFile(file, filename);
-        setloading(true)
+        setloading(false)
       }
-      setloading(true)
+      setloading(false)
       if (data?.status === 204) {
         if (type == "Logo") {
           setCollection({ ...collection, logo_image: data.location });
