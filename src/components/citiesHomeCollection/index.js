@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Col, Image, Row, Stack, Tab, Tabs } from "react-bootstrap";
 import { FiFilter } from "react-icons/fi";
+import Modal from "@mui/material/Modal";
 import useSound from "use-sound";
+import Bounce from "react-reveal/Bounce";
 import buttonSound from "../../assets/audio/button.wav";
 import NFTDetailsList from "../nftdetails/NFTDetailsList";
 import Activity from "../activity";
@@ -10,7 +12,7 @@ import WebFilter from "../SmallComponents/WebFilter";
 import Fade from "react-reveal/Fade";
 import MobileFilterBtn from "../SmallComponents/MobileFilterBtn";
 import useWindowDimensions from "../../helpers/useWindowDimensions";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LandNfts from "./LandNfts";
 import NFTDetails from "../nftdetailsparcels";
 import { FiSearch } from "react-icons/fi";
@@ -27,9 +29,10 @@ import Modalbox from "../modalbox/Modalbox";
 import MakeOfferModal from "../makeoffermodal";
 import { LocationOn, ViewModule } from "@mui/icons-material";
 import {
+  ReactS3Client4,
   ReactS3Client2,
   postMethod,
-  FormatDate1,
+  FormatDate1,putMethod
 } from "../../helpers/API&Helpers";
 import PlacebidModal from "../placebidModal";
 import CountdownTimer from "../timer/CountdownTimer";
@@ -41,10 +44,24 @@ const preimg = require("../../assets/nfts/1.png").default
 
 const urls = process.env.REACT_APP_SCAN_baseuri_HASH;
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "60%",
+  bgcolor: "background.paper",
+  border: "none !important",
+  boxShadow: 2,
+  p: 0,
+  borderRadius: "1em",
+};
+
 function CitiesHomeCollection({ selectedItem }) {
   const { width } = useWindowDimensions();
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry } = reduxItems;
   const [playSound] = useSound(buttonSound);
@@ -53,6 +70,7 @@ function CitiesHomeCollection({ selectedItem }) {
   const [filterType, setFilterType] = useState(null);
   const [filterTypeValue, setFilterTypeValue] = useState(null);
   const [onSale, setOnSale] = useState(false);
+  const [Confirmmodal, setConfirmmodal] = useState(false);
   const [show, setShow] = useState(false);
   const [selectedGrid, setSelectedGrid] = useState(selectedItem ? selectedItem : null);
   const [placeModalOpen, setPlaceModalOpen] = useState(false);
@@ -71,11 +89,15 @@ function CitiesHomeCollection({ selectedItem }) {
   const [Yvalue, setyvalue] = useState(null);
 
   const [Loading, setLoading] = useState(false);
+  const [imgloading, setloading] = useState(false);
 
   const [walletOpen, setWalletOpen] = useState(false);
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
   const [hashValue, sethashValue] = useState("");
+  const [bannerImgFileName, setbannerImgFileName] = useState("");
+  const [logoImgFileName, setLogoImgFileName] = useState("");
+  const [CollectionNmae, setCollectionNmae] = useState("");
 
   const getCoords = (x, y) => `${x},${y}`;
   const handleFormat = (event, newFormats) => {
@@ -167,6 +189,10 @@ function CitiesHomeCollection({ selectedItem }) {
     }
   };
   const buyClick = () => {
+    // if (selectedGrid.length == 1) {
+    //   const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+    //   let amt = parcelsSelected[id].bloqs_price;
+    // }
     setBuyModalOpen(true);
     playSound();
   };
@@ -1244,13 +1270,70 @@ function CitiesHomeCollection({ selectedItem }) {
       <p>time over</p>
     )
   }
-  const filtervalues = () => {
+  const insertImageintoS3 = async (e, type) => {
 
+    var file = e.target.files[0];
+    var date = new Date();
+    var timeStamp = date.getTime();
+    let name = file.name;
+    let extension = "." + name.split(".").pop();
+    let filename = timeStamp + type + extension;
+    try {
+      setloading(true)
+      // console.log("filename", filename, file);
+      const data = await ReactS3Client4.uploadFile(file, filename);
+      console.log("data",data)
+      if (data.status === 204) {
+        console.log("type",type)
+        if (type == "Logo") {
+          console.log("data.location ,logo",data.location)
+          setLogoImgFileName(data.location)
+          setloading(false)
+        } else if (type == "Banner") {
+          console.log("data.location ,Banner",data.location)
+          setbannerImgFileName(data.location);
+          setloading(false)
+        }
+      } else {
+        setloading(false)
+      }
+    } catch (err) {
+      console.log("error image uploading", err);
+      setloading(false)
+    }
+  };
+  const Updatecollection =async()=>{
+    let url = "updatecollection";
+    let method ="put";
+    let params = {
+      collection_name:CollectionNmae,
+      collection_id:data.collection_id ,
+      banner_image:bannerImgFileName,
+      logo_image:logoImgFileName
+    };
+    console.log("params",params)
+    let authtoken = "";
+    try{
+      let response = await postMethod({
+        url,
+        params,
+        authtoken,
+      });
+      console.log("response",response)
+      navigate('/')
+    }catch(err){
+      console.log("Error",err)
+    }
+  
   }
-
   useEffect(() => {
+    if(data){
+      setCollectionNmae(data.collection_name)
+      setLogoImgFileName(data.collection_logo_image)
+      setbannerImgFileName(data.collection_banner_image)
+    }
     getdata();
-  }, []);
+  }, [data]);
 
   // let value = auctionTime ? auctionTime() : ""
   // const [days, hours, minutes, seconds] = useCountdown(parseInt(value));
@@ -1287,6 +1370,15 @@ function CitiesHomeCollection({ selectedItem }) {
             <div className="mx-3">
               <h2>{data?.collection_name}</h2>
               <span>created by {data?.collection_wallet.slice(0, 5) + "..." + data?.collection_wallet.slice(-5)}</span>
+            </div>
+            <div className="mx-3">
+              {/* <h2>{data?.collection_name}</h2> */}
+              <span> </span>
+              <button
+                onClick={() => setConfirmmodal(true)}
+                className="mr-2 nftcollection_mobile-category" >
+                <span>Edit</span>
+              </button>
             </div>
           </div>
           <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
@@ -1875,6 +1967,132 @@ function CitiesHomeCollection({ selectedItem }) {
         hashValue={hashValue}
         setWalletOpen={setWalletOpen}
       />
+         <Modal
+        open={Confirmmodal}
+        onClose={()=>setConfirmmodal(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div style={{ borderRadius: "1em" }}>
+            <Stack gap={3}>
+              <div
+                style={{
+                  background:
+                    "linear-gradient(90deg, #6DC6FE 0%, #0295FA 100%)",
+                  borderRadius: "1em 1em 0 0 ",
+                }}
+                className="d-flex justify-content-between align-items-center py-4 px-3"
+              >
+                <h3 className="font-weight-bold m-0 text-light">Edit Collection</h3>
+                
+                <small
+                  onClick={()=>setConfirmmodal(false)}
+                  style={{ cursor: "pointer", color: "white" }}
+                >
+                  X
+                </small>
+              </div>
+              <div className="px-5">
+                <Row>
+                  <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
+                    <Bounce>
+                      <Stack gap={4}>
+                        <div>
+                          <div className="bold">Collection Name</div>
+                          <input
+                            type="text"
+                            placeholder="Enter campaing name"
+                            className="createitem_input"
+                            value={CollectionNmae}
+                            onChange={(e) => {
+                              setCollectionNmae(e.target.value)
+                            }}
+                          />
+                        </div>
+                      
+                      </Stack>
+                    </Bounce>
+                  </Col>
+
+                  {/* <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
+                    <Bounce>
+                      <Stack gap={4}>
+                      </Stack>
+                    </Bounce>
+                  </Col> */}
+                </Row>
+              </div>
+              <div className="py-2 createitem_uploadbox text-center h-100 mx-5">
+                <small className="bold">Logo Image</small>
+                
+                <br />
+                <small>Upload JPG, PNG, GIF or WEBP</small>
+                <br />
+                <label class="createitem_upload-button">
+                  {/* <RiUploadCloudFill color="white" />  */}
+                  <small>Upload</small>
+                  <input
+                    type="file"
+                    // accept=".xlsx, .xls, .csv"
+                    style={{ display: "none" }}
+                    onChange={(e)=>insertImageintoS3(e,'Logo')}
+                  />
+                   {
+                    imgloading?
+                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
+                    :
+                    <img src={logoImgFileName} style={{width:"30px",height:"30px"}} />
+                  }
+                </label>
+                <br />
+                {/* <small className="bold">{filename}</small> */}
+                <br />
+              </div>
+              <div className="py-2 createitem_uploadbox text-center h-100 mx-5">
+                <small className="bold">Banner Image</small>
+                <br />
+                <small>Upload JPG, PNG, GIF or WEBP</small>
+                <br />
+                <label class="createitem_upload-button">
+                  {/* <RiUploadCloudFill color="white" />  */}
+                  <small>Upload</small>
+                  <input
+                    type="file"
+                    // accept=".xlsx, .xls, .csv"
+                    style={{ display: "none" }}
+                    onChange={(e)=>insertImageintoS3(e,'Banner')}
+                  />
+                  {
+                    imgloading?
+                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
+                    :
+                    <img src={bannerImgFileName} style={{width:"30px",height:"30px"}} />
+                  }
+                </label>
+                <br />
+                {/* <small className="bold">{filename}</small> */}
+                <br />
+              </div>
+              <Bounce>
+                <div className="d-flex justify-content-center px-5 py-3">
+                  <button
+                    onClick={() => {
+                      playSound();
+                     
+                      Updatecollection()
+                      // pressingSubmit();
+                    }}
+                    className="metablog_primary-filled-button"
+                  >
+                    <span>Submit</span>
+                  </button>
+                </div>
+              </Bounce>
+            </Stack>
+          </div>
+        </Box>
+      </Modal>
     </div>
   );
 }

@@ -107,7 +107,7 @@ export const putMethod = async (item) => {
     // console.log("api error", error);
     // alert("Try again")
     // crashlytics().recordError(error);
-    return false;
+    return false,error;
   }
 };
 

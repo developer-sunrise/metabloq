@@ -41,50 +41,6 @@ function BuynowModal(props) {
     }else{
       action();
     }
-
-
-    //   try{
-    //     const buyNft = await Marketplace.methods
-    //     .executeOrder(data.nftcollections_wallet)
-    //     .send({ from: address });
-    //   let url = "updateNft";
-    //   let params = {
-    //     nft_id: data.nftcollections_id,
-    //     type: "buy",
-    //     wallet:address
-    //   };
-    //   let authtoken = "";
-    //   let response = await postMethod({ url, params, authtoken });
-    //   console.log("response",response);
-    //   if (response.status) {
-    //     try{
-    //       let url = "createActivities";
-    //       let params = {
-    //         wallet: address,
-    //         hash:"",
-    //         from: address,
-    //         to: data.nftcollections_wallet,
-    //         type: "onsale",
-    //         price:"",
-    //         quantity: 1,
-    //         collection: data.nftcollections_id,
-    //         nft: data.nftcollections_token_id,
-    //       };
-    //       let authtoken = "";
-    //       let response = await postMethod({
-    //         url,
-    //         params,
-    //         authtoken,
-    //       })
-    //       console.log("actvies",response)
-    //     }catch(e){
-    //       console.log(e)
-    //     }
-    //     setBuyModalOpen(false);
-    //   }
-    // }catch(err){
-    //   console.log("buy err",err)
-    // }
   }
 
   return (
