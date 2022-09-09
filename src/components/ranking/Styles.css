@@ -28,9 +28,6 @@
     border-radius: .5em;
 }
 @media(max-width:576px){
-  .ranking_table-wrapper{
-
-  }
   .ranking_table{
     width: 700px;
     height: auto;

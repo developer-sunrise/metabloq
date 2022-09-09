@@ -11,7 +11,6 @@ function CollectionsCards() {
     const navigate = useNavigate();
     const reduxItems = useSelector((state) => state.WalletConnect);
     const { allCollection } = reduxItems;
-    console.log("all collection iruka",allCollection);
     const dispatch = useDispatch()
 
     const getallcollection = async () => {
@@ -29,7 +28,7 @@ function CollectionsCards() {
 
   return (
     <Row>
-    {allCollection.length > 0 && allCollection.slice(0, 3).map((data,index) => (
+    {allCollection.length > 0 && allCollection.filter(data=> data.collection_category !== "Land").slice(0, 3).map((data,index) => (
       <Col key={index} xxl={4} xl={4} lg={4} md={4} sm={12} xs={12} className="mb-3">
         <Fade bottom>
           <div

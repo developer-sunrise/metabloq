@@ -7,7 +7,7 @@ import Fade from 'react-reveal/Fade';
 import { useNavigate } from "react-router-dom";
 
 const data = {
-  name: "Popular Collectables",
+  name: "Land Collections",
 };
 
 function Collectables() {

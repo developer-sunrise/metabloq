@@ -9,6 +9,7 @@ import { AiTwotoneHeart } from "react-icons/ai";
 import { Box } from "@mui/system";
 import * as XLSX from "xlsx/xlsx.mjs";
 import { Snackbar } from "@mui/material";
+import {BsDownload} from "react-icons/bs";
 import {
   ReactS3Client4,
   ReactS3Client2,
@@ -219,25 +220,24 @@ function XdcAirdrop() {
         <div className="createitempage_createitem">
           <h2 className="bold poppins">XDC AirDrop</h2>
         </div>
-        <div className="metabloq_container-fluid">
+        <div className="metabloq_container">
           <Row>
-            <Col xxl={2} xl={2} lg={2} md={2} className="light-text">
+            <Col  className="light-text text-center">
               Campaign name
             </Col>
-            <Col xxl={2} xl={2} lg={2} md={2} className="light-text">
+            {/* <Col xxl={2} xl={2} lg={2} md={2} className="light-text">
               XDC per wallet
-            </Col>
-            <Col xxl={1} xl={1} lg={1} md={1} className="light-text">
+            </Col> */}
+            <Col  className="light-text text-center">
               No of wallet
             </Col>
-            <Col xxl={1} xl={1} lg={1} md={1} className="light-text">
+            <Col  className="light-text text-center">
               Total XDC
             </Col>
-            <Col xxl={2} xl={2} lg={2} md={2} className="light-text">
+            <Col  className="light-text text-center">
               Date
             </Col>
-            <Col xxl={1} xl={2} lg={2} md={2} className="light-text"></Col>
-            <Col xxl={2} xl={2} lg={2} md={2}>
+            <Col className="d-flex justify-content-center">
               <button
                 onClick={() => setModalShow(true)}
                 className="metablog_primary-filled-button"
@@ -246,26 +246,27 @@ function XdcAirdrop() {
               </button>
             </Col>
           </Row>
+          <br/>
           <Row>
             {campaigns.length > 0 &&
               campaigns.map((data) => (
                 <>
-                  <Col xxl={2} xl={2} lg={2} md={2} className="fw-bold">
+                  <Col  className="fw-bold text-center">
                     {data.xdcairdrop_campaign_name}
                   </Col>
-                  <Col xxl={2} xl={2} lg={2} md={2} className="fw-bold">
+                  {/* <Col xxl={2} xl={2} lg={2} md={2} className="fw-bold">
                     {Slicer(data.xdcairdrop_wallet)}
-                  </Col>
-                  <Col xxl={1} xl={1} lg={1} md={1} className="fw-bold">
+                  </Col> */}
+                  <Col  className="fw-bold text-center">
                     {data.xdcairdrop_no_of_wallet}
                   </Col>
-                  <Col xxl={1} xl={1} lg={1} md={1} className="fw-bold">
+                  <Col  className="fw-bold text-center">
                     {data.xdcairdrop_total_xdc}
                   </Col>
-                  <Col xxl={2} xl={2} lg={2} md={2} className="fw-bold">
+                  <Col  className="fw-bold text-center">
                     {FormatDate1(data.xdcairdrop_createdat)}
                   </Col>
-                  <Col xxl={1} xl={2} lg={2} md={2}>
+                  <Col className="d-flex justify-content-center">
                     {data.xdcairdrop_status ? (
                       <button
                         onClick={() => {
@@ -427,8 +428,11 @@ function XdcAirdrop() {
                 <br />
                 <small className="bold">{filename}</small>
                 <br />
-                <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662385993107Logo.xlsx" download>Download File</a>
-                    
+                <div className="d-flex align-items-center justify-content-center">
+                <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662385993107Logo.xlsx" download>Template</a>&nbsp;
+                <BsDownload color="#0d6efd"/>
+                </div>
+                
               </div>
               {/* <div className="py-2 text-center h-100 mx-5">
                 <br />
