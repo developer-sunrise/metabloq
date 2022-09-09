@@ -77,7 +77,7 @@ const NFTDetailsList = (props) => {
                           className="font-weight-bold"
                           style={{ color: "#1C83E5" }}
                         >
-                          {data.nftcollections_price} XDC
+                          {data.nftcollections_price} bloqs
                         </div> : " "}
                       </div>
                     </div>
