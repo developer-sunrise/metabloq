@@ -16,7 +16,7 @@ import MobileFilterBtn from "../SmallComponents/MobileFilterBtn";
 import useWindowDimensions from "../../helpers/useWindowDimensions";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { postMethod, ReactS3Client3, ReactS3Client1 } from "../../helpers/API&Helpers";
+import { postMethod, ReactS3Client3, ReactS3Client1, FormatDate1 } from "../../helpers/API&Helpers";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/system";
 import Bounce from "react-reveal/Bounce";
@@ -309,8 +309,7 @@ function CollectablesHome() {
             </Stack> */}
           </div>
           {state?.data?.collection_ispreminted &&
-            <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
-              <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
+            <>
                 <div className="ranking_table">
                   <Row className="ranking_table-header lufga-bold d-flex justify-content-between align-items-center">
                     <Col className="text-center">NFT Name</Col>
@@ -324,53 +323,43 @@ function CollectablesHome() {
                   {collectionNfts?.length > 0 && collectionNfts.map((data) => (
                     <>
                       <Row className="ranking_table-body d-flex justify-content-between align-items-center">
-                        <Col>
-                          <div className="d-flex justify-content-start align-items-center ml-4">
-                            <small className="lufga-bold mx-1">{data.nftcollections_name}</small>
-                          </div>
+                        <Col className="text-center">
+                            <small>{data.nftcollections_name}</small>
                         </Col>
-                        <Col>
-                          <div className="d-flex justify-content-start align-items-center ml-4">
-                            <small className="lufga-bold mx-1">{data.nftcollections_description}</small>
-                          </div>
+                        <Col className="text-center">
+                            <small>{data.nftcollections_description}</small>
                         </Col>
-                        <Col className="text-left d-flex">
-                          <Stack gap={2} direction="horizontal">
-
-                            <div className="d-flex flex-column">
-                              <small className="lufga-bold mx-1">{data.nftcollections_price}</small>
-                            </div>
-                          </Stack>
+                        <Col className="text-center">
+                            <small>{data.nftcollections_price}</small>
                         </Col>
                         <Col className="text-center">
                           <small>{data.nftcollections_status}</small>
                         </Col>
                         <Col className="text-center">
-                          <small>{data.nftcollections_createdat}</small>
+                          <small>{FormatDate1(data.nftcollections_createdat)}</small>
                         </Col>
-                        <Col className="text-center">
+                        <Col className="d-flex justify-content-center">
                           {
                             data.nftcollections_status == "premint" &&
-                            <button className="metablog_primary-filled-square-button py-1 px-5" onClick={()=> {playSound();setSelectedNFT(data) ;setConfirmmodal(true)}} >
+                            <button className="metablog_primary-filled-square-button py-1 px-4" onClick={()=> {playSound();setSelectedNFT(data) ;setConfirmmodal(true)}} >
                               <span>Remove</span>
                             </button>
                           }
                         </Col>
 
                       </Row>
-                      <hr style={{ backgroundColor: "gray" }} />
+                      <hr style={{ backgroundColor: "lightgray" }} />
                     </>
                   ))}
                 </div>
-                <div className="d-flex flex-column ">
+                <div className="d-flex justify-content-center">
                   <button
                    onClick={() => { playSound();modalClose(true) }}
                     className="metablog_primary-filled-button">
                     <span>Add NFT</span>
                   </button>
                 </div>
-              </Stack>
-            </div>
+            </>
           }
         </div>
       </Fade>
