@@ -16,15 +16,16 @@ import MobileFilterBtn from "../SmallComponents/MobileFilterBtn";
 import useWindowDimensions from "../../helpers/useWindowDimensions";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { postMethod, ReactS3Client3, ReactS3Client1, FormatDate1 } from "../../helpers/API&Helpers";
+import { postMethod, ReactS3Client3, ReactS3Client1, FormatDate1,ReactS3Client4 } from "../../helpers/API&Helpers";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/system";
 import Bounce from "react-reveal/Bounce";
 const Loader = require("../../assets/loading.gif").default
 const preimg = require("../../assets/nfts/1.png").default
-
+const loaderimg = require("../../assets/loading.gif").default
 function CollectablesHome() {
   const { state } = useLocation();
+  const navigate = useNavigate();
   const [playSound] = useSound(buttonSound);
   const reduxItems = useSelector((e) => e.WalletConnect);
   const { allCollection ,address} = reduxItems;
@@ -35,8 +36,14 @@ function CollectablesHome() {
   const [collectionNfts, setcollectionNfts] = useState([]);
   const [selectedNFT, setSelectedNFT] = useState([]);
   const [confirmmodal, setConfirmmodal] = React.useState(false);
+  const [confirmmodal1, setConfirmmodal1] = React.useState(false);
   const [Loading, setloading] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+  const [bannerImgFileName, setbannerImgFileName] = useState("");
+  const [logoImgFileName, setLogoImgFileName] = useState("");
+  const [CollectionNmae, setCollectionNmae] = useState("");
+  const [imgloading, setLoading] = useState("");
+
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
   const [NFT, setNft] = useState({
@@ -222,10 +229,75 @@ function CollectablesHome() {
       }
     }
   }
+  const insertImageintoS3 = async (e, type) => {
+
+    var file = e.target.files[0];
+    var date = new Date();
+    var timeStamp = date.getTime();
+    let name = file.name;
+    let extension = "." + name.split(".").pop();
+    let filename = timeStamp + type + extension;
+    try {
+      setLoading(true)
+      // console.log("filename", filename, file);
+      const data = await ReactS3Client4.uploadFile(file, filename);
+      console.log("data",data)
+      if (data.status === 204) {
+        console.log("type",type)
+        if (type == "Logo") {
+          console.log("data.location ,logo",data.location)
+          setLogoImgFileName(data.location)
+          setLoading(false)
+        } else if (type == "Banner") {
+          console.log("data.location ,Banner",data.location)
+          setbannerImgFileName(data.location);
+          setLoading(false)
+        }
+      } else {
+        setLoading(false)
+      }
+    } catch (err) {
+      console.log("error image uploading", err);
+      setLoading(false)
+    }
+  };
+  const Updatecollection =async()=>{
+    if(!state.data.collection_id){
+      handleClick("warning", "try again");
+      return
+    }
+    let url = "updatecollection";
+    let method ="put";
+    let params = {
+      collection_name:CollectionNmae,
+      collection_id:state.data.collection_id ,
+      banner_image:bannerImgFileName,
+      logo_image:logoImgFileName
+    };
+    console.log("params",params)
+    let authtoken = "";
+    try{
+      let response = await postMethod({
+        url,
+        params,
+        authtoken,
+      });
+      console.log("response",response)
+      navigate('/')
+    }catch(err){
+      console.log("Error",err)
+    }
+  
+  }
   useEffect(() => {
     console.log("state", state)
+    if(state.data){
+      setCollectionNmae(state.data.collection_name)
+      setLogoImgFileName(state.data.collection_logo_image)
+      setbannerImgFileName(state.data.collection_banner_image)
+    }
     getCollectionNfts()
-  }, [])
+  }, [state])
   return (
     <div className="metabloq_container">
       <Fade bottom>
@@ -250,6 +322,11 @@ function CollectablesHome() {
               <h2>{state?.data?.collection_name}</h2>
               <span>created by {state?.data?.user_name? state?.data?.user_name : state?.data?.collection_wallet.slice(0,5)+"..."+state?.data?.collection_wallet.slice(-5) } {state?.data?.collection_id}</span>
             </div>
+            <button
+                onClick={() => setConfirmmodal1(true)}
+                className="mr-2 nftcollection_mobile-category" >
+                <span>Edit</span>
+              </button>
           </div>
           <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
             {/* <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
@@ -493,7 +570,7 @@ function CollectablesHome() {
                 <h3 className="font-weight-bold m-0 text-light">Add NFT</h3>
                
                 <small
-                  onClick={modalClose}
+                  onClick={()=>modalClose(false)}
                   style={{ cursor: "pointer", color: "white" }}
                 >
                   X
@@ -612,7 +689,132 @@ function CollectablesHome() {
           </div>
         </Box>
       </Modal>
+      <Modal
+        open={confirmmodal1}
+        onClose={()=>setConfirmmodal1(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <div style={{ borderRadius: "1em" }}>
+            <Stack gap={3}>
+              <div
+                style={{
+                  background:
+                    "linear-gradient(90deg, #6DC6FE 0%, #0295FA 100%)",
+                  borderRadius: "1em 1em 0 0 ",
+                }}
+                className="d-flex justify-content-between align-items-center py-4 px-3"
+              >
+                <h3 className="font-weight-bold m-0 text-light">Edit Collection</h3>
+                
+                <small
+                  onClick={()=>setConfirmmodal1(false)}
+                  style={{ cursor: "pointer", color: "white" }}
+                >
+                  X
+                </small>
+              </div>
+              <div className="px-5">
+                <Row>
+                  <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
+                    <Bounce>
+                      <Stack gap={4}>
+                        <div>
+                          <div className="bold">Collection Name</div>
+                          <input
+                            type="text"
+                            placeholder="Enter campaing name"
+                            className="createitem_input"
+                            value={CollectionNmae}
+                            onChange={(e) => {
+                              setCollectionNmae(e.target.value)
+                            }}
+                          />
+                        </div>
+                      
+                      </Stack>
+                    </Bounce>
+                  </Col>
 
+                  {/* <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
+                    <Bounce>
+                      <Stack gap={4}>
+                      </Stack>
+                    </Bounce>
+                  </Col> */}
+                </Row>
+              </div>
+              <div className="py-2 createitem_uploadbox text-center h-100 mx-5">
+                <small className="bold">Logo Image</small>
+                
+                <br />
+                <small>Upload JPG, PNG, GIF or WEBP</small>
+                <br />
+                <label class="createitem_upload-button">
+                  {/* <RiUploadCloudFill color="white" />  */}
+                  <small>Upload</small>
+                  <input
+                    type="file"
+                    // accept=".xlsx, .xls, .csv"
+                    style={{ display: "none" }}
+                    onChange={(e)=>insertImageintoS3(e,'Logo')}
+                  />
+                   {
+                    imgloading?
+                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
+                    :
+                    <img src={logoImgFileName} style={{width:"30px",height:"30px"}} />
+                  }
+                </label>
+                <br />
+                {/* <small className="bold">{filename}</small> */}
+                <br />
+              </div>
+              <div className="py-2 createitem_uploadbox text-center h-100 mx-5">
+                <small className="bold">Banner Image</small>
+                <br />
+                <small>Upload JPG, PNG, GIF or WEBP</small>
+                <br />
+                <label class="createitem_upload-button">
+                  {/* <RiUploadCloudFill color="white" />  */}
+                  <small>Upload</small>
+                  <input
+                    type="file"
+                    // accept=".xlsx, .xls, .csv"
+                    style={{ display: "none" }}
+                    onChange={(e)=>insertImageintoS3(e,'Banner')}
+                  />
+                  {
+                    imgloading?
+                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
+                    :
+                    <img src={bannerImgFileName} style={{width:"30px",height:"30px"}} />
+                  }
+                </label>
+                <br />
+                {/* <small className="bold">{filename}</small> */}
+                <br />
+              </div>
+              <Bounce>
+                <div className="d-flex justify-content-center px-5 py-3">
+                  <button
+                    onClick={() => {
+                      playSound();
+                     
+                      Updatecollection()
+                      // pressingSubmit();
+                    }}
+                    className="metablog_primary-filled-button"
+                  >
+                    <span>Submit</span>
+                  </button>
+                </div>
+              </Bounce>
+            </Stack>
+          </div>
+        </Box>
+      </Modal>
       <Modal
         open={confirmmodal}
         // onClose={setConfirmmodal}
