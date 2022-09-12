@@ -168,6 +168,7 @@ function Atlas({
   const getType2 = useCallback((x, y) => {
     const id = getCoords(x, y);
     const tile = parcels[id]; 
+    // console.log("tile",tile)
     if(tile?.type==3){
       var values =[]
       values.push(tile)
@@ -179,11 +180,10 @@ function Atlas({
         values.push(tile)
       }
       for(var i =1 ;i<10;i++){
-        let xvalue = x+i
-        let yvalue = y
+        let xvalue = x-1
+        let yvalue = y+i
         const id = getCoords(xvalue, yvalue);
         const tile = parcels[id];
-        
         values.push(tile)
       }
       for(var i =1 ;i<10;i++){
@@ -194,20 +194,18 @@ function Atlas({
         values.push(tile)
       }
       for(var i =1 ;i<10;i++){
-        let xvalue = x-i
-        let yvalue = y
+        let xvalue = x-1
+        let yvalue = y-i
         const id = getCoords(xvalue, yvalue);
         const tile = parcels[id];
         values.push(tile)
       }
-      console.log("values",values)
       var estatedata =values.filter((data)=>{
-        return data.estateId==9
+        return data.estateId==tile.estateId
       })
       console.log("estatedata",estatedata)
     } 
     // console.log("parcels",parcels)
-
     if (tile?.type == 9) {
       return true;
     }

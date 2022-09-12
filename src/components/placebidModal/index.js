@@ -33,8 +33,9 @@ function PlacebidModal(props) {
   const navigate =useNavigate()
   const [successModal,setSuccessModal] = useState(false);
   const [placeBidPrice,setPlaceBidPrice] = useState("");
+  const [placeBidPriceUSD,setPlaceBidPriceusd] = useState(0);
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { wallet,address, Token,web3 } = reduxItems;
+  const { wallet,address, Token,web3,USD } = reduxItems;
   const [balanceAmount,setBalanceAmount]  = useState("");
     //action wallet states
     const [walletOpen, setWalletOpen] = useState(false);
@@ -124,9 +125,17 @@ function PlacebidModal(props) {
     .call();
     setBalanceAmount(balance);
   }
+  const handleplacebit =(e)=>{
+    setPlaceBidPrice(e)
+    setPlaceBidPriceusd(e*USD)
+  }
   useEffect(() => {
     // balanceCheck();
   }, [])
+  var formatter = new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 4
+	});
   return (
     <>
       <Modal
@@ -148,17 +157,20 @@ function PlacebidModal(props) {
                 </div>
                 <div>
                 <Stack gap={1}>
-                  <small className="font-weight-bold">Your bid</small>
+                  <small className="font-weight-bold">Your Bid</small>
                   <div className="d-flex makeoffer_input-holder">
                   <input
                     type="text"
                     placeholder="Enter amount"
                     className="makeoffer_input"
                     value={placeBidPrice}
-                    onChange={(e) => setPlaceBidPrice(e.target.value)}
+                    onChange={(e) =>handleplacebit(e.target.value)}
                     required
                   />
                 </div>
+                  <div className=" d-flex justify-content-between align-items-center">
+                    <small>Your Bid</small> <small className="font-weight-bold">&nbsp;{formatter.format(placeBidPriceUSD)}$ USD</small>
+                  </div>
                   <div className=" d-flex justify-content-between align-items-center">
                     <small>Your balance</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/>&nbsp;{balanceAmount} BLOQS</small>
                   </div>

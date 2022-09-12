@@ -72,7 +72,10 @@ useEffect(()=>{
               <div>
                 <Stack gap={1}>
                   <div className=" d-flex justify-content-between align-items-center">
-                    <small>{ Totalamt ? Totalamt : data?data.nftcollections_price:0} BLOQS</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;BLOQS</small>
+                    <small>{ Totalamt ? Number(Totalamt) : data?Number(data.nftcollections_price):0} BLOQS</small> <small className="font-weight-bold"><Image src={bloqs} fluid  height={20} width={20}/> &nbsp;BLOQS</small>
+                  </div>
+                  <div className=" d-flex justify-content-between align-items-center">
+                    <small>{ Totalamt ? Number(Totalamt)*USD : data?Number(data.nftcollections_price)*USD:0}$ </small> <small className="font-weight-bold"> &nbsp;USD</small>
                   </div>
                   <hr/>
                   <div className=" d-flex justify-content-between align-items-center">

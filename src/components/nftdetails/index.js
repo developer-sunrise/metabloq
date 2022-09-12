@@ -74,7 +74,7 @@ function NFTDetails(props) {
       : [] : [];
   const [playSound] = useSound(buttonSound);
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { Land, address, NftSingle, Collection, Marketplace, web3, Token } = reduxItems;
+  const { Land, address, NftSingle, Collection, Marketplace, web3, Token,USD } = reduxItems;
   const dispatch = useDispatch();
   const [placeModalOpen, setPlaceModalOpen] = useState(false);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
@@ -284,10 +284,10 @@ function NFTDetails(props) {
   const usertokenbalance = async () => {
     try {
       var balance = await Token.methods.balanceOf(address).call();
-      balance =web3.utils.fromWei(balance,'ether')
-      console.log("balance",balance)
+      balance = web3.utils.fromWei(balance, 'ether')
+      console.log("balance", balance)
       setBalance(balance)
-    }catch{
+    } catch {
       console.log("ERROR")
     }
   }
@@ -432,7 +432,7 @@ function NFTDetails(props) {
           let authtoken = "";
           let signresponse = await postMethod({ url, params, authtoken });
           if (signresponse.status) {
-           
+
             const accept = await executeOrder(signresponse.signtuple);
             sethashValue(accept?.hash);
             setLoading1(false);
@@ -844,6 +844,10 @@ function NFTDetails(props) {
 
 
   };
+  var formatter = new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 4
+	});
   return (
     <div className="metabloq_container nftdetails_container">
       <Stack gap={5}>
@@ -994,14 +998,25 @@ function NFTDetails(props) {
                     </div>
                   </div>
                   {nft.nftcollections_price !== "" && (
-                    <div className="">
-                      <h5 className="fw-bold">Price</h5>
-                      <span className="fw-bold">
-                        {nft.nftcollections_price}
-                      </span>
-                      &nbsp;
-                      <small>BLOQS</small>
-                    </div>
+                    <>
+                      <div className="">
+                        <h5 className="fw-bold">Price</h5>
+                        <span className="fw-bold">
+                          {nft.nftcollections_price}
+                        </span>
+                        &nbsp;
+                        <small>BLOQS</small>
+                      </div>
+
+                      <div className="">
+                        <span className="fw-bold">
+                          {formatter.format(nft.nftcollections_price*USD)}$
+                        </span>
+                        &nbsp;
+                        {/* <small>USD</small> */}
+                      </div>
+                    </>
+
                   )}
                   {
                     nft.nftcollections_premintnft == true &&
@@ -1133,8 +1148,8 @@ function NFTDetails(props) {
                                       <AiOutlineDelete size={17} />
                                     </small>
                                   )
-                                : null
-                                }
+                                    : null
+                                  }
                                 </div>
                               </div>
                             ))}
@@ -1175,7 +1190,7 @@ function NFTDetails(props) {
                                   </div>
                                   <div clasName="p-2">
                                     <small className="fw-bold"> Date</small><br />
-                                    <small className="fw-bold">{offer.offer_bid_createdat?offer.offer_bid_createdat.slice(0,10):''} </small>
+                                    <small className="fw-bold">{offer.offer_bid_createdat ? offer.offer_bid_createdat.slice(0, 10) : ''} </small>
                                   </div>
                                   <div className="d-flex">
                                     {

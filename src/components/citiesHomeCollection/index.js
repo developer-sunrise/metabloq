@@ -63,7 +63,7 @@ function CitiesHomeCollection({ selectedItem }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry } = reduxItems;
+  const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry,USD } = reduxItems;
   const [playSound] = useSound(buttonSound);
   const { id, type, data } = location.state;
   const [parcels, setParcels] = useState(null);
@@ -261,10 +261,10 @@ function CitiesHomeCollection({ selectedItem }) {
   };
   // adjcent
   const findAdjcent = async (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     let arr = selectedGrid == null ? [...data] : [...selectedGrid, ...data];
     let newArr = [];
-    console.log("tesss", arr)
+    // console.log("tesss", arr)
     arr.map((item) => {
       newArr.push(
         {
@@ -285,9 +285,9 @@ function CitiesHomeCollection({ selectedItem }) {
         }
       );
     });
-    console.log("newwewew", newArr);
+    // console.log("newwewew", newArr);
     var parcelsSelected = parcels;
-    console.log("parcelsSelected",parcels)
+    // console.log("parcelsSelected",parcels)
     let newArr2 = [];
     newArr.map((item) => {
       let id = getCoords(item.x, item.y);
@@ -296,11 +296,11 @@ function CitiesHomeCollection({ selectedItem }) {
         newArr2.push(item);
       }
     });
-    console.log("newArr2", newArr2);
+    // console.log("newArr2", newArr2);
     let uniqueArr = newArr2.filter(
       (v, i, a) => a.findIndex((v2) => v2.x === v.x && v2.y === v.y) === i
     );
-    console.log("uniqueArr", uniqueArr);
+    // console.log("uniqueArr", uniqueArr);
     setAdjcent(uniqueArr);
     dispatch({ type: "ADJCENT", payload: uniqueArr });
 
@@ -671,6 +671,8 @@ function CitiesHomeCollection({ selectedItem }) {
   // auction
   const putonaction = async (tokenId, price, time) => {
     try {
+      setWalletOpen(true)
+      setLoading1(true)
       console.log("tokenIdtokenId", tokenId);
       const NftAuction = await LandRegistry.methods
         .approve(process.env.REACT_APP_Marketplace_CONTRACT, tokenId)
@@ -718,13 +720,25 @@ function CitiesHomeCollection({ selectedItem }) {
             params,
             authtoken,
           });
+          setLoading1(false)
+          setLoading2(true)
+          getdata();
+          setLoading2(false)
+          setWalletOpen(false)
         } catch (e) {
+          setWalletOpen(false)
+      setLoading1(false)
           console.log(e);
         }
         // setTimeout(window.location.reload(), 3000);
+      }else{
+        setLoading1(false)
+        setWalletOpen(false)
       }
       // setTimeout(window.location.reload(), 3000);
     } catch (err) {
+      setLoading1(false)
+      setWalletOpen(false)
       console.log("dsdds", err);
     }
   };
@@ -1409,6 +1423,10 @@ function CitiesHomeCollection({ selectedItem }) {
       usertokenbalance()
     }
   },[address])
+  var formatter = new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 4
+	});
   return (
     <div className="metabloq_container">
       <Fade bottom>
@@ -1688,8 +1706,12 @@ function CitiesHomeCollection({ selectedItem }) {
                       <span>
                         {/* {item?.bloqs_price} */}
                         {price()}
-
-                        <span className="secondary-text">{"$0"}</span>
+                        {/* <span className="secondary-text">{"$"}</span> */}
+                      </span>
+                      <span>
+                        {/* {item?.bloqs_price} */}
+                        {formatter.format(price()*USD)}
+                        <span className="secondary-text">{"$"}</span>
                       </span>
                     </div>
                     <div className="d-flex">

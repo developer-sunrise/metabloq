@@ -8,6 +8,7 @@ import {BsStars} from 'react-icons/bs';
 import Fade from 'react-reveal/Fade';
 import { Slicer,FormatDate1 } from "../../helpers/API&Helpers";
 import { useLocation } from "react-router-dom";
+
 const avatar1 = require('../../assets/nfts/1.png').default
 const avatar2 = require('../../assets/nfts/2.png').default
 const avatar3 = require('../../assets/nfts/3.png').default
@@ -15,7 +16,6 @@ const avatar4 = require('../../assets/nfts/4.png').default
 const bloqs = require('../../assets/logo_block.png').default
 
 const urls = process.env.REACT_APP_SCAN_baseuri_HASH
-
 
 const days = [
   {id:1,days:"60 Days"},
