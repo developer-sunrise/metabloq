@@ -27,7 +27,7 @@ function BuynowModal(props) {
   let { buyModalOpen, setBuyModalOpen,buyModalClose,playSound,data,action,from,tokenblc,Totalamt} = props;
   const [successModal,setSuccessModal] = useState(false);
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { wallet,address, Token,web3,Marketplace } = reduxItems;
+  const { wallet,address, Token,web3,Marketplace,USD } = reduxItems;
   const [Balance,setBalance]=useState(0)
   const successModalClose = ()=>{
     setSuccessModal(false)
@@ -43,7 +43,6 @@ function BuynowModal(props) {
   }
   const buyNow = async()=>{
     playSound();
-
     if(from=="atlas"){
       action();
     }else{
