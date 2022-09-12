@@ -32,7 +32,7 @@ import {
   ReactS3Client4,
   ReactS3Client2,
   postMethod,
-  FormatDate1,putMethod
+  FormatDate1, putMethod
 } from "../../helpers/API&Helpers";
 import PlacebidModal from "../placebidModal";
 import CountdownTimer from "../timer/CountdownTimer";
@@ -63,7 +63,7 @@ function CitiesHomeCollection({ selectedItem }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
-  const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry,USD } = reduxItems;
+  const { address, Marketplace, web3, Token, LandRegistry, EstateRegistry, USD } = reduxItems;
   const [playSound] = useSound(buttonSound);
   const { id, type, data } = location.state;
   const [parcels, setParcels] = useState(null);
@@ -119,13 +119,17 @@ function CitiesHomeCollection({ selectedItem }) {
     setPlaceModalOpen(false);
   };
   const onSelectGrid = (item) => {
-    console.log("onSelectGrid",item)
-    if (item.length > 0) {
+    console.log("onSelectGrid", item)
+    if (item.length == 1) {
       setSelectedGrid(item);
       getMakeOffers(item[0]);
       getItemActivity(item[0]);
       findAdjcent(item);
-    } else {
+    } else if (item.length > 1) {
+      setSelectedGrid(item);
+      findAdjcent(item);
+    }
+    else {
       setSelectedGrid(null);
       dispatch({ type: "ADJCENT", payload: [] });
     }
@@ -155,6 +159,20 @@ function CitiesHomeCollection({ selectedItem }) {
       return owner;
     } else {
       return "";
+    }
+  };
+  const isEstate = () => {
+    if (selectedGrid.length != 0) {
+      // selectedGrid.map((item) => {
+      //   owner = getDetails(item[0].x, item[0].y).isEstate
+      // });
+      let owner = getDetails(selectedGrid[0].x, selectedGrid[0].y).isEstate
+      console.log("isEstate", owner)
+      if (owner) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
   const auctionTime = () => {
@@ -195,9 +213,9 @@ function CitiesHomeCollection({ selectedItem }) {
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
       let amt = parcelsSelected[id].bloqs_price;
-      console.log("amt",amt)
+      console.log("amt", amt)
       setTotalamt(amt)
-    }else{
+    } else {
       var parcelsSelected = parcels;
       let price = 0;
       selectedGrid.map((item) => {
@@ -215,9 +233,9 @@ function CitiesHomeCollection({ selectedItem }) {
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
       let amt = parcelsSelected[id].bloqs_price;
-      console.log("amt",amt)
+      console.log("amt", amt)
       setTotalamt(amt)
-    }else{
+    } else {
       var parcelsSelected = parcels;
       let price = 0;
       selectedGrid.map((item) => {
@@ -234,9 +252,9 @@ function CitiesHomeCollection({ selectedItem }) {
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
       let amt = parcelsSelected[id].bloqs_price;
-      console.log("amt",amt)
+      console.log("amt", amt)
       setTotalamt(amt)
-    }else{
+    } else {
       var parcelsSelected = parcels;
       let price = 0;
       selectedGrid.map((item) => {
@@ -329,21 +347,21 @@ function CitiesHomeCollection({ selectedItem }) {
   // buy for 1st time (mint) from contract
   const buy = async () => {
 
-    var filename =data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +".json";
+    var filename = data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() + ".json";
     if (selectedGrid == null) {
       return;
     }
     if (selectedGrid.length == 1) {
       setWalletOpen(true)
       setLoading1(true)
-      let Staticimgurl ="https://pbs.twimg.com/media/FD_IeOOXIA4JiIj.jpg:large";
+      let Staticimgurl = "https://pbs.twimg.com/media/FD_IeOOXIA4JiIj.jpg:large";
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
-      
+
       let amt = parcelsSelected[id].bloqs_price;
       let amt2 = amt.toString();
       let priceInWei = web3.utils.toWei(amt2, "ether");
-      try {  
+      try {
         const allowance = await Token.methods
           .allowance(address, process.env.REACT_APP_Marketplace_CONTRACT)
           .call();
@@ -727,11 +745,11 @@ function CitiesHomeCollection({ selectedItem }) {
           setWalletOpen(false)
         } catch (e) {
           setWalletOpen(false)
-      setLoading1(false)
+          setLoading1(false)
           console.log(e);
         }
         // setTimeout(window.location.reload(), 3000);
-      }else{
+      } else {
         setLoading1(false)
         setWalletOpen(false)
       }
@@ -879,9 +897,7 @@ function CitiesHomeCollection({ selectedItem }) {
       setWalletOpen(true)
       setLoading1(true)
       var parcelsSelected = parcels;
-      const tokenId = await LandRegistry.methods
-        .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
-        .call();
+      const tokenId = await LandRegistry.methods.getlandIds(selectedGrid[0].x, selectedGrid[0].y).call();
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       let tile = parcelsSelected[id];
       console.log("dsddssd", tile);
@@ -1165,10 +1181,10 @@ function CitiesHomeCollection({ selectedItem }) {
   const usertokenbalance = async () => {
     try {
       var balance = await Token.methods.balanceOf(address).call();
-      balance =web3.utils.fromWei(balance,'ether')
-      console.log("balance",balance)
+      balance = web3.utils.fromWei(balance, 'ether')
+      console.log("balance", balance)
       setBalance(balance)
-    }catch{
+    } catch {
       console.log("ERROR")
     }
   }
@@ -1269,7 +1285,51 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("dddd", err);
     }
   };
+  const transferestateland = async () => {
+    let transferid = "0xeBA41eAa32841629B1d4F64852d0dadf70b0c665"
+    var esateid = getDetails(selectedGrid[0].x, selectedGrid[0].y).estateId
+    if (esateid) {
+      let x = [];
+      let y = [];
+      try {
+        var filename =
+          data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
+          ".json";
+          console.log("filename",filename)
+        var parcelsSelected = parcels;
+        // selectedGrid.map((item) => {
+        //   x.push(item.x);
+        //   y.push(item.y);
+          var id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+          // var id = getCoords(item.x, item.y);
+          parcelsSelected[id] = {
+            ...parcelsSelected[id],
+            type: 9,
+            status: "Mint",
+            isEstate:false,
+            owner: transferid,
+          };
+        // });
+        const tokenId = await LandRegistry.methods.getlandIds(selectedGrid[0].x, selectedGrid[0].y).call();
+        var landid = tokenId
+        console.log("esateid, landid, transferid",esateid, landid, transferid)
+        console.log("EstateRegistry.methods",EstateRegistry.methods)
+        const transferestate = await EstateRegistry.methods.transferLand(esateid, landid, transferid).send({ from: address })
+        console.log("transferestate", transferestate)
+        const jsonData = await ReactS3Client2.uploadFile(
+          JSON.stringify({
+            ok: true,
+            data: parcelsSelected,
+          }),
+          filename
+        ); // for json update
+        console.log("estate update", jsonData);
+      } catch (error) {
+        console.log("ERROR", error)
+      }
+    }
 
+  }
   const getdata = async () => {
     setAtlasLoader(true);
     const res = await fetch(data?.collection_land_json, { cache: "no-store" });
@@ -1315,32 +1375,32 @@ function CitiesHomeCollection({ selectedItem }) {
   };
 
   const getItemActivity = async (item) => {
-    console.log("item",item)
-    try{
+    console.log("item", item)
+    try {
       const tokenId = await LandRegistry.methods
-      .getlandIds(item.x, item.y)
-      .call();
-    console.log("tokenId item activity", tokenId);
-    if (tokenId) {
-      try {
-        let url = "getNftTransferActivitesLand" //"getNftTransferActivites";
-        let params = {
-          token_id: tokenId,
-        };
-        let authtoken = "";
-        let response = await postMethod({ url, params, authtoken });
-        console.log("response in item acivity", response);
-        if (response.status) {
-          setActivityDatas(response.resultAllActivites);
+        .getlandIds(item.x, item.y)
+        .call();
+      console.log("tokenId item activity", tokenId);
+      if (tokenId) {
+        try {
+          let url = "getNftTransferActivitesLand" //"getNftTransferActivites";
+          let params = {
+            token_id: tokenId,
+          };
+          let authtoken = "";
+          let response = await postMethod({ url, params, authtoken });
+          console.log("response in item acivity", response);
+          if (response.status) {
+            setActivityDatas(response.resultAllActivites);
+          }
+        } catch (e) {
+          console.log(e);
         }
-      } catch (e) {
-        console.log(e);
       }
+    } catch (e) {
+      console.log("Error", e);
     }
-    }catch (e) {
-      console.log("Error",e);
-    }
-    
+
   };
 
   const jsonUpdation = () => {
@@ -1360,15 +1420,15 @@ function CitiesHomeCollection({ selectedItem }) {
       setloading(true)
       // console.log("filename", filename, file);
       const data = await ReactS3Client4.uploadFile(file, filename);
-      console.log("data",data)
+      console.log("data", data)
       if (data.status === 204) {
-        console.log("type",type)
+        console.log("type", type)
         if (type == "Logo") {
-          console.log("data.location ,logo",data.location)
+          console.log("data.location ,logo", data.location)
           setLogoImgFileName(data.location)
           setloading(false)
         } else if (type == "Banner") {
-          console.log("data.location ,Banner",data.location)
+          console.log("data.location ,Banner", data.location)
           setbannerImgFileName(data.location);
           setloading(false)
         }
@@ -1380,53 +1440,53 @@ function CitiesHomeCollection({ selectedItem }) {
       setloading(false)
     }
   };
-  const Updatecollection =async()=>{
+  const Updatecollection = async () => {
     let url = "updatecollection";
-    let method ="put";
+    let method = "put";
     let params = {
-      collection_name:CollectionNmae,
-      collection_id:data.collection_id ,
-      banner_image:bannerImgFileName,
-      logo_image:logoImgFileName
+      collection_name: CollectionNmae,
+      collection_id: data.collection_id,
+      banner_image: bannerImgFileName,
+      logo_image: logoImgFileName
     };
-    console.log("params",params)
+    console.log("params", params)
     let authtoken = "";
-    try{
+    try {
       let response = await postMethod({
         url,
         params,
         authtoken,
       });
-      console.log("response",response)
+      console.log("response", response)
       navigate('/')
-    }catch(err){
-      console.log("Error",err)
+    } catch (err) {
+      console.log("Error", err)
     }
-  
+
   }
   useEffect(() => {
-    if(data){
+    if (data) {
       setCollectionNmae(data.collection_name)
       setLogoImgFileName(data.collection_logo_image)
       setbannerImgFileName(data.collection_banner_image)
     }
-    if(location.state.item){
-      console.log("state",location.state.item)
+    if (location.state.item) {
+      console.log("state", location.state.item)
       // setTimeout(function() {  onSelectGrid(location.state.item)}, 8000);
       // onSelectGrid(location.state.item)
     }
 
     getdata();
   }, [data]);
-  useEffect(()=>{
-    if(address){
+  useEffect(() => {
+    if (address) {
       usertokenbalance()
     }
-  },[address])
+  }, [address])
   var formatter = new Intl.NumberFormat('en-US', {
-		minimumFractionDigits: 0,
-		maximumFractionDigits: 4
-	});
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4
+  });
   return (
     <div className="metabloq_container">
       <Fade bottom>
@@ -1674,9 +1734,9 @@ function CitiesHomeCollection({ selectedItem }) {
                 <Fade bottom>
                   <Stack gap={4}>
                     <h1 className="font-weight-bold">{"Parcel"}</h1>
-                    {selectedGrid.map((item) => {
+                    {selectedGrid.map((item, i) => {
                       return (
-                        <h4 className="font-weight-bold">
+                        <h4 className="font-weight-bold" key={i}>
                           {"x:" + item.x + ",y:" + item.y}
                         </h4>
                       );
@@ -1691,6 +1751,14 @@ function CitiesHomeCollection({ selectedItem }) {
                       <div>owner</div>
                       <small className="secondary-text">{owner()}</small>
                     </div>
+                    {
+                      isEstate() &&
+                      <div>
+                        <div>Estate</div>
+                        <small className="secondary-text">{isEstate() ? "Estate" : ""}</small>
+                      </div>
+                    }
+
                     <div>
                       {status() == "auction" && (
                         <div>
@@ -1705,12 +1773,12 @@ function CitiesHomeCollection({ selectedItem }) {
                       <span>Price</span>
                       <span>
                         {/* {item?.bloqs_price} */}
-                        {price()}
+                        {price()} BLOQS
                         {/* <span className="secondary-text">{"$"}</span> */}
                       </span>
                       <span>
                         {/* {item?.bloqs_price} */}
-                        {formatter.format(price()*USD)}
+                        {formatter.format(price() * USD)}
                         <span className="secondary-text">{"$"}</span>
                       </span>
                     </div>
@@ -1742,7 +1810,7 @@ function CitiesHomeCollection({ selectedItem }) {
                           status() == "Mint" ? (
                             <>
                               <button
-                                onClick={() => makeofferClick () }
+                                onClick={() => makeofferClick()}
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1757,7 +1825,7 @@ function CitiesHomeCollection({ selectedItem }) {
                                 <span>Buy Now</span>
                               </button>
                               <button
-                                onClick={() => makeofferClick()   }
+                                onClick={() => makeofferClick()}
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1774,7 +1842,7 @@ function CitiesHomeCollection({ selectedItem }) {
                                 <span>Place a Bid</span>
                               </button>
                               <button
-                                onClick={() => makeofferClick() }
+                                onClick={() => makeofferClick()}
                                 className="mx-2 nftcollection_mobile-category"
                               >
                                 <span>Make offer</span>
@@ -1783,7 +1851,7 @@ function CitiesHomeCollection({ selectedItem }) {
                           ) : (
                             <>
                               <button
-                                  onClick={() => makeofferClick() }
+                                onClick={() => makeofferClick()}
                                 // onClick={() => setMakeModalOpen(true)}
                                 className="mx-2 nftcollection_mobile-category"
                               >
@@ -1802,12 +1870,24 @@ function CitiesHomeCollection({ selectedItem }) {
                           </>
                         )
                       ) : owner() == address ? (
-                        <button
-                          onClick={createEstate}
-                          className="mx-2 metablog_primary-filled-square-button"
-                        >
-                          <span>Create Estate</span>
-                        </button>
+                        isEstate() ?
+                          (
+                            <button
+                              // onClick={transferestateland}
+                              className="mx-2 metablog_primary-filled-square-button"
+                            >
+                              <span>Transfer Estate</span>
+                            </button>
+                          )
+                          :
+                          (
+                            <button
+                              onClick={createEstate}
+                              className="mx-2 metablog_primary-filled-square-button"
+                            >
+                              <span>Create Estate</span>
+                            </button>
+                          )
                       ) : (
                         <button
                           onClick={buyClick}
@@ -2065,9 +2145,9 @@ function CitiesHomeCollection({ selectedItem }) {
         hashValue={hashValue}
         setWalletOpen={setWalletOpen}
       />
-         <Modal
+      <Modal
         open={Confirmmodal}
-        onClose={()=>setConfirmmodal(false)}
+        onClose={() => setConfirmmodal(false)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -2083,9 +2163,9 @@ function CitiesHomeCollection({ selectedItem }) {
                 className="d-flex justify-content-between align-items-center py-4 px-3"
               >
                 <h3 className="font-weight-bold m-0 text-light">Edit Collection</h3>
-                
+
                 <small
-                  onClick={()=>setConfirmmodal(false)}
+                  onClick={() => setConfirmmodal(false)}
                   style={{ cursor: "pointer", color: "white" }}
                 >
                   X
@@ -2108,7 +2188,7 @@ function CitiesHomeCollection({ selectedItem }) {
                             }}
                           />
                         </div>
-                      
+
                       </Stack>
                     </Bounce>
                   </Col>
@@ -2123,7 +2203,7 @@ function CitiesHomeCollection({ selectedItem }) {
               </div>
               <div className="py-2 createitem_uploadbox text-center h-100 mx-5">
                 <small className="bold">Logo Image</small>
-                
+
                 <br />
                 <small>Upload JPG, PNG, GIF or WEBP</small>
                 <br />
@@ -2134,13 +2214,13 @@ function CitiesHomeCollection({ selectedItem }) {
                     type="file"
                     // accept=".xlsx, .xls, .csv"
                     style={{ display: "none" }}
-                    onChange={(e)=>insertImageintoS3(e,'Logo')}
+                    onChange={(e) => insertImageintoS3(e, 'Logo')}
                   />
-                   {
-                    imgloading?
-                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
-                    :
-                    <img src={logoImgFileName} style={{width:"30px",height:"30px"}} />
+                  {
+                    imgloading ?
+                      <img src={loaderimg} style={{ width: "30px", height: "30px" }} />
+                      :
+                      <img src={logoImgFileName} style={{ width: "30px", height: "30px" }} />
                   }
                 </label>
                 <br />
@@ -2159,13 +2239,13 @@ function CitiesHomeCollection({ selectedItem }) {
                     type="file"
                     // accept=".xlsx, .xls, .csv"
                     style={{ display: "none" }}
-                    onChange={(e)=>insertImageintoS3(e,'Banner')}
+                    onChange={(e) => insertImageintoS3(e, 'Banner')}
                   />
                   {
-                    imgloading?
-                    <img src={loaderimg} style={{width:"30px",height:"30px"}} />
-                    :
-                    <img src={bannerImgFileName} style={{width:"30px",height:"30px"}} />
+                    imgloading ?
+                      <img src={loaderimg} style={{ width: "30px", height: "30px" }} />
+                      :
+                      <img src={bannerImgFileName} style={{ width: "30px", height: "30px" }} />
                   }
                 </label>
                 <br />
@@ -2177,7 +2257,7 @@ function CitiesHomeCollection({ selectedItem }) {
                   <button
                     onClick={() => {
                       playSound();
-                     
+
                       Updatecollection()
                       // pressingSubmit();
                     }}

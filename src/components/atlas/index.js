@@ -168,42 +168,62 @@ function Atlas({
   const getType2 = useCallback((x, y) => {
     const id = getCoords(x, y);
     const tile = parcels[id]; 
-    // console.log("tile",tile)
+    console.log("tile",tile)
     if(tile?.type==3){
       var values =[]
-      values.push(tile)
-      for(var i =1 ;i<10;i++){
-        let xvalue = x
-        let yvalue = y+i
-        const id = getCoords(xvalue, yvalue);
-        const tile = parcels[id];
-        values.push(tile)
+      // values.push(tile)
+      for(var i =0 ;i<10;i++){
+        let xvalue = x+i
+        for(var p =0 ;p<10;p++){
+          let yvalue = y+p
+          const id = getCoords(xvalue, yvalue);
+          const tile = parcels[id];
+          values.push(tile)
+        }
+      
       }
-      for(var i =1 ;i<10;i++){
-        let xvalue = x-1
-        let yvalue = y+i
+      for(var i =0 ;i<10;i++){
+        let xvalue = x-i
+        for(var p =0 ;p<10;p++){
+        let yvalue = y+p
         const id = getCoords(xvalue, yvalue);
         const tile = parcels[id];
         values.push(tile)
+        }
       }
-      for(var i =1 ;i<10;i++){
-        let xvalue = x
-        let yvalue = y-i
+      for(var i =0 ;i<10;i++){
+        let xvalue = x+i
+        for(var p =0 ;p<10;p++){
+        let yvalue = y-p
         const id = getCoords(xvalue, yvalue);
         const tile = parcels[id];
         values.push(tile)
+        }
       }
-      for(var i =1 ;i<10;i++){
-        let xvalue = x-1
-        let yvalue = y-i
+      for(var i =0 ;i<10;i++){
+        let xvalue = x-i
+        for(var p =0 ;p<10;p++){
+        let yvalue = y-p
         const id = getCoords(xvalue, yvalue);
         const tile = parcels[id];
         values.push(tile)
+        }
       }
       var estatedata =values.filter((data)=>{
         return data.estateId==tile.estateId
       })
-      console.log("estatedata",estatedata)
+      // console.log("estatedata",estatedata)
+      var datauniq = [...new Set(estatedata)]
+      var selectmul=[]
+    datauniq.map((data)=>{
+      const id ={x:data.x, y:data.y}
+        selectmul.push(id)
+      })
+      // console.log("dataid",dataid)
+      console.log("selectmul",selectmul)
+      // console.log("new",datauniq)
+      // setSelected(selectmul)
+      // onSelectGrid(selectmul)
     } 
     // console.log("parcels",parcels)
     if (tile?.type == 9) {
@@ -420,7 +440,6 @@ function Atlas({
       return 400;
     }
   };
-
   useEffect(() => {
     console.log("selectedParcels",selectedParcels)
     if (selectedParcels) {
@@ -532,15 +551,26 @@ function Atlas({
             return;
           }
           if (selected.length == 0) {
-            console.log("getType2(x, y)",getType2(x, y))
             if (getType2(x, y)) {
               let newArr = [...selected];
+              if(selected.length!=1){
+                newArr.push({ x, y });
+              // console.log("newArr",newArr)
+              // setSelected(newArr);
+              // setSelectedAxis(newArr);
+              // onSelectGrid(newArr);
+              setAlreadyOwnedSelect(true);
+              return;
+              }else{ 
               newArr.push({ x, y });
+              console.log("newArr",newArr)
               setSelected(newArr);
               setSelectedAxis(newArr);
               onSelectGrid(newArr);
               setAlreadyOwnedSelect(true);
               return;
+              }
+              
             }
           }
           if (!getType(x, y)) {
