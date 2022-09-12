@@ -160,7 +160,7 @@ function PlacebidModal(props) {
                   <small className="font-weight-bold">Your Bid</small>
                   <div className="d-flex makeoffer_input-holder">
                   <input
-                    type="text"
+                    type="number"
                     placeholder="Enter amount"
                     className="makeoffer_input"
                     value={placeBidPrice}

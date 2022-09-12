@@ -251,8 +251,8 @@ function Modalbox(props) {
                             </div>
                             <h3 className="text-center">Price</h3>
                             <div className='forinputselectsec'>
-                                <input value={fixedSalePrice} onChange={(e) =>handlefixedprice(e.target.value)}
-                                    className='inputinnerselectsec' type='text' placeholder='0 BLOQS' />
+                                <input value={fixedSalePrice}  onChange={(e) =>handlefixedprice(e.target.value)}
+                                    className='inputinnerselectsec' type='number' placeholder='0 BLOQS' />
                             </div>
                             <small> USD </small>
                             <div className='forinputselectsec'>

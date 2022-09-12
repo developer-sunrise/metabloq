@@ -146,7 +146,7 @@ function MakeOfferModal(props) {
                 <small><Image src={bloqs} fluid height={15} width={15} />&nbsp;BLOQS</small>
                 <Divider orientation="vertical" variant="middle" flexItem />
                 <input
-                  type="text"
+                  type="number"
                   placeholder="Enter amount"
                   className="makeoffer_input"
                   value={makeOfferPrice}
