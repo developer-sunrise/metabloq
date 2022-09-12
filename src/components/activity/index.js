@@ -56,8 +56,9 @@ function Activity({myprofile,collectionhome,details,activityDatas}) {
 
         <Fade bottom>
         {
-          myprofile ? <h1 className="text-center lufga-bold">My Activity</h1> :
-          <h1 className="text-center lufga-bold">Activity</h1>
+          myprofile ?
+          <h1 className="text-center lufga-bold">My Activity</h1> :
+          <h1 className="text-center lufga-bold">Transaction History</h1>
         }
         </Fade>
         <Fade bottom>
@@ -74,7 +75,7 @@ function Activity({myprofile,collectionhome,details,activityDatas}) {
           <Row className="ranking_table-header lufga-bold d-flex justify-content-between align-items-center">
             <Col className="text-center">Activity</Col>
             <Col className="text-center">Hash</Col>
-            <Col className="text-center">Items</Col>
+            <Col className="text-center">User</Col>
             <Col className="text-center">Price</Col>
             <Col className="text-center">Quantity</Col>
             <Col className="text-center">From </Col>

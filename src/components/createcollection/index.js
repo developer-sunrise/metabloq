@@ -252,7 +252,23 @@ function CreateCollection() {
                     </div>
                     <div className="createitem_select">
                       <div className="bold">Royalties</div>
-                      <Form.Select
+                      <input
+                      type={"number"}
+                      max={100}
+                      aria-label="Default select example"
+                      className="createitem_input"
+                      placeholder={"Royalties %"}
+                      value={collection.royalties}
+                      onChange={(e) => {
+                        if(e.target.value<=100){
+                          setCollection({
+                            ...collection,
+                            royalties: e.target.value,
+                          });
+                        }
+                      }}
+                      />
+                      {/* <Form.Select
                         aria-label="Default select example"
                         onChange={(e) => {
                           setCollection({
@@ -265,7 +281,7 @@ function CreateCollection() {
                         <option value="10">10%</option>
                         <option value="15">15%</option>
                         <option value="20">20%</option>
-                      </Form.Select>
+                      </Form.Select> */}
                     </div>
                   </Stack>
                 </Bounce>

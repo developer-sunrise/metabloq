@@ -328,36 +328,26 @@ function CitiesHomeCollection({ selectedItem }) {
   };
   // buy for 1st time (mint) from contract
   const buy = async () => {
-    var filename =
-      data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
-      ".json";
-    console.log("start", filename, selectedGrid);
+
+    var filename =data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +".json";
     if (selectedGrid == null) {
-      console.log("selectedGrid null");
       return;
     }
     if (selectedGrid.length == 1) {
       setWalletOpen(true)
       setLoading1(true)
-      let Staticimgurl =
-        "https://pbs.twimg.com/media/FD_IeOOXIA4JiIj.jpg:large";
+      let Staticimgurl ="https://pbs.twimg.com/media/FD_IeOOXIA4JiIj.jpg:large";
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
-      parcelsSelected[id] = {
-        ...parcelsSelected[id],
-        type: 9,
-        owner: address,
-        isMinted: true,
-        status: "Mint",
-        name: "xdc new contract test",
-      };
+      
       let amt = parcelsSelected[id].bloqs_price;
       let amt2 = amt.toString();
       let priceInWei = web3.utils.toWei(amt2, "ether");
-      try {
+      try {  
         const allowance = await Token.methods
           .allowance(address, process.env.REACT_APP_Marketplace_CONTRACT)
           .call();
+
         if (allowance < priceInWei) {
           const approveToken = await Token.methods
             .approve(
@@ -367,9 +357,9 @@ function CitiesHomeCollection({ selectedItem }) {
             .send({ from: address });
           console.log("approveToken", approveToken);
         }
+
         try {
           console.log("ssss");
-
           let date = new Date();
           let timestamp = date.getTime();
           let url = "signature";
@@ -383,7 +373,6 @@ function CitiesHomeCollection({ selectedItem }) {
           };
           let authtoken = "";
           let response = await postMethod({ url, params, authtoken });
-          console.log("fghj", response);
           if (response?.status) {
             try {
               const mintNFT = await Marketplace.methods
@@ -396,6 +385,14 @@ function CitiesHomeCollection({ selectedItem }) {
                 .send({ from: address });
               console.log("tesss", mintNFT);
               console.log("start", filename);
+              parcelsSelected[id] = {
+                ...parcelsSelected[id],
+                type: 9,
+                owner: address,
+                isMinted: true,
+                status: "Mint",
+                name: "xdc new contract test",
+              };
               const jsonData = await ReactS3Client2.uploadFile(
                 JSON.stringify({
                   ok: true,
@@ -1304,7 +1301,9 @@ function CitiesHomeCollection({ selectedItem }) {
   };
 
   const getItemActivity = async (item) => {
-    const tokenId = await LandRegistry.methods
+    console.log("item",item)
+    try{
+      const tokenId = await LandRegistry.methods
       .getlandIds(item.x, item.y)
       .call();
     console.log("tokenId item activity", tokenId);
@@ -1324,6 +1323,10 @@ function CitiesHomeCollection({ selectedItem }) {
         console.log(e);
       }
     }
+    }catch (e) {
+      console.log("Error",e);
+    }
+    
   };
 
   const jsonUpdation = () => {

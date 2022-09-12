@@ -32,9 +32,11 @@ function Modalbox(props) {
     const [fixedPriceModal, setFixedPriceModal] = useState(false)
     const [timedAuctionModal, setTimedAuctionModal] = useState(false);
     const [fixedSalePrice, setFixedSalePrice] = useState("");
+    const [fixedSalePriceusd, setFixedSalePriceusd] = useState(0);
     const [auctionSalePrice, setAuctionSalePrice] = useState("");
+    const [auctionSalePriceusd, setAuctionSalePriceusd] = useState(0);
     const reduxItems = useSelector((state) => state.WalletConnect);
-    const { address, Collection } = reduxItems;
+    const { address, Collection,USD } = reduxItems;
     const classes = Styles()
     const [auctionPeriod, setAuctionPeriod] = useState("");
      //action wallet states
@@ -181,6 +183,15 @@ function Modalbox(props) {
         }
     }
     }
+    const handlefixedprice =(e)=>{
+        // console.log("USD",USD)
+        setFixedSalePrice(e)
+        setFixedSalePriceusd(Number(e)*USD)
+    }
+    const handleAuction =(e)=>{
+        setAuctionSalePrice(e)
+        setAuctionSalePriceusd(Number(e)*USD)
+    }
     return (
         <div>
             <Modal
@@ -240,7 +251,12 @@ function Modalbox(props) {
                             </div>
                             <h3 className="text-center">Price</h3>
                             <div className='forinputselectsec'>
-                                <input value={fixedSalePrice} onChange={(e) => setFixedSalePrice(e.target.value)}
+                                <input value={fixedSalePrice} onChange={(e) =>handlefixedprice(e.target.value)}
+                                    className='inputinnerselectsec' type='text' placeholder='0 BLOQS' />
+                            </div>
+                            <small> USD </small>
+                            <div className='forinputselectsec'>
+                                <input value={fixedSalePriceusd +"$"} 
                                     className='inputinnerselectsec' type='text' placeholder='0 BLOQS' />
                             </div>
                             <div className="d-flex justify-content-center">
@@ -270,7 +286,12 @@ function Modalbox(props) {
                             </div>
                             <h5 >Price</h5>
                             <div className='forinputselectsec'>
-                                <input value={auctionSalePrice} onChange={(e) => setAuctionSalePrice(e.target.value)}
+                                <input value={auctionSalePrice} onChange={(e) => handleAuction(e.target.value)}
+                                    className='inputinnerselectsec' type='text' placeholder='0 BLOQS' />
+                            </div>
+                            <small>USD </small> 
+                            <div className='forinputselectsec'>
+                                <input value={auctionSalePriceusd+"$"} 
                                     className='inputinnerselectsec' type='text' placeholder='0 BLOQS' />
                             </div>
                             <h5 >Duration</h5>

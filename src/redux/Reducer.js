@@ -43,7 +43,8 @@ const initialState = {
   // application data
   allCollection: [],
   adjcent: [],
-  User:null
+  User:null,
+  USD:0
 };
 
 const walletConnectReducer = (state = initialState, action) => {
@@ -95,6 +96,11 @@ const walletConnectReducer = (state = initialState, action) => {
         return {
           ...state,
           adjcent: action.payload,
+        };
+      case "USDDATA":
+        return {
+          ...state,
+          USD: action.payload,
         };
     default:
       return state;

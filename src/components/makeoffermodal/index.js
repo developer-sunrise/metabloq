@@ -26,89 +26,90 @@ const bloqs = require('../../assets/logo_block.png').default
 
 function MakeOfferModal(props) {
   const reduxItems = useSelector((state) => state.WalletConnect);
-    const { wallet,address, Token,web3 } = reduxItems;
-  let { makeModalOpen, setMakeModalOpen, makeModalClose, data ,from,action ,Totalamt,tokenblc} = props;
+  const { wallet, address, Token, web3, USD } = reduxItems;
+  let { makeModalOpen, setMakeModalOpen, makeModalClose, data, from, action, Totalamt, tokenblc } = props;
   const [makeOfferPrice, setMakeOfferPrice] = useState("");
+  const [makeOfferPriceusd, setMakeOfferPriceusd] = useState(0);
   const [balanceAmount, setBalanceAmount] = useState("");
   //action wallet states
   const [walletOpen, setWalletOpen] = useState(false);
   const [Loading1, setLoading1] = useState(false);
   const [Loading2, setLoading2] = useState(false);
-  const [hashValue,sethashValue]= useState("");
-  
+  const [hashValue, sethashValue] = useState("");
+
   const makeOffer = async () => {
-    if(from=="atlas"){
-      action(makeOfferPrice) 
-    }else{
-    try {
-      setWalletOpen(true);
-      setLoading1(true);
-      let priceInWei = web3.utils.toWei(makeOfferPrice, "ether");
-      console.log("priceInWei",priceInWei)
-      console.log("Token",Token)
-      console.log("REACT_APP_Marketplace_CONTRACT",process.env.REACT_APP_Marketplace_CONTRACT)
-      const makeOffer = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT , priceInWei ).send({ from: address })
-      setLoading1(false);
-      sethashValue(makeOffer?.hash);
-      setLoading2(true);
-      let url = "makeofferAndBid";
-      let params = {
-        nft_id: data.nftcollections_token_id,
-        wallet: address,
-        amount: makeOfferPrice,
-        type:"makeoffer",
-        hash: makeOffer?.transactionHash,
-      };
-      let authtoken = "";
-      let response = await postMethod({ url, params, authtoken });
-      console.log("make offer response",response);
-      if(response.status){
-        try{
-          let url = "createActivities";
-          let params = {
-            wallet: address, 
-            hash: makeOffer?.transactionHash,
-            from: data.nftcollections_wallet,
-            to: address,
-            type: "makeoffer",
-            price:makeOfferPrice,
-            quantity: 1,
-            collection: data.nftcollections_id,
-            nft: data.nftcollections_token_id,
-            tranfer:""
-          };
-          let authtoken = "";
-          let response = await postMethod({
-            url,
-            params,
-            authtoken,
-          })
-        }catch(e){
-          console.log(e)
+    if (from == "atlas") {
+      action(makeOfferPrice)
+    } else {
+      try {
+        setWalletOpen(true);
+        setLoading1(true);
+        let priceInWei = web3.utils.toWei(makeOfferPrice, "ether");
+        console.log("priceInWei", priceInWei)
+        console.log("Token", Token)
+        console.log("REACT_APP_Marketplace_CONTRACT", process.env.REACT_APP_Marketplace_CONTRACT)
+        const makeOffer = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({ from: address })
+        setLoading1(false);
+        sethashValue(makeOffer?.hash);
+        setLoading2(true);
+        let url = "makeofferAndBid";
+        let params = {
+          nft_id: data.nftcollections_token_id,
+          wallet: address,
+          amount: makeOfferPrice,
+          type: "makeoffer",
+          hash: makeOffer?.transactionHash,
+        };
+        let authtoken = "";
+        let response = await postMethod({ url, params, authtoken });
+        console.log("make offer response", response);
+        if (response.status) {
+          try {
+            let url = "createActivities";
+            let params = {
+              wallet: address,
+              hash: makeOffer?.transactionHash,
+              from: data.nftcollections_wallet,
+              to: address,
+              type: "makeoffer",
+              price: makeOfferPrice,
+              quantity: 1,
+              collection: data.nftcollections_id,
+              nft: data.nftcollections_token_id,
+              tranfer: ""
+            };
+            let authtoken = "";
+            let response = await postMethod({
+              url,
+              params,
+              authtoken,
+            })
+          } catch (e) {
+            console.log(e)
+          }
+          setMakeModalOpen(false);
         }
-        setMakeModalOpen(false);
+        setLoading2(false)
+        setWalletOpen(false);
+      } catch (e) {
+        console.log(e);
+        setWalletOpen(false);
+        setLoading1(false);
+        setLoading2(false);
       }
-      setLoading2(false)
-      setWalletOpen(false);
-    } catch (e) {
-      console.log(e);
-      setWalletOpen(false);
-      setLoading1(false);
-      setLoading2(false);
     }
-  }
   };
 
-  const balanceCheck = async()=>{
+  const balanceCheck = async () => {
     const balance = await Token.methods
-    .balanceOf(address)
-    .call();
+      .balanceOf(address)
+      .call();
     setBalanceAmount(balance);
   }
-  useEffect(() => {
-    // balanceCheck();
-  }, [])
-
+  const handlesetprice = (e) => {
+    setMakeOfferPrice(e)
+    setMakeOfferPriceusd(e*USD)
+  }
 
   // const days = [
   //   { id: 1, days: "1 Day" },
@@ -116,6 +117,10 @@ function MakeOfferModal(props) {
   //   { id: 4, days: "7 Days" },
   //   { id: 5, days: "1 month" },
   // ];
+  var formatter = new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 4
+	});
   return (
     <>
       <Modal
@@ -134,7 +139,7 @@ function MakeOfferModal(props) {
                 </small>
               </div>
               <div className="d-flex justify-content-between align-items-center">
-                <span>Price { Totalamt ? Totalamt : data?data.nftcollections_price:0}</span>
+                <span>Price {formatter.format(makeOfferPriceusd)} $</span>
                 <span>Balance {tokenblc}</span>
               </div>
               <div className="d-flex makeoffer_input-holder">
@@ -145,7 +150,7 @@ function MakeOfferModal(props) {
                   placeholder="Enter amount"
                   className="makeoffer_input"
                   value={makeOfferPrice}
-                  onChange={(e) => setMakeOfferPrice(e.target.value)}
+                  onChange={(e) => handlesetprice(e.target.value)}
                 />
               </div>
               <Stack gap={2}>
@@ -160,13 +165,13 @@ function MakeOfferModal(props) {
           </div>
         </Box>
       </Modal>
-      <ActionWallet 
+      <ActionWallet
         walletOpen={walletOpen}
         loader1={Loading1}
         loader2={Loading2}
         hashValue={hashValue}
         setWalletOpen={setWalletOpen}
-       />
+      />
     </>
   );
 }

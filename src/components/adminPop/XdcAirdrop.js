@@ -324,7 +324,7 @@ function XdcAirdrop() {
                     }}
                     className="metablog_primary-filled-button"
                   >
-                    <span>Deposit XDC</span>
+                    <span>Deposit BLOQS</span>
                   </button>
                 <small
                   onClick={modalClose}
@@ -388,10 +388,10 @@ function XdcAirdrop() {
                           />
                         </div> */}
                         <div>
-                          <div className="bold">Total XDC</div>
+                          <div className="bold">Total BLOQS</div>
                           <input
                             type="number"
-                            placeholder="0 XDC"
+                            placeholder="0 BLOQS"
                             className="createitem_input"
                             disabled
                             value={

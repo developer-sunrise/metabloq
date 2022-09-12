@@ -137,7 +137,9 @@ function Atlas({
   // estate
   const getType5 = useCallback((x, y) => {
     const id = getCoords(x, y);
+    console.log("id",id)
     const tile = parcels[id];
+    console.log("tile",parcels[id])
     if (tile?.type == 3) {
       return tile?.estateId;
     } else {
@@ -165,7 +167,47 @@ function Atlas({
   }, []);
   const getType2 = useCallback((x, y) => {
     const id = getCoords(x, y);
-    const tile = parcels[id];
+    const tile = parcels[id]; 
+    if(tile?.type==3){
+      var values =[]
+      values.push(tile)
+      for(var i =1 ;i<10;i++){
+        let xvalue = x
+        let yvalue = y+i
+        const id = getCoords(xvalue, yvalue);
+        const tile = parcels[id];
+        values.push(tile)
+      }
+      for(var i =1 ;i<10;i++){
+        let xvalue = x+i
+        let yvalue = y
+        const id = getCoords(xvalue, yvalue);
+        const tile = parcels[id];
+        
+        values.push(tile)
+      }
+      for(var i =1 ;i<10;i++){
+        let xvalue = x
+        let yvalue = y-i
+        const id = getCoords(xvalue, yvalue);
+        const tile = parcels[id];
+        values.push(tile)
+      }
+      for(var i =1 ;i<10;i++){
+        let xvalue = x-i
+        let yvalue = y
+        const id = getCoords(xvalue, yvalue);
+        const tile = parcels[id];
+        values.push(tile)
+      }
+      console.log("values",values)
+      var estatedata =values.filter((data)=>{
+        return data.estateId==9
+      })
+      console.log("estatedata",estatedata)
+    } 
+    // console.log("parcels",parcels)
+
     if (tile?.type == 9) {
       return true;
     }
@@ -174,7 +216,11 @@ function Atlas({
     }
     if (tile?.type == 2) {
       return true;
-    } else {
+    } 
+    // if (tile?.type == 3) {
+    //   return true;
+    // } 
+    else {
       return false;
     }
   }, []);
@@ -378,6 +424,7 @@ function Atlas({
   };
 
   useEffect(() => {
+    console.log("selectedParcels",selectedParcels)
     if (selectedParcels) {
       setSelected(selectedParcels);
     }
@@ -425,20 +472,19 @@ function Atlas({
         // layers={[atlasLayer]} Math.abs(x)
         layers={layers}
         onClick={(x, y) => {
-          if (getType5(selected[0]?.x, selected[0]?.y) != null) {
-            let data = Object.keys(parcels).filter((item) => {
-              if (item?.type == 3) {
-                if (
-                  item?.estateId == getType5(selected[0]?.x, selected[0]?.y)
-                ) {
-                  return item;
-                }
-              }
-            });
-
-            console.log("tesss",data)
-          }
-
+          console.log("x, y",x, y)
+          console.log("selected",selected[0])
+          // if (getType5(selected[0]?.x, selected[0]?.y) != null) {
+          //   alert("estate")
+          //   let data = Object.keys(parcels).filter((item) => {
+          //     if(item?.type == 3) {
+              
+          //       if (item?.estateId == getType5(selected[0]?.x, selected[0]?.y) ) {
+          //         return item;
+          //       }
+          //     }
+          //   });
+          // }
           if (getType4(selected[0]?.x, selected[0]?.y) == address) {
             if (getType3(x, y)) {
               let removedArr = [];
@@ -480,7 +526,6 @@ function Atlas({
             }
             return;
           }
-
           if (alreadyOwnedSelect) {
             setSelected([]);
             setSelectedAxis([]);
@@ -489,6 +534,7 @@ function Atlas({
             return;
           }
           if (selected.length == 0) {
+            console.log("getType2(x, y)",getType2(x, y))
             if (getType2(x, y)) {
               let newArr = [...selected];
               newArr.push({ x, y });
