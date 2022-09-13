@@ -21,7 +21,26 @@ function BuildingCollection(props) {
   const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { allCollection } = reduxItems;
-
+  const calfloorprice = (data) => {
+    var totalamount = 0
+    if (!data) {
+      return 0
+    }
+    if (data.length != 0) {
+      data.map((price) => {
+        if (price) {
+          totalamount += Number(price)
+        }
+      })
+      return totalamount / data.length
+    } else {
+      return 0
+    }
+  }
+  var formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4
+  });
   return (
     <Stack gap={3}>
       <Row>
@@ -74,9 +93,15 @@ function BuildingCollection(props) {
                           </small>
                         </div>
                         <div className="d-flex justify-content-center align-items-center">
-                          <AiTwotoneHeart />
-                          <span className="mx-1 poppins">{item.collection_likes}</span>
+                        <div className="d-flex flex-column">
+                          <span className="font-weight-bold poppins">
+                            Floor Price
+                          </span>
+                          <span className="mx-1 poppins">
+                            {formatter.format(calfloorprice(item.price))} BLOQS
+                          </span>
                         </div>
+                      </div>
                       </div>
                       {/* <div className="d-flex justify-content-between poppins">
                         <small>Floor price</small>

@@ -164,7 +164,7 @@ function PlacebidModal(props) {
                     placeholder="Enter amount"
                     className="makeoffer_input"
                     value={placeBidPrice}
-                    onChange={(e) =>handleplacebit(e.target.value)}
+                    onChange={(e) =>{ if(e.target.value>=0){ handleplacebit(e.target.value) } }}
                     required
                   />
                 </div>

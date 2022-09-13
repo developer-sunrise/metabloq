@@ -116,14 +116,18 @@ const Header = () => {
     console.log("colllections", colllections.result)
     setAllCollections(colllections.result)
   }
+  var userprofile = JSON.parse(localStorage.getItem('Userdata'))
+  useEffect(()=>{
+   
+    if (userprofile) {
+      // console.log("User", userprofile.profileImage)
+      setProfileImage(userprofile.profileImage)
+    }
+  },[userprofile])
   useEffect(() => {
     getallcollections()
     getactivity()
-    var userprofile = JSON.parse(localStorage.getItem('Userdata'))
-    if (userprofile) {
-      console.log("User", userprofile.profileImage)
-      setProfileImage(userprofile.profileImage)
-    }
+    
     if (wallet.connected) {
       if(userprofile){
         if(userprofile.wallet!=address){

@@ -67,10 +67,10 @@ function CollectionsCards() {
                   <small>created by {data.collection_wallet.slice(0,5)+"..."+data.collection_wallet.slice(-5)}</small>
                 </div>
                 <div className="d-flex justify-content-center align-items-center">
-                  <AiTwotoneHeart />
+                  {/* <AiTwotoneHeart />
                   <span className="mx-1 poppins">
                     {data.collection_likes}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </Stack>

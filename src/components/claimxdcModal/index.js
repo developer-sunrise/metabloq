@@ -176,7 +176,7 @@ function ClaimxdcModal(props) {
                 <Box sx={style}>
                     <Stack gap={3}>
                         <div className='modal_header'>
-                            <h4 className="text-light fw-bold m-0">Claim BLOQS</h4>
+                            <h4 className="text-light fw-bold m-0">Claim XDC</h4>
                             <small onClick={() => setclaimmodal(false)} style={{ cursor: 'pointer', color: "white" }}>X</small>
                         </div>
                         <div className='modal_body'>

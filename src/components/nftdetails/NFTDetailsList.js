@@ -77,7 +77,7 @@ const NFTDetailsList = (props) => {
                           className="font-weight-bold"
                           style={{ color: "#1C83E5" }}
                         >
-                          {data.nftcollections_price} bloqs
+                          {data.nftcollections_price} BLOQS
                         </div> : " "}
                       </div>
                     </div>
@@ -91,7 +91,6 @@ const NFTDetailsList = (props) => {
                          <button className="nftcollection_mobile-category">ON SALE</button> : null 
                       }
                       </>
-                      
                     }
                   </Stack>
                 </div>

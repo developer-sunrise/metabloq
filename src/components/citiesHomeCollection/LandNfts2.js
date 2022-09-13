@@ -7,16 +7,20 @@ import Switch from '@mui/material/Switch';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import MiniAtlas from "../atlasMini";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-
-function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
-  
+function LandNfts2({onSelectGrid,parcels,filterType,result}){
+  const reduxItems = useSelector((state) => state.WalletConnect);
+  const { address,USD } = reduxItems;
     const [visible,setVisible] = useState("land");
     const navigate = useNavigate();
  useEffect(()=>{
   console.log("result",result)
  },[])
+ var formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 4
+});
   return (
     <div>
       parcels
@@ -45,9 +49,18 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
                           <h5 className="fw-bold">{data}</h5>&nbsp;
                           <span className="fw-bold">
                             {parcels[data]?.bloqs_price
-                              ? parcels[data]?.bloqs_price + "Bloqs"
+                              ? parcels[data]?.bloqs_price + "BLOQS"
                               : ""}
                           </span>
+                         
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                        <span className="fw-bold"> </span>
+                          <span className="fw-bold">
+                      {parcels[data].bloqs_price
+                        ? formatter.format(parcels[data].bloqs_price*USD) + "$"
+                        : ""}
+                    </span>
                         </div>
                         <div>
                           {parcels[data]?.owner == address
@@ -74,9 +87,12 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
             return(
               <Col key={index.toString()+"parcels"} xxl={3} xl={3} lg={3} md={6} sm={6} xs={6} className="mb-3">
                 <div
-                  // onClick={()=> navigate("citieshome",{
-                  //   state: {data:result},
-                  // })}
+                onClick={() => {
+                  navigate("/collections/citieshome",{  state:{  id: '49',data:result, item:[{ x: parcels[data].x, y: parcels[data].y }]} })
+                  // onSelectGrid([
+                  //   { x: parcels[data].x, y: parcels[data].y },
+                  // ]);
+                }}
                     className="land_nft-card">
                   <div className=" h-170 w-100 ">
                     <MiniAtlas parcels={parcels} selectedParcels={[ {x:parcels[data].x,y:parcels[data].y} ]}/>
@@ -87,9 +103,18 @@ function LandNfts2({onSelectGrid,parcels,filterType,address,result}){
                           <h5 className="fw-bold">{data}</h5>
                           <span className="fw-bold">
                             {parcels[data]?.bloqs_price
-                              ? parcels[data]?.bloqs_price + "Bloqs"
+                              ? parcels[data]?.bloqs_price + "BLOQS"
                               : ""}
                           </span>
+                          
+                        </div>
+                        <div className="d-flex justify-content-between align-items-center">
+                        <span className="fw-bold"> </span>
+                          <span className="fw-bold">
+                      {parcels[data].bloqs_price
+                        ? formatter.format(parcels[data].bloqs_price*USD) + "$"
+                        : ""}
+                    </span>
                         </div>
                         <div>
                           {parcels[data]?.status == "onsale" ? <button className="nftcollection_mobile-category w-100 py-2">On Sale</button>

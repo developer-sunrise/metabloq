@@ -84,10 +84,10 @@ function CollectionsListing() {
                           </small>
                         </small>
                       </div>
-                      <div className="d-flex justify-content-center align-items-center">
+                      {/* <div className="d-flex justify-content-center align-items-center">
                         <AiTwotoneHeart />
                         <span className="mx-1 poppins">{data.c_likes}</span>
-                      </div>
+                      </div> */}
                     </div>
                   </Stack>
                 </div>

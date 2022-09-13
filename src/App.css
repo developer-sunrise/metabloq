@@ -14,6 +14,15 @@ body {
 .bold{
   font-weight: bold;
 }
+/*  hide Input arrow*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
 /* gradient button*/
 .metablog_gradient-button {
 

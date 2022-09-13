@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Stack, Image } from "react-bootstrap";
 import {
   CollectionsData,
@@ -19,39 +19,58 @@ function ArtCollection(props) {
   const navigate = useNavigate();
   const [next, setNext] = useState(collectionsPerRow);
   const handleMoreCollection = () => {
-      setNext(next + collectionsPerRow);
-    };
+    setNext(next + collectionsPerRow);
+  };
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { allCollection } = reduxItems;
-
+  const calfloorprice = (data) => {
+    var totalamount = 0
+    if (!data) {
+      return 0
+    }
+    if (data.length != 0) {
+      data.map((price) => {
+        if (price) {
+          totalamount += Number(price)
+        }
+      })
+      return totalamount / data.length
+    } else {
+      return 0
+    }
+  }
+  var formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 4
+  });
   return (
     <Stack gap={3}>
       <Row>
-        {allCollection.filter(item => item.collection_category == "Art").slice(0, next)?.map((item,i) => {
+        {allCollection.filter(item => item.collection_category == "Art").slice(0, next)?.map((item, i) => {
           return (
             <Col xxl={4} xl={4} lg={4} md={4} sm={12} xs={12} className="mb-3" key={i}>
               <Fade bottom>
                 <div
                   className="collections_cards metablog_cards"
-                  onClick={() => navigate("collectionhome",{
-                    state: { id: item.collection_id, type:item.category, data: item },
+                  onClick={() => navigate("collectionhome", {
+                    state: { id: item.collection_id, type: item.category, data: item },
                   })}
                 >
                   <Stack gap={2}>
                     <Row className="collections_cards-grid">
-                          <div style={{ padding: 5,borderRadius:".5em",overflow:"hidden"}}>
-                            <Image
-                              style={{
-                                height: "200px",
-                                width: "100%",
-                                objectFit: "cover",
-                              }}
-                              fluid
-                              src={item.collection_banner_image}
-                              alt="gridimg1"
-                              className="metabloq_img img-zoom-animation"
-                            />
-                          </div>
+                      <div style={{ padding: 5, borderRadius: ".5em", overflow: "hidden" }}>
+                        <Image
+                          style={{
+                            height: "200px",
+                            width: "100%",
+                            objectFit: "cover",
+                          }}
+                          fluid
+                          src={item.collection_banner_image}
+                          alt="gridimg1"
+                          className="metabloq_img img-zoom-animation"
+                        />
+                      </div>
                     </Row>
                     <div className="d-flex justify-content-between align-items-center">
                       <div className="d-flex flex-column">
@@ -59,12 +78,18 @@ function ArtCollection(props) {
                           {item.collection_name}
                         </span>
                         <small className="secondary-text poppins">
-                            created by {item.collection_wallet.slice(0,5)+"..."+item.collection_wallet.slice(-5)}
+                          created by {item.collection_wallet.slice(0, 5) + "..." + item.collection_wallet.slice(-5)}
                         </small>
                       </div>
                       <div className="d-flex justify-content-center align-items-center">
-                        <AiTwotoneHeart />
-                        <span className="mx-1 poppins">{item.collection_likes}</span>
+                        <div className="d-flex flex-column">
+                          <span className="font-weight-bold poppins">
+                            Floor Price
+                          </span>
+                          <span className="mx-1 poppins">
+                            {formatter.format(calfloorprice(item.price))} BLOQS
+                          </span>
+                        </div>
                       </div>
                     </div>
                     {/* <div className="d-flex justify-content-between poppins">
@@ -246,13 +271,13 @@ function ArtCollection(props) {
       </Row>
       {
         allCollection.length > 0 &&
-      <Zoom bottom duration={2000}>
-        <div className="d-flex justify-content-center">
-          <button onClick={handleMoreCollection} className="mr-2 nftcollection_mobile-category">
-            <font size="2">Load More</font>
-          </button>
-        </div>
-      </Zoom>
+        <Zoom bottom duration={2000}>
+          <div className="d-flex justify-content-center">
+            <button onClick={handleMoreCollection} className="mr-2 nftcollection_mobile-category">
+              <font size="2">Load More</font>
+            </button>
+          </div>
+        </Zoom>
       }
     </Stack>
   );

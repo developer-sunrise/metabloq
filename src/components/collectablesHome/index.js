@@ -322,11 +322,15 @@ function CollectablesHome() {
               <h2>{state?.data?.collection_name}</h2>
               <span>created by {state?.data?.user_name? state?.data?.user_name : state?.data?.collection_wallet.slice(0,5)+"..."+state?.data?.collection_wallet.slice(-5) } {state?.data?.collection_id}</span>
             </div>
-            <button
-                onClick={() => setConfirmmodal1(true)}
-                className="mr-2 nftcollection_mobile-category" >
-                <span>Edit</span>
-              </button>
+            {
+              state?.data?.collection_wallet==address&&
+              <button
+              onClick={() => setConfirmmodal1(true)}
+              className="mr-2 nftcollection_mobile-category" >
+              <span>Edit</span>
+            </button>
+            }
+           
           </div>
           <div className="d-flex justify-content-start align-items-center h-100 mb-sm-3">
             {/* <Stack gap={width > 600 ? "5" : "2"} direction="horizontal">
@@ -598,13 +602,15 @@ function CollectablesHome() {
                   <Col xxl={6} xl={6} lg={6} sm={12} xs={12} className="mb-3">
                       <Stack gap={4}>
                       <div>
-                          <div className="bold">XDC Price</div>
+                          <div className="bold">BLOQS Price</div>
                           <input
                             type="number"
                             placeholder="0"
                             className="createitem_input"
                             onChange={(e) => {
+                              if(e.target.value>=0){ 
                               setNft({...NFT,NFT_Price:e.target.value})
+                              }
                             }}
                           />
                         </div>
@@ -664,13 +670,6 @@ function CollectablesHome() {
                 <br />
                 {/* <small className="bold">{filename}</small> */}
               </div>
-              {/* <div className="py-2 text-center h-100 mx-5">
-                <br />
-                <small>Add XDC</small>
-                <br />
-                <br />
-               
-              </div> */}
               <Bounce>
                 <div className="d-flex justify-content-center px-5 py-3">
                   <button

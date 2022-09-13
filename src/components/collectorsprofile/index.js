@@ -26,6 +26,10 @@ function CollectorsProfile() {
     const [profileImage, setprofileImage]=useState(null)
     const [userEmail, setUserEmail]=useState('')
     const [userName, setuserName]=useState('')
+    const [Facebooklink, setFacebooklink] = useState('');
+    const [Instagramlink, setInstagramlink] = useState('');
+    const [Twitterlink, setTwitterlink] = useState('');
+    const [Telegramlink, setTelegramlink] = useState('');
     const wallet = useSelector((state) => state.WalletConnect);
     const { connected , address} =wallet
     useEffect(()=>{
@@ -39,6 +43,10 @@ function CollectorsProfile() {
                 setprofileImage(userprofile.profileImage)
                 setUserEmail(userprofile.email)
                 setuserName(userprofile.user_name)
+                setFacebooklink(userprofile.facebooklink)
+                setTelegramlink(userprofile.telegramlink)
+                setTwitterlink(userprofile.twitterlink)
+                setInstagramlink(userprofile.instagramlink)
             }
             if(connected){
                 getactivity()
@@ -107,10 +115,10 @@ function CollectorsProfile() {
             <Col xxl={5} xl={5} lg={5} md={5} sm={12} xs={12} className=''>
                 <div className='h-100 d-flex flex-column justify-content-around align-items-center'>
                     <div className='collectors-social-icons-div d-flex justify-sm-content-end align-items-start'>
-                        <span className='collectors-social-icons'><BsInstagram color="white" /></span>
-                        <span className='collectors-social-icons'><BsTwitter color="white" /></span>
-                        <span className='collectors-social-icons'><FaFacebookF color="white" /></span>
-                        <span className='collectors-social-icons'><FaTelegramPlane color="white" /></span>
+                        <a className='collectors-social-icons'href={Instagramlink} target="_blank" ><BsInstagram color="white" /></a>
+                        <a className='collectors-social-icons' href={Twitterlink} target="_blank" ><BsTwitter color="white" /></a>
+                        <a className='collectors-social-icons' href={Facebooklink} target="_blank" ><FaFacebookF color="white" /></a>
+                        <a className='collectors-social-icons' href={Telegramlink} target="_blank" ><FaTelegramPlane color="white" /></a>
                     </div>
                     <div className='d-flex'>
                         <Stack direction="horizontal" gap={3}>

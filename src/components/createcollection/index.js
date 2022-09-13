@@ -260,7 +260,7 @@ function CreateCollection() {
                       placeholder={"Royalties %"}
                       value={collection.royalties}
                       onChange={(e) => {
-                        if(e.target.value<=100){
+                        if(e.target.value<=100  && e.target.value>=0 ){
                           setCollection({
                             ...collection,
                             royalties: e.target.value,

@@ -105,7 +105,7 @@ function SignIn() {
               const jsonValue = JSON.stringify(response.userToken);
               console.log("jsonValue",jsonValue)
               localStorage.setItem("UserToken", jsonValue);
-              var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet}
+              var data ={email:user.user_email,user_name:user.user_name,profileImage:user.user_image,wallet:user.user_wallet,facebooklink:user.facebooklink,telegramlink:user.telegramlink,twitterlink:user.twitterlink,instagramlink:user.instagramlink,}
               const jsonObj = JSON.stringify(data);
               localStorage.setItem("Userdata", jsonObj);
               navigate("/");

@@ -28,7 +28,7 @@ function NFTCollectionSection(props) {
   const [playSound] = useSound(buttonSound);
   const [showFilter, setShowFilter] = useState(false);
   const [rangeSlider, setRangeSlider] = useState(10);
-
+  const [pricefilter, setpricefilter]= useState(false)
   const activeTab = useSelector((state) => state.TabReducer);
 
   const rangeSliderChange = (value) => {
@@ -38,7 +38,7 @@ function NFTCollectionSection(props) {
     0: "0.01BLOQS",
     100:"100BLOQS",
   };
-
+  
   return (
     <div className="metabloq_container">
       <Stack gap={4}>
@@ -82,9 +82,7 @@ function NFTCollectionSection(props) {
                     )}
                   </Tab>
                   <Tab
-                    onClick={() => playSound()}
-                    eventKey="Real Estate"
-                    title="Virtual Real Estate"
+                    onClick={() => playSound()} eventKey="Real Estate" title="Virtual Real Estate"
                   >
                     {collections ? (
                       <VirtualCollection virtual="Virtual Real Estate" />
@@ -132,7 +130,7 @@ function NFTCollectionSection(props) {
                       title={
                         <div
                           onClick={() => {
-                            setShowFilter(true);
+                            // setShowFilter(true);
                             playSound();
                           }}
                           className="nftcollection_filter-div-gradient"
@@ -181,7 +179,7 @@ function NFTCollectionSection(props) {
                   title="All Items"
                 >
                   {collections ? (
-                    <CollectorsCollectionCard collections="collections" />
+                    <CollectorsCollectionCard pricefilter={pricefilter} collections="collections" />
                   ) : (
                     <NFTCollectionCards />
                   )}
@@ -253,21 +251,25 @@ function NFTCollectionSection(props) {
                   title={
                     <div
                       onClick={() => {
-                        setShowFilter(true);
+                        setpricefilter(!pricefilter);
                         playSound();
                       }}
                       className="nftcollection_filter-div-gradient"
                     >
                       <small className="d-flex align-items-center">
-                        Filter & Sort <FiFilter />
+                        {/* Filter & Sort <FiFilter /> */}
+                        {
+                          !pricefilter?
+                          "Heigh to low "
+                          :
+                          "low to High "
+                        }
+                        
                       </small>
                     </div>
                   }
                 ></Tab>
-
-
               </Tabs>
-          
               <Drawer
                 anchor="right"
                 open={showFilter}

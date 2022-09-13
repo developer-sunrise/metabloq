@@ -150,7 +150,7 @@ function MakeOfferModal(props) {
                   placeholder="Enter amount"
                   className="makeoffer_input"
                   value={makeOfferPrice}
-                  onChange={(e) => handlesetprice(e.target.value)}
+                  onChange={(e) =>  { if(e.target.value>=0){ handlesetprice(e.target.value) }}}
                 />
               </div>
               <Stack gap={2}>

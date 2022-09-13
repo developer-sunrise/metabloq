@@ -15,20 +15,78 @@ import { useDispatch, useSelector } from "react-redux";
 const collectionsPerRow = 6;
 
 function CollectorsCollectionCard(props) {
-  let { collections, myprofile } = props;
+  let { collections, myprofile,pricefilter } = props;
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { allCollection } = reduxItems;
+  const [Totalcollections,SetTotalcollections]=useState([])
   const [next, setNext] = useState(collectionsPerRow);
   const handleMoreCollection = () => {
       setNext(next + 3);
     };
   const [playSound] = useSound(buttonSound);
   const navigate = useNavigate();
+  const calfloorprice = (data) => {
+    var totalamount = 0
+    if(!data){
+      return 0
+    }
+    if (data.length!=0) {
+      data.map((price) => {
+        if (price) {
+          totalamount += Number(price)
+        }
+      })
+      return totalamount / data.length
+    } else {
+      return 0
+    }
+  }
+  var formatter = new Intl.NumberFormat('en-US', {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 4
+	});
+  const sortcollections= ()=>{
+    allCollection.map((data,i)=>{
+      var totalprice =0
+      if(data.price){
+        data.price.map((pricedata)=>{
+          if(pricedata){
+            totalprice += Number(pricedata)
+          }else{
+            totalprice += 0
+          }
+        })
+      }
+      allCollection[i].floorprice=totalprice/Number(data.count)
+    })
+    var data =allCollection.sort((a,b) => b.collection_id-a.collection_id,0).slice(0, next)
+    console.log("allCollection",data)
+    SetTotalcollections(data.slice(0, next))
+  }
+
+  const floorpricesort =()=>{
+    var data =allCollection.sort((a,b) => b.floorprice-a.floorprice,0).slice(0, next)
+    SetTotalcollections(data)
+  }
+  useEffect(()=>{
+    if(allCollection.length!=0){
+      sortcollections()
+    }
+  },[allCollection])
+
+  useEffect(()=>{
+    console.log("pricefilter",pricefilter)
+    if(pricefilter){
+      floorpricesort()
+    }else{
+      sortcollections()
+    }
+  },[pricefilter])
   return (
     <Stack gap={3}>
       {myprofile ? <h2 className="lufga-bold">My Collections</h2> : null}
       <Row>
-        {allCollection.slice(0, next).map((data,index) => (
+        { Totalcollections.map((data,index) => (
           <Col key={index} xxl={4} xl={4} lg={4} md={4} sm={12} xs={12} className="mb-3">
             <Fade bottom>
               <div
@@ -77,10 +135,15 @@ function CollectorsCollectionCard(props) {
                       <small>created by {data.collection_wallet.slice(0,5)+"..."+data.collection_wallet.slice(-5)}</small>
                     </div>
                     <div className="d-flex justify-content-center align-items-center">
-                      <AiTwotoneHeart />
-                      <span className="mx-1 poppins">
-                        {data.collection_likes}
+                      {/* <AiTwotoneHeart /> */}
+                      <div className="d-flex flex-column"> 
+                      <span className="font-weight-bold poppins">
+                        Floor Price
                       </span>
+                      <span className="mx-1 poppins">
+                        {formatter.format(calfloorprice(data.price))} BLOQS
+                      </span>
+                    </div>
                     </div>
                   </div>
                 </Stack>

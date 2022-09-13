@@ -358,10 +358,12 @@ function XdcAirdrop() {
                             className="createitem_input"
                             value={no_of_wallet}
                             onChange={(e) => {
+                              if(e.target.value>=0){
                               setAirdropDetails({
                                 ...airdropDetails,
                                 no_of_wallet: e.target.value,
-                              });
+                              })
+                            }
                             }}
                           />
                         </div>

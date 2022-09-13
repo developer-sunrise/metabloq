@@ -220,10 +220,10 @@ function Atlas({
         selectmul.push(id)
       })
       // console.log("dataid",dataid)
-      console.log("selectmul",selectmul)
+      // console.log("selectmul",selectmul)
       // console.log("new",datauniq)
-      // setSelected(selectmul)
-      // onSelectGrid(selectmul)
+      setSelected(selectmul)
+      onSelectGrid(selectmul)
     } 
     // console.log("parcels",parcels)
     if (tile?.type == 9) {
@@ -235,9 +235,9 @@ function Atlas({
     if (tile?.type == 2) {
       return true;
     } 
-    // if (tile?.type == 3) {
-    //   return true;
-    // } 
+    if (tile?.type == 3) {
+      return true;
+    } 
     else {
       return false;
     }

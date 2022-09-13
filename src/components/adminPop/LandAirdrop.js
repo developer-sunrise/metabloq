@@ -6,6 +6,7 @@ import { RiUploadCloudFill } from "react-icons/ri";
 import Bounce from "react-reveal/Bounce";
 import { AiTwotoneHeart } from "react-icons/ai";
 import { Snackbar } from "@mui/material";
+import {BsDownload} from "react-icons/bs";
 import {
   ReactS3Client4,
   ReactS3Client2,
@@ -124,6 +125,7 @@ function LandAirdrop() {
         setloading(false)
       }
       setloading(false)
+      console.log("data.location",data.location )
       if (data?.status === 204) {
         if (type == "Logo") {
           setCollection({ ...collection, logo_image: data.location });
@@ -414,9 +416,7 @@ function LandAirdrop() {
                         <input
                           type="file"
                           style={{ display: "none" }}
-                          onChange={(e) => {
-                            insertImageintoS3(e, "Banner");
-                          }}
+                          onChange={(e) => { insertImageintoS3(e, "Banner"); }}
                         />
                       </label>
                     </div>
@@ -453,7 +453,10 @@ function LandAirdrop() {
                             insertImageintoS3(e, "Land");
                           }}
                         />
+                        
                       </label>
+                      <br />
+                         <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1663058153412Banner.xlsx" download>Template </a>&nbsp; <BsDownload color="#0d6efd"/>
                     </div>
                   </Bounce>
                 </Col>
@@ -480,7 +483,10 @@ function LandAirdrop() {
                             bannerImageChange(e);
                           }}
                         />
+                         
                       </label>
+                      <br />
+                      <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662385993107Logo.xlsx" download>Template</a>&nbsp;<BsDownload color="#0d6efd"/>
                     </div>
                   </Bounce>
                 </Col>

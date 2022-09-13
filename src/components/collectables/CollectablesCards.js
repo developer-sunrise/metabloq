@@ -25,7 +25,6 @@ function CollectablesCards() {
   useEffect(() => {
     getallcollection();
   }, []);
-  console.log(allCollection)
   return (
     <Row>
     {allCollection.length > 0 && allCollection.filter(data=> data.collection_category == "Land").slice(0, 3).map((data,index) => (
@@ -64,13 +63,13 @@ function CollectablesCards() {
                   <span className="font-weight-bold poppins">
                     {data.collection_name}
                   </span>
-                  <small>created by {data.collection_wallet.slice(0,5)+"..."+data.collection_wallet.slice(-5)}</small>
+                  <small>created by  {data.collection_wallet.slice(0,5)+"..."+data.collection_wallet.slice(-5)}</small>
                 </div>
                 <div className="d-flex justify-content-center align-items-center">
-                  <AiTwotoneHeart />
+                  {/* <AiTwotoneHeart />
                   <span className="mx-1 poppins">
                     {data.collection_likes}
-                  </span>
+                  </span> */}
                 </div>
               </div>
             </Stack>

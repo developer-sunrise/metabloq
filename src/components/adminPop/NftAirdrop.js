@@ -8,6 +8,7 @@ import { AiTwotoneHeart } from "react-icons/ai";
 import { Snackbar } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import { Box } from "@mui/system";
+import {BsDownload} from "react-icons/bs";
 import {
   ReactS3Client4,
   ReactS3Client2,
@@ -23,18 +24,18 @@ const empty = require("../../assets/empty.png");
 
 function NftAirdrop() {
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: "60%",
-  bgcolor: "background.paper",
-  border: "none !important",
-  boxShadow: 2,
-  p: 0,
-  borderRadius: "1em",
-};
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "60%",
+    bgcolor: "background.paper",
+    border: "none !important",
+    boxShadow: 2,
+    p: 0,
+    borderRadius: "1em",
+  };
   const [playSound] = useSound(buttonSound);
   const navigate = useNavigate();
   const reduxItems = useSelector((state) => state.WalletConnect);
@@ -175,7 +176,7 @@ const style = {
     console.log("response", response.result)
     setCollections(response.result)
   }
-  
+
   useEffect(() => {
     getAllCollection()
   }, [])
@@ -303,7 +304,23 @@ const style = {
                         </div>
                         <div className="createitem_select">
                           <div className="bold">Royalties</div>
-                          <Form.Select
+                          <input
+                            type={"number"}
+                            max={100}
+                            aria-label="Default select example"
+                            className="createitem_input"
+                            placeholder={"Royalties %"}
+                            value={collection.royalties}
+                            onChange={(e) => {
+                              if (e.target.value <= 100 && e.target.value >= 0) {
+                                setCollection({
+                                  ...collection,
+                                  royalties: e.target.value,
+                                });
+                              }
+                            }}
+                          />
+                          {/* <Form.Select
                             aria-label="Default select example"
                             onChange={(e) => {
                               setCollection({
@@ -317,7 +334,7 @@ const style = {
                             <option value="10">10%</option>
                             <option value="15">15%</option>
                             <option value="20">20%</option>
-                          </Form.Select>
+                          </Form.Select> */}
                         </div>
                       </Stack>
                     </Bounce>
@@ -450,7 +467,8 @@ const style = {
                         <br />
                         <h5>{filename}</h5>
                         <br />
-                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662387927910Logo.xlsx" download>Download File</a>
+                        <a href="https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/collection/1662387927910Logo.xlsx" download>Template </a>&nbsp; <BsDownload color="#0d6efd"/>
+                        
                       </div>
                     </Bounce>
                   </Col>
