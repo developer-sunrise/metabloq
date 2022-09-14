@@ -168,10 +168,8 @@ function Atlas({
   const getType2 = useCallback((x, y) => {
     const id = getCoords(x, y);
     const tile = parcels[id]; 
-    console.log("tile",tile)
-    if(tile?.type==3){
+    if(tile?.isEstate){
       var values =[]
-      // values.push(tile)
       for(var i =0 ;i<10;i++){
         let xvalue = x+i
         for(var p =0 ;p<10;p++){
@@ -225,7 +223,7 @@ function Atlas({
       setSelected(selectmul)
       onSelectGrid(selectmul)
     } 
-    // console.log("parcels",parcels)
+     console.log("tile?.type",tile?.type)
     if (tile?.type == 9) {
       return true;
     }
@@ -237,8 +235,7 @@ function Atlas({
     } 
     if (tile?.type == 3) {
       return true;
-    } 
-    else {
+    }else {
       return false;
     }
   }, []);
@@ -491,17 +488,23 @@ function Atlas({
         onClick={(x, y) => {
           console.log("x, y",x, y)
           console.log("selected",selected[0])
-          // if (getType5(selected[0]?.x, selected[0]?.y) != null) {
-          //   alert("estate")
-          //   let data = Object.keys(parcels).filter((item) => {
-          //     if(item?.type == 3) {
-              
-          //       if (item?.estateId == getType5(selected[0]?.x, selected[0]?.y) ) {
-          //         return item;
-          //       }
-          //     }
-          //   });
-          // }
+          if (getType5(selected[0]?.x, selected[0]?.y) != null) {
+            // alert("estate")
+            setSelected([]);
+            setSelectedAxis([]);
+            onSelectGrid([]);
+            setAlreadyOwnedSelect(false);
+            let data = Object.keys(parcels).filter((item) => {
+              if(item?.type == 3) {
+                // if (item?.estateId == getType5(selected[0]?.x, selected[0]?.y) ) {
+                //   return item;
+                // }
+                setSelected(removedArr);
+                setSelectedAxis(removedArr);
+                onSelectGrid(removedArr);
+              }
+            });
+          }
           if (getType4(selected[0]?.x, selected[0]?.y) == address) {
             if (getType3(x, y)) {
               let removedArr = [];
@@ -553,7 +556,10 @@ function Atlas({
           if (selected.length == 0) {
             if (getType2(x, y)) {
               let newArr = [...selected];
-              if(selected.length!=1){
+              const id = getCoords(x, y);
+              const tile = parcels[id]; 
+              if(tile?.isEstate){
+                console.log("Estate")
                 newArr.push({ x, y });
               // console.log("newArr",newArr)
               // setSelected(newArr);
@@ -562,6 +568,7 @@ function Atlas({
               setAlreadyOwnedSelect(true);
               return;
               }else{ 
+                console.log("parcel")
               newArr.push({ x, y });
               console.log("newArr",newArr)
               setSelected(newArr);
@@ -570,7 +577,6 @@ function Atlas({
               setAlreadyOwnedSelect(true);
               return;
               }
-              
             }
           }
           if (!getType(x, y)) {

@@ -21,7 +21,11 @@ function CollectorsCollectionCard(props) {
   const [Totalcollections,SetTotalcollections]=useState([])
   const [next, setNext] = useState(collectionsPerRow);
   const handleMoreCollection = () => {
-      setNext(next + 3);
+    var data =next+3
+       setNext(next + 3);
+      var data =allCollection.sort((a,b) => b.collection_id-a.collection_id,0).slice(0, data)
+      // console.log("allCollection",data)
+      SetTotalcollections(data)
     };
   const [playSound] = useSound(buttonSound);
   const navigate = useNavigate();
@@ -61,7 +65,7 @@ function CollectorsCollectionCard(props) {
     })
     var data =allCollection.sort((a,b) => b.collection_id-a.collection_id,0).slice(0, next)
     console.log("allCollection",data)
-    SetTotalcollections(data.slice(0, next))
+    SetTotalcollections(data)
   }
 
   const floorpricesort =()=>{
@@ -75,7 +79,6 @@ function CollectorsCollectionCard(props) {
   },[allCollection])
 
   useEffect(()=>{
-    console.log("pricefilter",pricefilter)
     if(pricefilter){
       floorpricesort()
     }else{

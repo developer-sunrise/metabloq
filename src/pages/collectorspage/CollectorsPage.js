@@ -5,14 +5,14 @@ import CollectorsProfile from "../../components/collectorsprofile";
 import NFTDetailsCards from "../../components/nftdetails/NFTDetailsCards";
 import NFTDetailsList from "../../components/nftdetails/NFTDetailsList";
 import { useDispatch, useSelector } from "react-redux";
-import { postMethod } from "../../helpers/API&Helpers";
+import { postMethod, getMethod } from "../../helpers/API&Helpers";
 import LandNfts2 from "../../components/citiesHomeCollection/LandNfts2";
 function CollectorsPage() {
   const reduxItems = useSelector((state) => state.WalletConnect);
   const { address, Marketplace, web3, Token, Collection ,allCollection} = reduxItems;
   const dispatch = useDispatch()
   const [collectionNfts, setcollectionNfts] = useState([]);
-  const [parcels, setParcels] = useState({});
+  const [parcels, setParcels] = useState([]);
   // const [userCollection,setuserCollection] = useState([]);
   var data ={
     "collection_id": "49",
@@ -49,14 +49,24 @@ function CollectorsPage() {
 }
   const result = allCollection.filter(data=> data.collection_category == "Land")
 
-  const getdata = async () => {
-    let staticUrl =  "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/nft/1661751917404testLand.json";
-    const res = await fetch(staticUrl, { cache: "no-store" });
-    const json = await res.json();
-    console.log("resss", json?.ok);
-    if (json.ok) {
-      setParcels(json.data);
-    }
+  const getdata = async (result) => {
+    const parceldata=[]
+    result.map( async(landres,i)=>{
+      if(landres.collection_land_json){
+        let staticUrl =  landres.collection_land_json
+        // "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/nft/1661751917404testLand.json";
+        //  https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/nft/1661751917404testLand.json
+      const res = await fetch(staticUrl,{ cache: "no-store" });
+      const json = await res.json();
+      if (json.ok) {
+        // setParcels(json.data);
+        landres.parcels=json.data
+        parceldata.push(landres)
+        result[i].parcels=json.data
+      }}
+    })
+   console.log("parceldata",result)
+   setParcels(result)
   };
   const tokenCheck = async () => {
     try {
@@ -106,7 +116,17 @@ function CollectorsPage() {
       console.log(e);
     }
   };
-
+  const getallcollection = async () => {
+    let url = "getAllCollection";
+    let authtoken = "";
+    let response = await getMethod({ url, authtoken })
+    if (response.status) {
+    //  setallcollectionsdata(response.result)
+     var  Collection = response.result
+     const result = Collection.filter( data=> data.collection_category == "Land")
+     getdata(result)
+    }
+  };
   const getUserCollection = async()=>{
     try{
       let url = "getCollection";
@@ -115,7 +135,6 @@ function CollectorsPage() {
       };
       let authtoken = "";
       let response = await postMethod({url,params,authtoken});
-      console.log("response user",response)
       if(response.status){
         dispatch({ type: "GETALLCOLLECTION", payload: response.result });
       }
@@ -125,12 +144,12 @@ function CollectorsPage() {
   }
   useEffect(() => {
     if (address != "") {
+      getallcollection()
       getUserNftDetails();
       tokenCheck();
-      getdata();
+      // getdata();
       getUserCollection();
     }
-    console.log("result",Collection)
   }, [address]);
 
   return (

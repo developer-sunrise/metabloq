@@ -47,6 +47,7 @@ function PlacebidModal(props) {
   }
 
   const placebidClick = async()=>{
+    console.log("placeBidPrice",placeBidPrice)
     if(from=="atlas"){
       action(placeBidPrice) 
     }else{

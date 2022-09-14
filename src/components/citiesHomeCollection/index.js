@@ -16,6 +16,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import LandNfts from "./LandNfts";
 import NFTDetails from "../nftdetailsparcels";
 import { FiSearch } from "react-icons/fi";
+import {Snackbar} from "@mui/material";
+import MuiAlert from "@mui/material/Alert";
 import {
   Switch,
   FormGroup,
@@ -27,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import BuynowModal from "../buynowModal";
 import Modalbox from "../modalbox/Modalbox";
 import MakeOfferModal from "../makeoffermodal";
-import { LocationOn, ViewModule } from "@mui/icons-material";
+import { ContactlessOutlined, LocationOn, ViewModule } from "@mui/icons-material";
 import {
   ReactS3Client4,
   ReactS3Client2,
@@ -72,19 +74,23 @@ function CitiesHomeCollection({ selectedItem }) {
   const [onSale, setOnSale] = useState(false);
   const [Confirmmodal, setConfirmmodal] = useState(false);
   const [show, setShow] = useState(false);
+  const [showestate, setShowestate] = useState(false);
   const [selectedGrid, setSelectedGrid] = useState(selectedItem ? selectedItem : null);
   const [placeModalOpen, setPlaceModalOpen] = useState(false);
+  const [placeModalOpenestate, setPlaceModalOpenestate] = useState(false);
   const [buyModalOpen2, setBuyModalOpen2] = useState(false);
   const [atlasLoader, setAtlasLoader] = useState(false);
   const [makeModalOpen, setMakeModalOpen] = useState(false);
+  const [makeModalOpenestate, setMakeModalOpenestate] = useState(false);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [buyModalOpenestate, setBuyModalOpenestate] = useState(false);
   const [highestBid, sethighestBid] = useState([]);
   const [formats, setFormats] = useState("map");
   const [activityDatas, setActivityDatas] = useState([]);
   const [adjcent, setAdjcent] = useState([]);
   const [offerData, setOfferData] = useState([]);
   const [bidData, setBidData] = useState([]);
-  const [tokenAddress, settokenAddress] = useState("");
+  const [tokenAddress, settokenAddress] = useState(0);
   const [Xvalue, setxvalue] = useState(null);
   const [Yvalue, setyvalue] = useState(null);
 
@@ -100,6 +106,29 @@ function CitiesHomeCollection({ selectedItem }) {
   const [CollectionNmae, setCollectionNmae] = useState("");
   const [BalanceToken, setBalance] = useState(0);
   const [Totalamt, setTotalamt] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = useState("");
+  const [types, setType] = useState("");
+
+  const [states, setStates] = useState({
+    vertical: 'bottom',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal } = states;
+  const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
+  const handleClick = (types, message) => {
+    setType(types);
+    setMessage(message);
+    setOpen(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   const getCoords = (x, y) => `${x},${y}`;
   const handleFormat = (event, newFormats) => {
@@ -112,11 +141,20 @@ function CitiesHomeCollection({ selectedItem }) {
   const buyModalClose = () => {
     setBuyModalOpen(false);
   };
+  const buyModalCloseestate = () => {
+    setBuyModalOpenestate(false);
+  };
   const makeModalClose = () => {
     setMakeModalOpen(false);
   };
+  const makeModalCloseestate = () => {
+    setMakeModalOpenestate(false);
+  };
   const placeModalClose = () => {
     setPlaceModalOpen(false);
+  };
+  const placeModalCloseestate = () => {
+    setPlaceModalOpenestate(false);
   };
   const onSelectGrid = (item) => {
     console.log("onSelectGrid", item)
@@ -126,6 +164,8 @@ function CitiesHomeCollection({ selectedItem }) {
       getItemActivity(item[0]);
       findAdjcent(item);
     } else if (item.length > 1) {
+      getTokendetails(item);
+      getItemActivity(item);
       setSelectedGrid(item);
       findAdjcent(item);
     }
@@ -163,11 +203,8 @@ function CitiesHomeCollection({ selectedItem }) {
   };
   const isEstate = () => {
     if (selectedGrid.length != 0) {
-      // selectedGrid.map((item) => {
-      //   owner = getDetails(item[0].x, item[0].y).isEstate
-      // });
       let owner = getDetails(selectedGrid[0].x, selectedGrid[0].y).isEstate
-      console.log("isEstate", owner)
+      // console.log("isEstate", owner)
       if (owner) {
         return true;
       } else {
@@ -212,21 +249,29 @@ function CitiesHomeCollection({ selectedItem }) {
     if (selectedGrid.length == 1) {
       const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
       var parcelsSelected = parcels;
-      let amt = parcelsSelected[id].bloqs_price;
+      let amt = Number(parcelsSelected[id].bloqs_price);
       console.log("amt", amt)
       setTotalamt(amt)
     } else {
       var parcelsSelected = parcels;
       let price = 0;
       selectedGrid.map((item) => {
-        price = price + parcelsSelected[id].bloqs_price;
+        let id = getCoords(item.x, item.y);
+        price = price + Number(parcelsSelected[id].bloqs_price);
       });
       let amt = price;
       let amt2 = amt.toString();
+      console.log("amt", amt)
       setTotalamt(amt2)
     }
-    setBuyModalOpen(true);
     playSound();
+    if(isEstate()){
+      setBuyModalOpenestate(true)
+    }else{
+      setBuyModalOpen(true);
+     
+    }
+    
   };
   const buyClick2 = () => {
     if (selectedGrid.length == 1) {
@@ -258,6 +303,7 @@ function CitiesHomeCollection({ selectedItem }) {
       var parcelsSelected = parcels;
       let price = 0;
       selectedGrid.map((item) => {
+        const id = getCoords(item.x, item.y);
         price = price + parcelsSelected[id].bloqs_price;
       });
       let amt = price;
@@ -327,13 +373,6 @@ function CitiesHomeCollection({ selectedItem }) {
   const balance = async (address, amtInWei) => {
     try {
       const balance = await Token.methods.balanceOf(address).call();
-
-      console.log(
-        "Ddd",
-        parseInt(balance) > amtInWei,
-        parseInt(balance),
-        amtInWei
-      );
       if (parseInt(balance) > amtInWei) {
         return true;
       } else {
@@ -460,7 +499,7 @@ function CitiesHomeCollection({ selectedItem }) {
             } catch (err) {
               setWalletOpen(false)
               console.log("err", err);
-              alert("failed");
+              // alert("failed");
             }
           }
         } catch (err) {
@@ -605,7 +644,6 @@ function CitiesHomeCollection({ selectedItem }) {
       const tokenId = await LandRegistry.methods
         .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
         .call();
-
       if (type == "fixedsale") {
         putonsale(tokenId, price, time);
       } else {
@@ -615,6 +653,105 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("ddsds", err);
     }
   };
+  //Estate
+  const actionestate = async (type, price, time) => {
+    console.log("type, price, time", type, price, time)
+    if(!price){
+      handleClick("error", 'Enter valid price amount');
+      return 
+    }
+    try {
+      const tokenId = tokenAddress
+      // await LandRegistry.methods.getlandIds(selectedGrid[0].x, selectedGrid[0].y).call();
+      if (type == "fixedsale") {
+        putonsaleEstate(tokenId, price, time);
+      } else {
+        if(!time){
+          handleClick("error", 'Enter valid time');
+          return 
+        }
+        putonactionEstate(tokenId, price, time);
+      }
+    } catch (err) {
+      console.log("ERROR", err);
+    }
+  };
+  //Estateputonsale
+  const putonsaleEstate = async (tokenId, price, time) => {
+    try {
+      setWalletOpen(true)
+      setLoading1(true)
+      console.log("tokenIdtokenId", tokenId);
+      const EstateFixedSale = await EstateRegistry.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, tokenId).send({ from: address });
+      console.log("tesss", EstateFixedSale);
+      // const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      var parcelsSelected = parcels;
+      let x = [];
+      let y = [];
+      selectedGrid.map((item) => {
+        x.push(item.x);
+        y.push(item.y);
+        var id = getCoords(item.x, item.y);
+        parcelsSelected[id] = {
+          ...parcelsSelected[id],
+          type: 1,
+          status: "onsale",
+          bloqs_price: Number(price),
+        };
+      });
+      var filename =
+        data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
+        ".json";
+      const jsonData = await ReactS3Client2.uploadFile(
+        JSON.stringify({
+          ok: true,
+          data: parcelsSelected,
+        }),
+        filename
+      ); // for json update
+      console.log("json updateee", jsonData);
+      if (jsonData.status == 204) {
+        try {
+          let url = "createActivities";
+          let params = {
+            wallet: address,
+            hash: EstateFixedSale?.transactionHash,
+            from: address,
+            to: "",
+            type: "onsale",
+            price: Number(price),
+            quantity: 1,
+            collection: data.collection_id,
+            nft: tokenId,
+            transfer: "",
+            Land: true,
+          };
+          let authtoken = "";
+          let response = await postMethod({
+            url,
+            params,
+            authtoken,
+          });
+          console.log("response", response)
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
+        } catch (e) {
+          setWalletOpen(false)
+          setLoading1(false)
+          console.log(e);
+        }
+        // setTimeout(window.location.reload(), 3000);
+      }
+      // setTimeout(window.location.reload(), 3000);
+    } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
+      console.log("dsdds", err);
+    }
+  }
   // putonsale
   const putonsale = async (tokenId, price, time) => {
     try {
@@ -683,6 +820,94 @@ function CitiesHomeCollection({ selectedItem }) {
     } catch (err) {
       setWalletOpen(false)
       setLoading1(false)
+      console.log("dsdds", err);
+    }
+  };
+  //Estate
+  const putonactionEstate = async (tokenId, price, time) => {
+    try {
+      setWalletOpen(true)
+      setLoading1(true)
+      console.log("tokenIdtokenId", tokenId);
+      const NftAuction = await EstateRegistry.methods
+        .approve(process.env.REACT_APP_Marketplace_CONTRACT, tokenId)
+        .send({ from: address });
+      console.log("tesss", NftAuction);
+      const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      var parcelsSelected = parcels;
+      // parcelsSelected[id] = {
+      //   ...parcelsSelected[id],
+      //   type: 2,
+      //   status: "auction",
+      //   bloqs_price: price,
+      //   auction_time: time,
+      // };
+      let x = [];
+      let y = [];
+      selectedGrid.map((item) => {
+        x.push(item.x);
+        y.push(item.y);
+        var id = getCoords(item.x, item.y);
+        parcelsSelected[id] = {
+          ...parcelsSelected[id],
+          type: 2,
+          status: "auction",
+          bloqs_price: Number(price),
+          auction_time: time,
+        };
+      });
+      var filename =
+        data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
+        ".json";
+      const jsonData = await ReactS3Client2.uploadFile(
+        JSON.stringify({
+          ok: true,
+          data: parcelsSelected,
+        }),
+        filename
+      ); // for json update
+      console.log("json updateee actionnn", jsonData);
+      if (jsonData.status == 204) {
+        try {
+          let url = "createActivities";
+          let params = {
+            wallet: address,
+            hash: NftAuction?.transactionHash,
+            from: address,
+            to: "",
+            type: "onsale",
+            price: price,
+            quantity: 1,
+            collection: data.collection_id,
+            nft: tokenId,
+            transfer: "",
+            Land: true,
+          };
+          let authtoken = "";
+          let response = await postMethod({
+            url,
+            params,
+            authtoken,
+          });
+          setLoading1(false)
+          setLoading2(true)
+          getdata();
+          setLoading2(false)
+          setWalletOpen(false)
+        } catch (e) {
+          setWalletOpen(false)
+          setLoading1(false)
+          console.log(e);
+        }
+        // setTimeout(window.location.reload(), 3000);
+      } else {
+        setLoading1(false)
+        setWalletOpen(false)
+      }
+      // setTimeout(window.location.reload(), 3000);
+    } catch (err) {
+      setLoading1(false)
+      setWalletOpen(false)
       console.log("dsdds", err);
     }
   };
@@ -827,6 +1052,72 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("ddsds", err);
     }
   };
+  //Estate
+  const makeOfferEstate = async (price) => {
+    const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+    var parcelsSelected = parcels;
+    console.log(parcelsSelected[id].owner);
+    try {
+      setWalletOpen(true)
+      setLoading1(true)
+      const tokenId =tokenAddress 
+      // await LandRegistry.methods
+      //   .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
+      //   .call();
+      console.log("SSSSSSs", price, tokenId);
+      let priceInWei = web3.utils.toWei(price, "ether");
+      const makeOffer = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({ from: address });
+      console.log("makeOffer", makeOffer);
+      let url = "makeofferAndBidLand";
+      let params = {
+        nft_id: tokenId,
+        wallet: address,
+        amount: price,
+        type: "makeoffer",
+        hash: makeOffer?.transactionHash,
+      };
+      let authtoken = "";
+      let response = await postMethod({ url, params, authtoken });
+      console.log("make offer response", response);
+      if (response.status) {
+        try {
+          let url = "createActivities";
+          let params = {
+            wallet: address,
+            hash: makeOffer?.transactionHash,
+            from: makeOffer?.from,
+            to: address,
+            type: "makeoffer",
+            price: price,
+            quantity: 1,
+            collection: data.collection_id,
+            nft: tokenId,
+            transfer: "",
+            Land: true,
+          };
+          let authtoken = "";
+          let response = await postMethod({
+            url,
+            params,
+            authtoken,
+          });
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
+        } catch (e) {
+          setWalletOpen(false)
+          setLoading2(false)
+          console.log(e);
+        }
+      }
+    } catch (err) {
+      setWalletOpen(false)
+      setLoading2(false)
+      console.log("ddsds", err);
+    }
+  };
   // place bid
   const placeBid = async (price) => {
     console.log("ddddddddbifddddd", price);
@@ -837,6 +1128,68 @@ function CitiesHomeCollection({ selectedItem }) {
         .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
         .call();
       console.log("SSSSSSs", price, tokenId);
+      let priceInWei = web3.utils.toWei(price, "ether");
+      const placebid = await Token.methods
+        .approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei)
+        .send({ from: address });
+      console.log("makeOffer", placebid);
+      let url = "makeofferAndBidLand";
+      let params = {
+        nft_id: tokenId,
+        wallet: address,
+        amount: price,
+        type: "bid",
+        hash: placebid?.transactionHash,
+      };
+      let authtoken = "";
+      let response = await postMethod({ url, params, authtoken });
+      console.log("bid response", response);
+      if (response.status) {
+        try {
+          let url = "createActivities";
+          let params = {
+            wallet: address,
+            hash: placebid?.transactionHash,
+            from: placebid?.from,
+            to: address,
+            type: "bid",
+            price: price,
+            quantity: 1,
+            collection: data.collection_id,
+            nft: tokenId,
+            transfer: "",
+          };
+          let authtoken = "";
+          let response = await postMethod({
+            url,
+            params,
+            authtoken,
+          });
+          setLoading1(false)
+          setLoading2(true)
+          getdata()
+          setWalletOpen(false)
+          setLoading2(false)
+        } catch (e) {
+          setWalletOpen(false)
+          setLoading1(false)
+          console.log(e);
+        }
+      }
+    } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
+      console.log("ddsds", err);
+    }
+  };
+  // estate 
+  const placeBidestate = async (price) => {
+    console.log("placeBidestate", price);
+    try {
+      setWalletOpen(true)
+      setLoading1(true)
+      const tokenId = tokenAddress
+      console.log("placeBidestate", price, tokenId);
       let priceInWei = web3.utils.toWei(price, "ether");
       const placebid = await Token.methods
         .approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei)
@@ -986,6 +1339,115 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("ddd", err);
     }
   };
+  //Estate BUY
+  const BuyEstate = async () => {
+    try {
+      setWalletOpen(true)
+      setLoading1(true)
+      var parcelsSelected = parcels;
+      const tokenId = tokenAddress
+      // await LandRegistry.methods.getlandIds(selectedGrid[0].x, selectedGrid[0].y).call();
+      const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+      let tile = parcelsSelected[id];
+      let amt = tile.bloqs_price*selectedGrid.length
+      let priceInWei = web3.utils.toWei(String(amt), "ether");
+      console.log("priceInWei", priceInWei);
+      var checkblc = await balance(address, priceInWei)
+      console.log("checkblc", checkblc)
+      if (checkblc) {
+        let date = new Date();
+        let timestamp = date.getTime();
+        let url = "signature";
+        let params = {
+          seller: tile.owner,
+          buyer: address,
+          nftAddress: process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT,
+          amount: priceInWei,
+          tokenId: tokenId,
+          nonce: timestamp,
+        };
+        let authtoken = "";
+        let signresponse = await postMethod({ url, params, authtoken });
+        if (signresponse.status) {
+          const accept = await executeOrder(signresponse.signtuple);
+          if (accept) {
+            // parcelsSelected[id] = {
+            //   ...parcelsSelected[id],
+            //   type: 9,
+            //   owner: address,
+            //   status: "Mint",
+            // };
+            let x = [];
+            let y = [];
+            selectedGrid.map((item) => {
+              x.push(item.x);
+              y.push(item.y);
+              var id = getCoords(item.x, item.y);
+              parcelsSelected[id] = {
+                ...parcelsSelected[id],
+                type: 3,
+                owner: address,
+                status: "Mint",
+              };
+            });
+            var filename =
+              data?.collection_land_json
+                ?.split("/")
+                ?.pop()
+                ?.split(".")
+                ?.shift() + ".json";
+            const jsonData = await ReactS3Client2.uploadFile(
+              JSON.stringify({
+                ok: true,
+                data: parcelsSelected,
+              }),
+              filename
+            );
+            if (jsonData.status == 204) {
+              try {
+                let url = "createActivities";
+                let params = {
+                  wallet: address,
+                  hash: accept?.transactionHash,
+                  from: tile.owner,
+                  to: address,
+                  type: "buy",
+                  price: tile.bloqs_price,
+                  quantity: 1,
+                  collection: data.collection_id,
+                  nft: tokenId,
+                  transfer: "transfered",
+                };
+                let authtoken = "";
+                let response = await postMethod({
+                  url,
+                  params,
+                  authtoken,
+                });
+                setLoading1(false)
+                setLoading2(true)
+                getdata()
+                setWalletOpen(false)
+                setLoading2(false)
+              } catch (e) {
+                console.log(e);
+              }
+              // setTimeout(window.location.reload(), 3000);
+            }
+            console.log("jsonData", jsonData);
+          }
+        }
+      } else {
+        setWalletOpen(false)
+        setLoading1(false)
+        console.log("check balanceeee");
+      }
+    } catch (err) {
+      setWalletOpen(false)
+      setLoading1(false)
+      console.log("ddd", err);
+    }
+  };
   // accept make offer
   const acceptMakeOffer = async (buyerAddress, amt, token) => {
     let priceInWei = web3.utils.toWei(amt.toString(), "ether");
@@ -1076,7 +1538,115 @@ function CitiesHomeCollection({ selectedItem }) {
       alert("check balance");
     }
   };
-  // place bid
+  //Estate
+  const acceptMakeOfferEstate = async (buyerAddress, amt, token) => {
+    let priceInWei = web3.utils.toWei(amt.toString(), "ether");
+    if (await balance(buyerAddress, priceInWei)) {
+      try {
+        setWalletOpen(true)
+        setLoading1(true)
+        let date = new Date();
+        let timestamp = date.getTime();
+        let url = "signature";
+        let params = {
+          seller: address,
+          buyer: buyerAddress,
+          nftAddress: process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT,
+          amount: priceInWei,
+          tokenId: token,
+          nonce: timestamp,
+        };
+        console.log("params",params)
+        let authtoken = "";
+        let signresponse = await postMethod({ url, params, authtoken });
+        if (signresponse.status) {
+          try{
+          const EstateFixedSale = await EstateRegistry.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, token).send({ from: address });
+          console.log("EstateFixedSale",EstateFixedSale)
+          const accept = await executeOrder(signresponse.signtuple);
+          if (accept) {
+            var parcelsSelected = parcels;
+            const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+            let x = [];
+            let y = [];
+            selectedGrid.map((item) => {
+              x.push(item.x);
+              y.push(item.y);
+              var id = getCoords(item.x, item.y);
+              parcelsSelected[id] = {
+                ...parcelsSelected[id],
+                type: 3,
+                status: "Mint",
+                owner: buyerAddress,
+              };
+            });
+            var filename =
+              data?.collection_land_json
+                ?.split("/")
+                ?.pop()
+                ?.split(".")
+                ?.shift() + ".json";
+            const jsonData = await ReactS3Client2.uploadFile(
+              JSON.stringify({
+                ok: true,
+                data: parcelsSelected,
+              }),
+              filename
+            );
+            if (jsonData.status == 204) {
+              try {
+                let url = "createActivities";
+                let params = {
+                  wallet: address,
+                  hash: accept?.transactionHash,
+                  from: address,
+                  to: buyerAddress,
+                  type: "transfer",
+                  price: amt,
+                  quantity: 1,
+                  collection: data.collection_id,
+                  nft: token,
+                  transfer: "transfered",
+                  Land: true,
+                };
+                let authtoken = "";
+                let response = await postMethod({
+                  url,
+                  params,
+                  authtoken,
+                });
+                setLoading2(true)
+                getdata()
+                setWalletOpen(false)
+                setLoading2(false)
+              } catch (e) {
+                setWalletOpen(false)
+                setLoading1(false)
+                console.log(e);
+              }
+              // setTimeout(window.location.reload(), 3000);
+            }
+            console.log("jsonData", jsonData);
+          }else{
+            setWalletOpen(false)
+        setLoading1(false)
+          }
+        }catch(err){
+          console.log("Error",err)
+          setWalletOpen(false)
+          setLoading1(false)
+        }
+        }
+      } catch (e) {
+        setWalletOpen(false)
+        setLoading1(false)
+        console.log(e);
+      }
+    } else {
+      alert("check balance");
+    }
+  };
+  // place bid settle
   const transferNft = async (buyerAddress, amt, token) => {
     let priceInWei = web3.utils.toWei(amt.toString(), "ether");
     if (await balance(buyerAddress, priceInWei)) {
@@ -1155,7 +1725,111 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log("err while transfered");
     }
   };
-
+  // Estate settle
+  const transferEstate = async (buyerAddress, amt, token) => {
+    let priceInWei = web3.utils.toWei(amt.toString(), "ether");
+    if (await balance(buyerAddress, priceInWei)) {
+      try {
+        setWalletOpen(true)
+        setLoading1(true)
+        let date = new Date();
+        let timestamp = date.getTime();
+        let url = "signature";
+        let params = {
+          seller: address,
+          buyer: buyerAddress,
+          nftAddress: process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT,
+          amount: priceInWei,
+          tokenId: token,
+          nonce: timestamp,
+        };
+        let authtoken = "";
+        let signresponse = await postMethod({ url, params, authtoken });
+        if (signresponse.status) {
+          const accept = await executeOrder(signresponse.signtuple);
+          if (accept) {
+            var parcelsSelected = parcels;
+            const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+            // parcelsSelected[id] = {
+            //   ...parcelsSelected[id],
+            //   type: 9,
+            //   owner: buyerAddress,
+            //   status: "Mint",
+            // };
+            let x = [];
+            let y = [];
+            selectedGrid.map((item) => {
+              x.push(item.x);
+              y.push(item.y);
+              var id = getCoords(item.x, item.y);
+              parcelsSelected[id] = {
+                ...parcelsSelected[id],
+                type: 3,
+                owner: buyerAddress,
+                status: "Mint"
+              };
+            });
+            var filename =
+              data?.collection_land_json
+                ?.split("/")
+                ?.pop()
+                ?.split(".")
+                ?.shift() + ".json";
+            const jsonData = await ReactS3Client2.uploadFile(
+              JSON.stringify({
+                ok: true,
+                data: parcelsSelected,
+              }),
+              filename
+            );
+            if (jsonData.status == 204) {
+              try {
+                let url = "createActivities";
+                let params = {
+                  wallet: address,
+                  hash: accept?.transactionHash,
+                  from: address,
+                  to: buyerAddress,
+                  type: "transfer",
+                  price: amt,
+                  quantity: 1,
+                  collection: data.collection_id,
+                  nft: token,
+                  transfer: "transfered",
+                  Land: true,
+                };
+                let authtoken = "";
+                let response = await postMethod({
+                  url,
+                  params,
+                  authtoken,
+                });
+                setLoading2(true)
+                getdata()
+                setWalletOpen(false)
+                setLoading2(false)
+                setLoading1(false)
+              } catch (e) {
+                setWalletOpen(false)
+                setLoading1(false)
+                console.log(e);
+              }
+              // setTimeout(window.location.reload(), 3000);
+            }
+            console.log("jsonData", jsonData);
+          }
+        }
+      } catch (e) {
+        setWalletOpen(false)
+        setLoading1(false)
+        console.log(e);
+      }
+    } else {
+      setWalletOpen(false)
+      setLoading1(false)
+      console.log("err while transfered");
+    }
+  };
   // rejectMakeOffer
   const rejectMakeOffer = async (id, token) => {
     try {
@@ -1202,6 +1876,68 @@ function CitiesHomeCollection({ selectedItem }) {
       type: 9,
       status: "Mint",
     };
+    var filename =
+      data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
+      ".json";
+    const jsonData = await ReactS3Client2.uploadFile(
+      JSON.stringify({
+        ok: true,
+        data: parcelsSelected,
+      }),
+      filename
+    );
+
+    console.log("json updateee actionnn", jsonData);
+    let url = "createActivities";
+    let params = {
+      wallet: address,
+      hash: "",
+      from: address,
+      to: "",
+      type: "Delist",
+      price: 0,
+      quantity: 1,
+      collection: data.collection_id,
+      nft: tokenId,
+      transfer: "",
+      Land: true,
+    };
+    let authtoken = "";
+    let response = await postMethod({
+      url,
+      params,
+      authtoken,
+    });
+    console.log("response", response)
+    getdata()
+    setLoading(false)
+  };
+  const relistEstate = async () => {
+    setLoading(true)
+    const tokenId = await LandRegistry.methods
+      .getlandIds(selectedGrid[0].x, selectedGrid[0].y)
+      .call();
+    const id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+    console.log("TOKEN ID", tokenId)
+    var parcelsSelected = parcels;
+    let x = [];
+    let y = [];
+    selectedGrid.map((item) => {
+      x.push(item.x);
+      y.push(item.y);
+      var id = getCoords(item.x, item.y);
+      parcelsSelected[id] = {
+        ...parcelsSelected[id],
+        type: 3,
+        status: "Mint",
+        bloqs_price: Number(price),
+      };
+    });
+    // parcelsSelected[id] = {
+    //   ...parcelsSelected[id],
+    //   type: 9,
+    //   status: "Mint",
+    // };
     var filename =
       data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
       ".json";
@@ -1295,27 +2031,24 @@ function CitiesHomeCollection({ selectedItem }) {
         var filename =
           data?.collection_land_json?.split("/")?.pop()?.split(".")?.shift() +
           ".json";
-          console.log("filename",filename)
+        console.log("filename", filename)
         var parcelsSelected = parcels;
         // selectedGrid.map((item) => {
         //   x.push(item.x);
         //   y.push(item.y);
-          var id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
-          // var id = getCoords(item.x, item.y);
-          parcelsSelected[id] = {
-            ...parcelsSelected[id],
-            type: 9,
-            status: "Mint",
-            isEstate:false,
-            owner: transferid,
-          };
+        var id = getCoords(selectedGrid[0].x, selectedGrid[0].y);
+        // var id = getCoords(item.x, item.y);
+        parcelsSelected[id] = {
+          ...parcelsSelected[id],
+          type: 9,
+          status: "Mint",
+          isEstate: false,
+          owner: transferid,
+        };
         // });
         const tokenId = await LandRegistry.methods.getlandIds(selectedGrid[0].x, selectedGrid[0].y).call();
         var landid = tokenId
-        console.log("esateid, landid, transferid",esateid, landid, transferid)
-        console.log("EstateRegistry.methods",EstateRegistry.methods)
         const transferestate = await EstateRegistry.methods.transferLand(esateid, landid, transferid).send({ from: address })
-        console.log("transferestate", transferestate)
         const jsonData = await ReactS3Client2.uploadFile(
           JSON.stringify({
             ok: true,
@@ -1341,13 +2074,37 @@ function CitiesHomeCollection({ selectedItem }) {
       setParcels(json.data);
     }
   };
-
+  const getTokendetails = async(item) => {
+    const id = getCoords(item[0].x, item[0].y);
+    const tile = parcels[id];
+    console.log("getDetails", tile)
+    if (tile.estateId) {
+      settokenAddress(tile.estateId);
+      try {
+        let url = "getNftOffersAndBidOffersLand";
+        let params = {
+          nft_id: tile.estateId,
+        };
+        let authtoken = "";
+        let response = await postMethod({ url, params, authtoken });
+        if (response.status) {
+          setOfferData(response.resultOffers);
+          setBidData(response.resultNftBids);
+          const result = response.resultNftBids.map((data, i) => {
+            return data.offer_bid_amount;
+          });
+          sethighestBid(result);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      settokenAddress(0);
+    }
+  }
   const getMakeOffers = async (item) => {
     try {
-      const tokenId = await LandRegistry.methods
-        .getlandIds(item.x, item.y)
-        .call();
-      // console.log("dff", tokenId);
+      const tokenId = await LandRegistry.methods.getlandIds(item.x, item.y).call();
       if (tokenId) {
         settokenAddress(tokenId);
         try {
@@ -1373,13 +2130,20 @@ function CitiesHomeCollection({ selectedItem }) {
       console.log(e);
     }
   };
-
   const getItemActivity = async (item) => {
-    console.log("item", item)
+    console.log("getItemActivity", item)
     try {
-      const tokenId = await LandRegistry.methods
+      var tokenId =false
+      if(isEstate){
+        const id = getCoords(item[0].x, item[0].y);
+        const tile = parcels[id];
+        tokenId =tile.estateId
+      }else{
+        tokenId = await LandRegistry.methods
         .getlandIds(item.x, item.y)
         .call();
+      }
+      
       console.log("tokenId item activity", tokenId);
       if (tokenId) {
         try {
@@ -1402,7 +2166,6 @@ function CitiesHomeCollection({ selectedItem }) {
     }
 
   };
-
   const jsonUpdation = () => {
     return (
       <p>time over</p>
@@ -1489,6 +2252,11 @@ function CitiesHomeCollection({ selectedItem }) {
   });
   return (
     <div className="metabloq_container">
+       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose} anchorOrigin={{ vertical, horizontal }}>
+        <Alert onClose={handleClose} severity={types} sx={{ width: "100%" }}>
+          {message}
+        </Alert>
+      </Snackbar>
       <Fade bottom>
         <div className="collections_home-wrapper">
           <div className="collections_home-banner">
@@ -1871,14 +2639,36 @@ function CitiesHomeCollection({ selectedItem }) {
                         )
                       ) : owner() == address ? (
                         isEstate() ?
-                          (
+                          status() == "onsale" ?
                             <button
-                              // onClick={transferestateland}
-                              className="mx-2 metablog_primary-filled-square-button"
+                              onClick={() => relistEstate()}
+                              disabled={Loading}
+                              className="mr-2 nftcollection_mobile-category"
                             >
-                              <span>Transfer Estate</span>
+                              <span>Delist Estate</span>{
+                                Loading &&
+                                <img src={loaderimg} style={{ width: "30px", height: "30px" }} />
+                              }
                             </button>
-                          )
+                            :
+                            status() == "auction" ? 
+                            <button
+                              onClick={() => relistEstate()}
+                              disabled={Loading}
+                              className="mr-2 nftcollection_mobile-category"
+                            >
+                              <span>Delist Estate</span>{
+                                Loading &&
+                                <img src={loaderimg} style={{ width: "30px", height: "30px" }} />
+                              }
+                            </button>
+                            :
+                            (
+                              <button onClick={() => setShowestate(true)}
+                                className="mx-2 metablog_primary-filled-square-button">
+                                <span>put on sale Estate</span>
+                              </button>
+                            )
                           :
                           (
                             <button
@@ -1888,13 +2678,36 @@ function CitiesHomeCollection({ selectedItem }) {
                               <span>Create Estate</span>
                             </button>
                           )
-                      ) : (
-                        <button
-                          onClick={buyClick}
-                          className="mx-2 metablog_primary-filled-square-button">
-                          <span>Buy Now 1</span>
-                        </button>
-                      )}
+                      ) 
+                      : (
+                        isEstate() &&
+                          status() == "onsale" ?
+                            (
+                              <button
+                                onClick={buyClick}
+                                className="mx-2 metablog_primary-filled-square-button">
+                                <span>Buy Now Estate </span>
+                              </button>
+                            )
+                            :
+                            status() == "auction" ? 
+                            (
+                              <button
+                                onClick={()=>setPlaceModalOpenestate(true)}
+                                className="mx-2 metablog_primary-filled-square-button">
+                                <span>Place a Bid Estate</span>
+                              </button>
+                            )
+                            :
+                            (
+                              <button
+                              onClick={() => setMakeModalOpenestate(true)}
+                                className="mx-2 metablog_primary-filled-square-button">
+                                <span>Make offer Estate</span>
+                              </button>
+                            )
+                      )
+                      }
                     </div>
                     <div className="nftdetails_tabs-small"></div>
                   </Stack>
@@ -1916,19 +2729,18 @@ function CitiesHomeCollection({ selectedItem }) {
                     <div className="d-flex justify-content-between">
                       <div className="text-left">Contract address</div>
                       <a
-                        href={process.env.REACT_APP_SCAN_baseuri + process.env.REACT_APP_LAND_REGISTRY_CONTRACT}
+                        href={isEstate() ? process.env.REACT_APP_SCAN_baseuri + process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT : process.env.REACT_APP_SCAN_baseuri + process.env.REACT_APP_LAND_REGISTRY_CONTRACT}
                         className="text-right"
                         style={{ textDecoration: "inherit" }}
                         target="_blank"
                       >
-                        {process.env.REACT_APP_LAND_REGISTRY_CONTRACT.slice(
-                          0,
-                          5
-                        ) +
-                          "..." +
-                          process.env.REACT_APP_LAND_REGISTRY_CONTRACT.slice(
-                            -5
-                          )}
+                        {
+                          isEstate() ?
+                            process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT.slice(0, 5) + "..." + process.env.REACT_APP_ESTATE_REGISTRY_CONTRACT.slice(-5)
+                            :
+                            process.env.REACT_APP_LAND_REGISTRY_CONTRACT.slice(0, 5) + "..." + process.env.REACT_APP_LAND_REGISTRY_CONTRACT.slice(-5)
+                        }
+
                       </a>
                     </div>
                     <div className="d-flex justify-content-between">
@@ -1939,7 +2751,7 @@ function CitiesHomeCollection({ selectedItem }) {
                     </div>
                     <div className="d-flex justify-content-between">
                       <span className="text-left">Token Standard</span>
-                      <span className="text-right">ERC-1155</span>
+                      <span className="text-right">ERC-721</span>
                     </div>
                     <div className="d-flex justify-content-between">
                       <span className="text-left">Metadata</span>
@@ -1983,6 +2795,20 @@ function CitiesHomeCollection({ selectedItem }) {
                                 </div>
                                 <div className="d-flex">
                                   {owner() == address && (
+                                    isEstate()?
+                                    <button
+                                    onClick={() =>
+                                      acceptMakeOfferEstate(
+                                        offer.offer_bid_land_wallet,
+                                        offer.offer_bid_land_amount,
+                                        offer.offer_bid_land_token_id
+                                      )
+                                    }
+                                    className="metablog_primary-filled-square-button"
+                                  >
+                                    <font size="1">Accept Estate</font>
+                                  </button>
+                                    :
                                     <button
                                       onClick={() =>
                                         acceptMakeOffer(
@@ -2058,11 +2884,13 @@ function CitiesHomeCollection({ selectedItem }) {
                                 </a>
                                 <div className="d-flex">
                                   {
-                                    // (days + hours + minutes + seconds <= 0) &&
+                                    // (days + hours + minutes + seconds <= 0) && 
                                     owner() == address ? (
-                                      <button
+                                      
+                                       isEstate()?
+                                       <button
                                         onClick={() =>
-                                          transferNft(
+                                          transferEstate(
                                             bid.offer_bid_land_wallet,
                                             bid.offer_bid_land_amount,
                                             bid.offer_bid_land_token_id
@@ -2070,8 +2898,23 @@ function CitiesHomeCollection({ selectedItem }) {
                                         }
                                         className="metablog_primary-filled-square-button"
                                       >
-                                        <font size="1">Settle</font>
+                                        <font size="1">Settle Estate</font>
                                       </button>
+                                       :
+                                       <button
+                                       onClick={() =>
+                                         transferNft(
+                                           bid.offer_bid_land_wallet,
+                                           bid.offer_bid_land_amount,
+                                           bid.offer_bid_land_token_id
+                                         )
+                                       }
+                                       className="metablog_primary-filled-square-button"
+                                     >
+                                       <font size="1">Settle</font>
+                                     </button>
+                                      
+                                      
                                     ) : null
                                   }
                                 </div>
@@ -2099,6 +2942,13 @@ function CitiesHomeCollection({ selectedItem }) {
         playSound={playSound}
         action={buy}
       />
+      {/* <BuynowModal
+        buyModalOpen={buyModalOpenestate}
+        setBuyModalOpen={setBuyModalOpenestate}
+        buyModalClose={buyModalCloseestate}
+        playSound={playSound}
+        action={buy}
+      /> */}
       <Modalbox
         show={show}
         setShow={setShow}
@@ -2108,6 +2958,16 @@ function CitiesHomeCollection({ selectedItem }) {
         // data={price}
         from={"atlas"}
         action={action}
+      />
+      <Modalbox
+        show={showestate}
+        setShow={setShowestate}
+        nftsImg={
+          "https://sunrisetechs.s3-ap-southeast-2.amazonaws.com/metabloqs/preview/1.jpg"
+        }
+        // data={price}
+        from={"atlas"}
+        action={actionestate}
       />
       <MakeOfferModal
         makeModalOpen={makeModalOpen}
@@ -2119,6 +2979,16 @@ function CitiesHomeCollection({ selectedItem }) {
         from={"atlas"}
         action={makeOffer}
       />
+      <MakeOfferModal
+        makeModalOpen={makeModalOpenestate}
+        setMakeModalOpen={setMakeModalOpenestate}
+        makeModalClose={makeModalCloseestate}
+        // data={nft}
+        tokenblc={BalanceToken}
+        Totalamt={Totalamt}
+        from={"atlas"}
+        action={makeOfferEstate}
+      />
       <PlacebidModal
         placeModalOpen={placeModalOpen}
         setPlaceModalOpen={setPlaceModalOpen}
@@ -2127,6 +2997,15 @@ function CitiesHomeCollection({ selectedItem }) {
         highestBid={highestBid}
         from={"atlas"}
         action={placeBid}
+      />
+      <PlacebidModal
+        placeModalOpen={placeModalOpenestate}
+        setPlaceModalOpen={setPlaceModalOpenestate}
+        placeModalClose={placeModalCloseestate}
+        playSound={playSound}
+        highestBid={highestBid}
+        from={"atlas"}
+        action={placeBidestate}
       />
       <BuynowModal
         buyModalOpen={buyModalOpen2}
@@ -2137,6 +3016,16 @@ function CitiesHomeCollection({ selectedItem }) {
         Totalamt={Totalamt}
         tokenblc={BalanceToken}
         action={realBuy}
+      />
+      <BuynowModal
+        buyModalOpen={buyModalOpenestate}
+        setBuyModalOpen={setBuyModalOpenestate}
+        buyModalClose={buyModalCloseestate}
+        playSound={playSound}
+        from={"atlas"}
+        Totalamt={Totalamt}
+        tokenblc={BalanceToken}
+        action={BuyEstate}
       />
       <ActionWallet
         walletOpen={walletOpen}
