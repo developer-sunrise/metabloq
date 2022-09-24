@@ -2,7 +2,6 @@
     background: linear-gradient(90deg, #6DC6FE 0%, #0295FA 100%);
     padding: 1em;
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     border-radius: 1em 1em 0 0;

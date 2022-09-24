@@ -8,11 +8,12 @@ import { SiDiscord } from "react-icons/si";
 import { BsInstagram } from "react-icons/bs";
 import useSound from "use-sound";
 import buttonSound from "../../assets/audio/button.wav";
+import { useNavigate } from 'react-router-dom';
 const logo = require("../../assets/metablog_logo.png").default
 
 function Footer() {
   const [playSound] = useSound(buttonSound);
-
+const navigate=useNavigate()
 
   return (
     <>
@@ -29,6 +30,7 @@ function Footer() {
             <Col xxl={2} xl={2} lg={2} md={2} sm={12} xs={12} className="mb-3">
               <div className="font-weight-bold poppins mb-3">About Us</div>
               <Stack gap={2}>
+                <small className="secondary-text poppins" onClick={()=>navigate('/login')} >KYC</small>
                 <small className="secondary-text poppins">About</small>
                 <small className="secondary-text poppins">Ecosystem</small>
                 <small className="secondary-text poppins">Team</small>

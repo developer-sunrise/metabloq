@@ -15,12 +15,11 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { RiArrowDownSLine } from "react-icons/ri";
-
 import ConenctWallet from "../connectwallet/index.js";
 import useSound from "use-sound";
 import { Box, Modal } from "@mui/material";
 import buttonSound from "../../assets/audio/button.wav";
-
+import BuyBloqs from '../buybloqs'
 import {
   artAction,
   buildingAction,
@@ -34,6 +33,9 @@ import { IoIosArrowDown } from "react-icons/io";
 import { AiOutlineLogout, AiOutlinePlus } from "react-icons/ai";
 import { postMethod, getMethod } from "../../helpers/API&Helpers";
 import ClaimxdcModal from "../claimxdcModal";
+import ClaimBloqsModal from '../claimbloqsModal'
+import Swap from '../swap'
+
 const metablog_logo = require("../../assets/metablog_logo.png").default;
 const userlogo = require("../../assets/profile/blankprofile.png").default;
 
@@ -44,6 +46,9 @@ const Header = () => {
   const [amount1, setamount] = useState(0);
   const [xdcToken, setXdcToken] = useState(0);
   const [claimmodal, setclaimmodal] = useState(false);
+  const [claimbloqsmodal, setclaimbloqsmodal] = useState(false);
+  const [swapmodal, setswapmodal] = useState(false);
+  const [BuyBloqsmodal, setBuyBloqs] = useState(false);
   const [AllActivity, setAllActivity] = useState([])
   const [AllCollections, setAllCollections] = useState([])
   const [profileImage, setProfileImage] = useState(null)
@@ -322,7 +327,7 @@ const Header = () => {
                   Ranking
                 </NavDropdown.Item>
               </NavDropdown>
-              <Link
+              {/* <Link
                 className="nav-link"
                 to={"login"}
                 onClick={() => setExpanded(false)}
@@ -335,13 +340,62 @@ const Header = () => {
                 onClick={() => setExpanded(false)}
               >
                 About Us
-              </Link>
+              </Link> */}
               <Link
+                className="nav-link"
+                to={"#"}
+                onClick={() => setswapmodal(true)}
+              >
+                Swap
+              </Link>
+              <NavDropdown
+                title={
+                  <span>
+                    Claim <RiArrowDownSLine color="#007bff" />{" "}
+                  </span>
+                }
+                id="basic-nav-dropdown"
+                className="nav-link"
+              >
+                <NavDropdown.Item
+                  // onClick={() => {
+                  //   setExpanded(false);
+                  //   navigate("activity", { state: AllActivity })
+                  // }}
+                  onClick={() => setclaimmodal(true)}
+                >
+                  claim xdc
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  // onClick={() => {
+                  //   setExpanded(assxfalse);
+                  //   navigate("ranking", { state: AllCollections });
+                  // }}
+                  onClick={() => setclaimbloqsmodal(true)}
+                >
+                      claim Bloqs
+                </NavDropdown.Item>
+              </NavDropdown>
+              {/* <Link
                 className="nav-link"
                 to={"#"}
                 onClick={() => setclaimmodal(true)}
               >
                 claim xdc
+              </Link>
+              <Link
+                className="nav-link"
+                to={"#"}
+                onClick={() => setclaimbloqsmodal(true)}
+              >
+                claim Bloqs
+              </Link> */}
+              <Link
+                className="nav-link"
+                to={"#"}
+                onClick={() => setBuyBloqs(true)}
+              >
+                BUY Bloqs
               </Link>
             </Nav>
 
@@ -432,6 +486,22 @@ const Header = () => {
                         className="d-flex justify-content-between align-items-center"
                       >
                         <span>XDC AirDrop</span>
+                        <AiOutlinePlus color="#1a69a4" size={20} />
+                      </div>
+                      <hr
+                        style={{
+                          borderBottom: ".5px solid lightgray",
+                          margin: ".5em 0",
+                        }}
+                      />
+                      <div
+                        onClick={() => {
+                          navigate("BloqsAirdrop");
+                          setAdminDropdown(false);
+                        }}
+                        className="d-flex justify-content-between align-items-center"
+                      >
+                        <span>BLOQS AirDrop</span>
                         <AiOutlinePlus color="#1a69a4" size={20} />
                       </div>
                       <hr
@@ -569,12 +639,14 @@ const Header = () => {
                 </Stack>
               </Box>
             </Modal>
-
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <ConenctWallet openWallet={openWallet} setOpenWallet={setOpenWallet} />
       <ClaimxdcModal claimmodal={claimmodal} setclaimmodal={setclaimmodal} />
+      <ClaimBloqsModal claimmodal={claimbloqsmodal} setclaimmodal={setclaimbloqsmodal} />
+      <Swap claimmodal={swapmodal} setclaimmodal={setswapmodal} />
+      <BuyBloqs claimmodal={BuyBloqsmodal} setclaimmodal={setBuyBloqs} />
     </>
   );
 };

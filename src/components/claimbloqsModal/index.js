@@ -64,7 +64,7 @@ const datas = [
         status: "claimed"
     }
 ]
-function ClaimxdcModal(props) {
+function ClaimBloqsModal(props) {
     let { claimmodal, setclaimmodal } = props;
     const returnItems = useSelector((state) => state.WalletConnect);
     const { address, connected,XDC_AirDrop ,web3 } = returnItems
@@ -77,8 +77,8 @@ function ClaimxdcModal(props) {
     const [Loading2, setLoading2] = useState(false);
     const [hashValue, sethashValue] = useState("");
 
-    const getXDCairdroplist = async () => {
-        let url = "xdcAirdroplist";
+    const getBloqsairdroplist = async () => {
+        let url = "BloqsAirdroplist";
         let params = {
             wallet: address,
         };
@@ -106,27 +106,27 @@ function ClaimxdcModal(props) {
             contractAddress: process.env.REACT_APP_XDCAIRDROP_CONTRACT ,
             userAddress: address , 
             amount:amount, 
-            isXDC:true,
+            isXDC:false,
             nonce:time
         };
-        // console.log("params",params)
+         console.log("params",params)
         let authtoken = "";
         let responses = await postMethod({ url, params, authtoken });
         // console.log("response",responses)
         //  console.log("response",response.signtuple)
-        console.log("XDC_AirDrop.methods",XDC_AirDrop.methods)
+        console.log("Bloqs_AirDrop.methods",responses.signtuple)
         if(responses.signtuple){
             try{
                 var Claim = await XDC_AirDrop.methods.claimAirDrops(responses.signtuple).send({from:address});
                 console.log("Claim",Claim)
-                let url = "UpdateXDCAirdrop";
+                let url = "UpdateBloqsAirdrop";
                 let params = {id:Selectedid };
                 console.log("paramss",params)
                 let authtoken = "";
                 let response = await postMethod({ url, params, authtoken });
                 console.log("response",response)
                 setLoading2(true)
-                getXDCairdroplist()
+                getBloqsairdroplist()
                 setLoading1(false)
                 setLoading2(false)
                 setWalletOpen(false)
@@ -141,8 +141,8 @@ function ClaimxdcModal(props) {
         }
     }
     const handlecheckbox = (e, data) => {
-        var id = data.airdrop_wallets_id
-        var amt = data.airdrop_amt
+        var id = data.bloqsairdrop_wallets_id
+        var amt = data.bloqsairdrop_amt
         console.log("Selectedid",Selectedid)
         if (e.target.checked) {
             Selectedid.push(id)
@@ -163,7 +163,7 @@ function ClaimxdcModal(props) {
     }
     useEffect(() => {
         if (address) {
-            getXDCairdroplist()
+            getBloqsairdroplist()
         }
     }, [connected])
     return (
@@ -176,8 +176,8 @@ function ClaimxdcModal(props) {
             >
                 <Box sx={style}>
                     <Stack gap={3}>
-                        <div className='modal_header' style={{ flexDirection:"row", justifyContent:"space-between" }}>
-                            <h4 className="text-light fw-bold m-0">Claim XDC</h4>
+                    <div className='modal_header' style={{ flexDirection:"row", justifyContent:"space-between" }}>
+                            <h4 className="text-light fw-bold m-0">Claim Bloqs</h4>
                             <small onClick={() => setclaimmodal(false)} style={{ cursor: 'pointer', color: "white" }}>X</small>
                         </div>
                         <div className='modal_body'>
@@ -191,14 +191,14 @@ function ClaimxdcModal(props) {
                                     AirDropdata.map((data) => (
                                         <>
                                             <Col className="text-left" xxl={4} xl={4} lg={4} md={4}>
-                                                <div className="my-2">{data.xdcairdrop_campaign_name}</div>
+                                                <div className="my-2">{data.bloqsairdrop_campaign_name}</div>
                                             </Col>
                                             <Col className="text-center" xxl={4} xl={4} lg={4} md={4}>
-                                                <div className="my-2">{data.airdrop_amt}</div>
+                                                <div className="my-2">{data.bloqsairdrop_amt}</div>
                                             </Col>
                                             <Col className="text-right" xxl={4} xl={4} lg={4} md={4} >
-                                                <span className="my-2">{data.airdrop_claimed_status ? "claimed" : "claim"}</span>
-                                                {data.airdrop_claimed_status == false &&
+                                                <span className="my-2">{data.bloqsairdrop_claimed_status ? "claimed" : "claim"}</span>
+                                                {data.bloqsairdrop_claimed_status == false &&
                                                     <input type="checkbox" onChange={(e) => handlecheckbox(e, data)} className="ml-2" />
                                                 }
                                             </Col>
@@ -214,7 +214,6 @@ function ClaimxdcModal(props) {
                         </div>
                     </Stack>
                 </Box>
-                
             </Modal>
             <ActionWallet
         walletOpen={walletOpen}
@@ -227,4 +226,4 @@ function ClaimxdcModal(props) {
     )
 }
 
-export default ClaimxdcModal
+export default ClaimBloqsModal

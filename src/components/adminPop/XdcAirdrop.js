@@ -62,6 +62,7 @@ function XdcAirdrop() {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
+  const [AvailableXDC, setAvailableXDC] = useState("");
   const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
@@ -168,6 +169,9 @@ function XdcAirdrop() {
   };
   const getXdcAirdrops = async () => {
     if (address != "") {
+      var AvailableXDC = await XDC_AirDrop.methods.AvailableXDC().call();
+       AvailableXDC =web3.utils.fromWei(AvailableXDC,'ether')
+       setAvailableXDC(AvailableXDC)
       let url = "getXdcAirdrops";
       let params = {
         wallet: address,
@@ -209,6 +213,10 @@ function XdcAirdrop() {
       handleClick("warning", "invalid amount");
     }
 };
+var formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2
+})
   return (
     <>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
@@ -222,14 +230,16 @@ function XdcAirdrop() {
         </div>
         <div className="metabloq_container">
           <Row>
+          <Col  className="light-text text-right">
+             XDC Balance - {AvailableXDC}
+            </Col>
+          </Row>
+          <Row>
             <Col  className="light-text text-center">
               Campaign name
             </Col>
-            {/* <Col xxl={2} xl={2} lg={2} md={2} className="light-text">
-              XDC per wallet
-            </Col> */}
             <Col  className="light-text text-center">
-              No of wallet
+              Total wallet
             </Col>
             <Col  className="light-text text-center">
               Total XDC
@@ -261,7 +271,7 @@ function XdcAirdrop() {
                     {data.xdcairdrop_no_of_wallet}
                   </Col>
                   <Col  className="fw-bold text-center">
-                    {data.xdcairdrop_total_xdc}
+                    {formatter.format(data.xdcairdrop_total_xdc)}
                   </Col>
                   <Col  className="fw-bold text-center">
                     {FormatDate1(data.xdcairdrop_createdat)}

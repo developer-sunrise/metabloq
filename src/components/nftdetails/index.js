@@ -24,6 +24,7 @@ import { FiEdit2 } from "react-icons/fi";
 import "./Styles.css";
 import { useCountdown } from "../timer/useCountdown";
 import ActionWallet from "../connectwallet/actionWallet";
+import PurchaseBloqsModal from "../purchasebloqs";
 const avatar1 = require("../../assets/profilepics/face7.jpg").default
 const avatar2 = require("../../assets/profilepics/face8.jpg").default
 const avatar3 = require("../../assets/profilepics/face9.jpg").default
@@ -78,6 +79,7 @@ function NFTDetails(props) {
   const dispatch = useDispatch();
   const [placeModalOpen, setPlaceModalOpen] = useState(false);
   const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [purchasebloqssts, setPurchasebloqs] = useState(false);
   const [makeModalOpen, setMakeModalOpen] = useState(false);
   const [selectedAxis, setSelectedAxis] = useState(null);
   const [showModel, setShowModel] = useState(false);
@@ -209,6 +211,9 @@ function NFTDetails(props) {
   };
   const buyModalClose = () => {
     setBuyModalOpen(false);
+  };
+  const purchaseModalClose = () => {
+    setPurchasebloqs(false);
   };
 
   const makeOfferClick = () => {
@@ -497,7 +502,8 @@ function NFTDetails(props) {
       }
       setWalletOpen(false)
     } else {
-      alert("check balance");
+      // alert("check balance");
+      setPurchasebloqs(true)
       setWalletOpen(false)
       setLoading1(false)
       setLoading2(false)
@@ -846,7 +852,7 @@ function NFTDetails(props) {
   };
   var formatter = new Intl.NumberFormat('en-US', {
 		minimumFractionDigits: 0,
-		maximumFractionDigits: 4
+		maximumFractionDigits: 6
 	});
   return (
     <div className="metabloq_container nftdetails_container">
@@ -1273,6 +1279,15 @@ function NFTDetails(props) {
         playSound={playSound}
         tokenblc={BalanceToken}
         // amount={nft.nftcollections_price}
+        action={buy}
+        data={nft}
+      />
+      <PurchaseBloqsModal
+        buyModalOpen={purchasebloqssts}
+        setBuyModalOpen={setPurchasebloqs}
+        buyModalClose={purchaseModalClose}
+        playSound={playSound}
+        tokenblc={BalanceToken}
         action={buy}
         data={nft}
       />

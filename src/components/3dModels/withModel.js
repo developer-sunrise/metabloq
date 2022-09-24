@@ -140,7 +140,7 @@ const WithModel = (props) => {
               progressBarColor={Color3.FromHexString(props.bgColor)}
               center={new Vector3(0, avocadoSettings.avocadoYPos, 0)}
               // onModelLoaded={onModelLoaded}
-              modelRotation={new Vector3(0, rotation.y, 0)}
+              // modelRotation={new Vector3(0, rotation.y, 0)}
               scaling={
                 new Vector3(
                   avocadoSettings.avocadoScaling,

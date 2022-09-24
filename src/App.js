@@ -29,7 +29,6 @@ const App = () => {
   const getXDCrate =async()=>{
     try{
         var rate = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=xdce-crowd-sale&vs_currencies=usd')
-        // console.log("rate",rate)
         if(rate){
             let USD =Object.values(rate.data) 
             // console.log("rate",USD[0].usd)

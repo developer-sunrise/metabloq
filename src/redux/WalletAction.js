@@ -98,9 +98,14 @@ export const connectWallet = (walletname) => {
 
       const web3 = new Web3(provider);
 
+      // Address 
       const accounts = await web3.eth.getAccounts();
       const address = accounts[0];
+      console.log("web3",web3)
       const Chain=process.env.REACT_APP_CHAIN_ID
+
+      console.log("chainid",window.ethereum && window.ethereum.networkVersion)
+
       if (window.ethereum && window.ethereum.networkVersion !== String(Chain)) {
         await addNetwork(Number(Chain));
       }
@@ -196,7 +201,6 @@ export async function addNetwork(id) {
           blockExplorerUrls: ["https://apothem.xinfinscan.com"],
         },
       ];
-
       break;
 
     default:
@@ -213,16 +217,12 @@ export async function addNetwork(id) {
       params: networkData,
     });
   }
-  return window.ethereum.request({
-    method: "wallet_addEthereumChain",
-    params: networkData,
-  });
 }
 
 (() => {
   if (window.ethereum) {
     window.ethereum.on("networkChanged", function (networkId) {
-      if (networkId !== "56") {
+      if (networkId !== "4") {
         // console.log(networkId);
         store.dispatch(connectFailed("Please switch to Binance mainnet"));
       } else {

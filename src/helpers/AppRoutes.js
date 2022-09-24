@@ -24,6 +24,7 @@ import SignIn from "../components/signin";
 import LandAirdrop from "../components/adminPop/LandAirdrop";
 import NftAirdrop from "../components/adminPop/NftAirdrop";
 import XdcAirdrop from "../components/adminPop/XdcAirdrop";
+import BloqsAirdrop from "../components/adminPop/BloqsAirdrop";
 import Login from '../pages/login/Login';
 import Register from '../pages/Register/Register';
 import Validate from '../pages/validate/Validate'
@@ -33,6 +34,7 @@ import SubscriptionPaymentStatus from '../pages/Subscription/PaymentStatus'
 import SubscriptionVideoConference from '../pages/Subscription/VideoConference'
 import SubscriptionVideoConferenceBooking from '../pages/Subscription/VideoConferenceBooking'
 import SubscriptionEdit from '../pages/Subscription/Edit'
+// import Swap from '../components/swap'
 // export const AuthRoute = () => {
 //   return (
 //       <Routes>
@@ -95,9 +97,10 @@ export const AppRoutes = () => {
         <Route path="/landairdrop" element={<LandAirdrop />} />
         <Route path="/nftairdrop" element={<NftAirdrop />} />
         <Route path="/xdcairdrop" element={<XdcAirdrop />} />
+        <Route path="/BloqsAirdrop" element={<BloqsAirdrop />} />
+        {/* <Route path="/Swap" element={<Swap />} /> */}
         <Route path="*" element={<h1 className="text-center">404 NOT FOUND</h1>} />
       </Routes>
-
     </>
   );
 }

@@ -40,6 +40,7 @@ const initialState = {
   EstateRegistry: null,
   Token: null,
   XDC_AirDrop: null,
+  BLOQS_AirDrop: null,
   // application data
   allCollection: [],
   adjcent: [],
@@ -70,6 +71,7 @@ const walletConnectReducer = (state = initialState, action) => {
         EstateRegistry: action.payload.EstateRegistry,
         Token: action.payload.Token,
         XDC_AirDrop: action.payload.XDC_AirDrop,
+        BLOQS_AirDrop: action.payload.BLOQS_AirDrop,
       };
     case "CONNECTION_FAILED":
       return {

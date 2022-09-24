@@ -145,7 +145,7 @@ function CreateItem() {
         try {
           setWalletOpen(true);
           setLoading1(true);
-          const LastMintId = await Collection.methods.totalSupply().call();
+          const LastMintId = await Collection.methods.totalSupply().call(); // bhargav
           var mintid = parseInt(LastMintId) + 1;
           console.log("LastMintId", mintid);
           sethashValue(LastMintId?.hash)
