@@ -275,10 +275,10 @@ function NFTDetails(props) {
     }
   };
 
-  const executeOrder = async (signtuple) => {
+  const executeOrder = async (signtuple,isCrypto) => {
     try {
       const acceptOffer = await Marketplace.methods
-        .executeOrder(signtuple)
+        .executeOrder(signtuple,isCrypto)
         .send({ from: address });
       return acceptOffer;
     } catch (e) {
@@ -412,15 +412,26 @@ function NFTDetails(props) {
       console.log(e)
     }
   };
-  const buy = async () => {
+  const buy = async (isCrypto) => {
     let priceInWei = web3.utils.toWei(nft.nftcollections_price.toString(), "ether");
+    console.log("priceInWei",priceInWei)
     var checkblc = await balance(address, priceInWei)
     console.log("checkblc", checkblc)
-    if (checkblc) {
+    console.log("isCrypto", isCrypto)
+    if(!checkblc && isCrypto){
+      alert()
+      return
+    }
+    // if (!checkblc && !isCrypto) {
       setWalletOpen(true);
       try {
         setLoading1(true)
-        const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, priceInWei).send({ from: address });
+        const allowance = await Token.methods.allowance(address,process.env.REACT_APP_Marketplace_CONTRACT).call()
+        console.log("allowance",allowance)
+        if(allowance<priceInWei){
+          const balance = await Token.methods.approve(process.env.REACT_APP_Marketplace_CONTRACT, '100000000000000000000000').send({ from: address });
+        }
+       
         try {
           setLoading2(true);
           let date = new Date();
@@ -437,8 +448,9 @@ function NFTDetails(props) {
           let authtoken = "";
           let signresponse = await postMethod({ url, params, authtoken });
           if (signresponse.status) {
-
-            const accept = await executeOrder(signresponse.signtuple);
+            console.log("signresponse.signtuple",signresponse.signtuple)
+            console.log("signresponse.signtuple",signresponse.signtuple,isCrypto)
+            const accept = await executeOrder(signresponse.signtuple,isCrypto);
             sethashValue(accept?.hash);
             setLoading1(false);
             if (accept) {
@@ -501,13 +513,14 @@ function NFTDetails(props) {
         setLoading2(false)
       }
       setWalletOpen(false)
-    } else {
-      // alert("check balance");
-      setPurchasebloqs(true)
-      setWalletOpen(false)
-      setLoading1(false)
-      setLoading2(false)
-    }
+    // }
+    //  else {
+    //   // alert("check balance");
+    //   // setPurchasebloqs(true)
+    //   setWalletOpen(false)
+    //   setLoading1(false)
+    //   setLoading2(false)
+    // }
 
     //   try{
     //     const buyNft = await Marketplace.methods

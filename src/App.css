@@ -115,7 +115,13 @@ input[type=number] {
   border: 1px solid #0d6efd;
   background: linear-gradient(102.66deg, #78ceff -17.72%, #0295fa 80.89%);
   color: white;
-
+}
+.metablog_primary-filled-button-disable {
+  border-radius: 1.5em;
+  padding: 0.5em 1.5em;
+  border: 1px solid #b9b6b6;
+  background-color: #b9b6b6;
+  color:rgb(0, 0, 0) ;
 }
 
 .metablog_primary-filled-button-red {
@@ -123,7 +129,7 @@ input[type=number] {
   padding: 0.5em 1.5em;
   border: 1px solid #830000;
   background: linear-gradient(102.66deg, #ff7878 -17.72%, #ff0000 80.89%);
-  color: white;
+  color:white ;
 }
 .metablog_primary-filled-button-green {
   border-radius: 1.5em;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { postMethod } from "../../helpers/API&Helpers/index";
 import { useDispatch, useSelector } from "react-redux";
-export default function CheckoutForm({ clientSecret,data,setPaymentmethod}) {
+export default function CheckoutForm({ clientSecret,data,setPaymentStatus}) {
     const stripe = useStripe();
     const elements = useElements();
     const [message, setMessage] = useState(null);
@@ -87,7 +87,7 @@ export default function CheckoutForm({ clientSecret,data,setPaymentmethod}) {
             if(result.paymentIntent){
                 // uploadpayment(result.paymentIntent)
                 setMessage(result.paymentIntent.status)
-                setPaymentmethod(false)
+                setPaymentStatus(false)
             }
           });
         setIsLoading(false);

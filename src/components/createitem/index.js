@@ -145,8 +145,8 @@ function CreateItem() {
         try {
           setWalletOpen(true);
           setLoading1(true);
-          const LastMintId = await Collection.methods.totalSupply().call(); // bhargav
-          var mintid = parseInt(LastMintId) + 1;
+          const LastMintId = await Collection.methods.tokenID().call(); // bhargav
+          var mintid = LastMintId //parseInt(LastMintId) + 1;
           console.log("LastMintId", mintid);
           sethashValue(LastMintId?.hash)
           setLoading1(false);
@@ -198,8 +198,6 @@ function CreateItem() {
                       .send({ from: address });
                     console.log("approveToken", approveToken);
                   }
-                  
-
                   try {
                     console.log("dfghjkl", priceInWei);
                     let date = new Date();
@@ -229,7 +227,7 @@ function CreateItem() {
                           .buyCollections(
                             response.signtuple,
                             data2.location,
-                            parseInt(selectedCollection?.collection_royalties)
+                            parseInt(selectedCollection?.collection_royalties),true
                           )
                           .send({ from: address });
                         console.log("tesss", mintNFT);
